@@ -1,0 +1,90 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2 panel viewticket-page">
+      <div class="well  {% if site['rtl'] %} rtl-content {% endif %}">
+        <div class="pb-5">
+          <a href="javascript:history.back()"><i class="fa-solid fa-arrow-left me-2"></i>Back</a>
+        </div>
+        <div class="titcket-title">{{ ticket['id'] }}: {{ ticket['thema'] }}</div>
+        {% if messageList %}
+          {% for message in messageList %}
+            {% if message['support'] == 0 %}
+              <div class="row ticket-message-block ticket-message-right">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+					<div class="viewticket-client">
+						<div class="info text-right">
+							<small class="text-muted">{{ message['time'] }}</small>
+							<strong>{{ message['author'] }}</strong>
+						</div>
+						<div class="ticket-message">
+							<div class="message">{{ message['message'] }}</div>
+						</div>
+					</div>
+                  
+                </div>
+                <!--<div class="col-md-1"></div>-->
+              </div>
+            {% else %}
+              <div class="row ticket-message-block ticket-message-left">
+                <div class="col-md-10">
+					<div class="viewticket-followiz">
+						<img class="viewticket-logo" src="https://followizaddons.com/followiz-icons/100x100-followiz-logo.png">
+						<div class="info">
+							<span class="ticketReview"
+                     data-message="{{ message['message'] }}" 
+                     data-Rating="{{ message['rating'] }}" 
+                     id="msg_{{ message['id'] }}" data_ser_key="{{ message['id'] }}" >
+                   
+ <div class="review" id="review_1977" data-service_id="1977" style="color: rgb(252, 215, 3);" rating="true">
+    <i class="fas fa-star" style="cursor: pointer;" aria-hidden="true"></i>
+    <i class="fas fa-star" style="cursor: pointer;" aria-hidden="true"></i>
+    <i class="fas fa-star" style="cursor: pointer;" aria-hidden="true"></i>
+    <i class="far fa-star" style="cursor: pointer;" aria-hidden="true"></i>
+    <i class="far fa-star" style="cursor: pointer;" aria-hidden="true"></i>
+</div>                             
+                   
+                     </span>
+							<strong>{{ message['author'] }}</strong>
+							<small class="text-muted">{{ message['time'] }}</small>
+						</div>
+						<div class="ticket-message">
+							<div class="message">{{ message['message'] }}</div>
+						</div>
+					</div>
+                </div>
+                <div class="col-md-2"></div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+        {% if canAddMessage %}
+          <div class="row">
+            <div class="col-md-12">
+              <form {% if site['rtl'] %} class="rtl-form"{% endif %} method="post" action="">
+                {% if error %}
+                  <div class="alert alert-dismissible alert-danger {% if site['rtl'] %} rtl-alert {% endif %}">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                      {{ errorMessage }}
+                  </div>
+                {% endif %}
+                <div class="form-group panel-border-top">
+                  <label for="message" class="control-label">{{ lang('tickets.message') }}</label>
+                  <textarea id="message" rows="5" class="form-control" name="TicketMessageForm[message]"></textarea>
+                </div>
+                <input type="hidden" name="_csrf" value="{{csrftoken}}">
+                <button type="submit" class="btn btn-primary w-100">{{ lang('tickets.button.reply') }}</button>
+              </form>
+            </div>
+          </div>
+		  {% else %}
+		  <div class="row">
+            <div class="col-md-12">
+				<label class="control-label" style="width:100%;font-size:16px;margin-top:20px;margin-bottom:20px;text-align:center;"><a href="/tickets">This ticket has been closed.<br>Please open up a new ticket if you still face issues.</a></label>
+			</div>
+			</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>		
+</div>

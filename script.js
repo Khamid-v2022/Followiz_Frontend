@@ -114,25 +114,18 @@ function loadCategoryOrderLocal(link) {
 
 const currentURL = window.location.href;
 
-
-
 $(window).load(function () {
 	var checkCookie = getCookie("theme_layout");
 	if (checkCookie != "") { 
-    $("body").addClass(getCookie("theme_layout")); 
-		if(getCookie("theme_layout") != ""){ 
-            //$("body").removeClass("theme-default");                                            
-            //$("body").addClass(getCookie("theme_layout")); 
-			if(getCookie("theme_layout") == "theme-dark"){
-				$("#themeMode").prop("checked",true); $(".label-success").html("Light Mode");
-			} 
-		}
+        if(getCookie("theme_layout") == "theme-dark"){
+            $("#themeMode").prop("checked",true); $(".label-success").html("Light Mode");
+        } 	
 	}   
 });
 
 
-         $(document).ready(function () {
-           /* if(getCookie("theme_layout") != ""){ $("body").removeClass("theme-default");           $("body").addClass(getCookie("theme_layout")); if(getCookie("theme_layout") == "theme-dark"){ $("#themeMode").prop("checked",true); $(".label-success").html("Light Mode");} } */
+
+    $(document).ready(function () {
           var trigger = $('.hamburger'),
               overlay = $('.overlay'),
              isClosed = false;
@@ -179,7 +172,56 @@ $(document).on('submit','#order-form',function(){
 
 /*************** FAQ PAGE SLIDE NEW CODE *****************/
 
+$(document).on("keyup","#searchService",function() {
 
+	// Retrieve the input field text and reset the count to zero
+	var filter = $(this).val(),
+	count = 0;
+   console.log(typeof filter);
+	let flag = false;
+    
+    $('.well .servie-data-panel a.list-item').each(function() {
+      	let texts = $(this).find(".filter--text").html();
+        let ids =  $(this).find(".filter--id").html();
+      
+		if (texts.search(new RegExp(filter, "i")) < 0 && ids.search(new RegExp(filter, "i")) < 0) {
+              if(!$(this).hasClass("collapsed")){
+                $(this).parents(".servie-data-panel").find(".panel-collapse").collapse('toggle');
+              }
+              $(this).hide();  // MY CHANGE
+              // Show the list item if the phrase matches and increase the count by 1
+          } else {
+              $(this).show(); // MY CHANGE
+
+              if(filter.length == 0 && !$(this).hasClass("collapsed")){
+                    $(this).parents(".servie-data-panel").find(".panel-collapse").collapse('toggle');
+              }
+              if(filter.length != 0 && !flag ){
+                    flag = true;
+                    $(this).parents(".servie-data-panel").click();
+                    if($(this).hasClass("collapsed")){
+                        $(this).parents(".servie-data-panel").find(".panel-collapse").collapse('toggle');
+                    }
+              }
+             
+          } 
+    });
+   
+   		// Loop through the comment list
+      $('.well .servie-data-panel tr').each(function() {
+        // If the list item does not contain the text phrase fade it out
+        if ($(this).html().search(new RegExp(filter, "i")) < 0) {
+          $(this).hide();  // MY CHANGE
+			
+          // Show the list item if the phrase matches and increase the count by 1
+        } else {
+          	$(this).show(); // MY CHANGE
+          count++;
+        }
+
+      });
+
+});
 
 $(document).ready(function(){
    $(".ques_1").css("display","none");
@@ -232,55 +274,6 @@ $(document).ready(function(){
 
     });
 
- $(document).on("keyup","#searchService",function() {
-
-	// Retrieve the input field text and reset the count to zero
-	var filter = $(this).val(),
-	count = 0;
-	let flag = false;
-    
-    $('.well .servie-data-panel a.list-item').each(function() {
-      	let texts = $(this).find(".filter--text").html();
-        let ids =  $(this).find(".filter--id").html();
-      
-		if (texts.search(new RegExp(filter, "i")) < 0 && ids.search(new RegExp(filter, "i")) < 0) {
-              if(!$(this).hasClass("collapsed")){
-                $(this).parents(".servie-data-panel").find(".panel-collapse").collapse('toggle');
-              }
-              $(this).hide();  // MY CHANGE
-              // Show the list item if the phrase matches and increase the count by 1
-          } else {
-              $(this).show(); // MY CHANGE
-
-              if(filter.length == 0 && !$(this).hasClass("collapsed")){
-                    $(this).parents(".servie-data-panel").find(".panel-collapse").collapse('toggle');
-              }
-              if(filter.length != 0 && !flag ){
-                    flag = true;
-                    $(this).parents(".servie-data-panel").click();
-                    if($(this).hasClass("collapsed")){
-                        $(this).parents(".servie-data-panel").find(".panel-collapse").collapse('toggle');
-                    }
-              }
-             
-          } 
-    });
-   
-   		// Loop through the comment list
-      $('.well .servie-data-panel tr').each(function() {
-        // If the list item does not contain the text phrase fade it out
-        if ($(this).html().search(new RegExp(filter, "i")) < 0) {
-          $(this).hide();  // MY CHANGE
-			
-          // Show the list item if the phrase matches and increase the count by 1
-        } else {
-          	$(this).show(); // MY CHANGE
-          count++;
-        }
-
-      });
-
-    });
 
 $(document).ready(function(){
   	$('.nav .ticketList').click(function(){
@@ -2899,72 +2892,6 @@ $(document).on('submit','#order-form',function(){
 
 /******************* DARK MODE  *******************************/
 
- $(document).on("change",".selectpicker",function() {
-
-      // Retrieve the input field text and reset the count to zero
-      var filter = $(this).val(),
-        count = 0;
-    
-      // Loop through the comment list
-      $('.well  .servie-data-panel').each(function() {
-
-
-        // If the list item does not contain the text phrase fade it out
-        if ($(this).text().search(new RegExp(filter, "i")) < 0) {
-          $(this).hide();  // MY CHANGE
-
-          // Show the list item if the phrase matches and increase the count by 1
-        } else {
-          $(this).show(); // MY CHANGE
-          count++;
-        }
-
-      });
-
-    });
-
- /*$(document).on("keyup","#searchService",function() {
-
-      // Retrieve the input field text and reset the count to zero
-      var filter = $(this).val(),
-        count = 0;
-    
-      // Loop through the comment list
-      //$('.well  .servie-data-panel').each(function() {
-      $('.well  .tablerowid').each(function() {
-
-        //console.log($(this).find('.id').text().search(new RegExp(filter, "i")));
-
-        //console.log($(this).find('.name').text().search(new RegExp(filter, "i")));
-
-      	if( 
-      	     ($(this).find('.id').text().search(new RegExp(filter, "i")) <  0 )
-      	      &&
-      	     ($(this).find('.name').text().search(new RegExp(filter, "i")) < 0 ) 
-      	 ){
-      		$(this).hide();  // MY CHANGE
-
-      	}else{
-      		$(this).show(); // MY CHANGE
-            count++;
-      	}
-         
-
-
-
-        // If the list item does not contain the text phrase fade it out
-        /*if ($(this).text().search(new RegExp(filter, "i")) < 0) {
-          $(this).hide();  // MY CHANGE
-
-          // Show the list item if the phrase matches and increase the count by 1
-        } else {
-          $(this).show(); // MY CHANGE
-          count++;
-        }*/
-
-      /*});
-
-    });*/
 
 //$(document).ready(function(){
 //  $('.nav .ticketList').click(function(){
@@ -3606,6 +3533,7 @@ $(document).ready(function () {
 function loadServicesAuto(serviceOrder){
 	console.log("serviceOrderData",serviceByCate);
 	$(".filter--text").remove();
+  $(".filter--id").remove();
 	$(".servie-data-panel").each(function(){
 		let service_cat_id = $(this).attr('data-cat_key');
         let serviceContent = $("#service_container_"+service_cat_id).text().trim();
@@ -3636,48 +3564,46 @@ function loadServicesAuto(serviceOrder){
       $(".servie-data-panel").click(function(){
         
         
-         let service_cat_id = $(this).attr('data-cat_key');
-         
-         let serviceContent = $("#service_container_"+service_cat_id).text().trim();
-         
-         if(serviceContent.length == 0){ //check empty 
-            //console.log('content on exists');
-            
-            //console.log(serviceByCate[service_cat_id]);
-            //console.log(serviceOrder);
-            let sortedService = {};
-            let service_of_cat = serviceByCate[service_cat_id];
+            let inputed_val = $("#searchService").val();
+  
+           let service_cat_id = $(this).attr('data-cat_key');
            
-            for (const [key, value] of Object.entries(service_of_cat)) {
+           let serviceContent = $("#service_container_"+service_cat_id).text().trim();
+          //  searchService
+          //  if(serviceContent.length == 0){ //check empty 
               
-              let sort_order_arr = serviceOrder.filter((order)=>{  return order.service_id == key; });				
-               let sort_val = sort_order_arr[0]
-               //console.log(sort_val.sort_order);
-               sortedService[sort_val.sort_order] = value;
-            }
-
-            //console.log(sortedService);
-            //let tbody = getTbodyForService(serviceByCate[service_cat_id],serviceOrder);
-            let tbody = getTbodyForService(sortedService);
-            $("#service_container_"+service_cat_id).html(tbody);
-           
-            //code to add rating.
-            var local_user_id = user_id;// "{{ user['id'] }}";
-            var userRatingArr = getUserRating();
-            getUserRatingOnly();
-
-            jQuery(".review").rating({
-              "value": 3,
-              "click": function (e) {     
-                ////console.log(e);
-                if(typeof e.event !== "undefined"){
-                  var service_id = (e.event.target.parentNode.id).split("_")[1];
-                  //$("#starsInput").val(user_id,service_id,e.stars);
-                  insertOrUpdateVote(local_user_id,service_id,e.stars);
-                }
-              },
-            });
-         }
+              let sortedService = {};
+              let service_of_cat = serviceByCate[service_cat_id];
+             
+              for (const [key, value] of Object.entries(service_of_cat)) {
+                  if(value['id'].search(new RegExp(inputed_val, "i")) >= 0 || value['name'].search(new RegExp(inputed_val, "i")) >= 0 ){
+                      let sort_order_arr = serviceOrder.filter((order)=>{  return order.service_id == key; });				
+                      let sort_val = sort_order_arr[0]
+                      sortedService[sort_val.sort_order] = value;
+                  }                
+              }
+  
+              //console.log(sortedService);
+              //let tbody = getTbodyForService(serviceByCate[service_cat_id],serviceOrder);
+              let tbody = getTbodyForService(sortedService);
+              $("#service_container_"+service_cat_id).html(tbody);
+             
+              //code to add rating.
+              var local_user_id = user_id;// "{{ user['id'] }}";
+              var userRatingArr = getUserRating();
+              getUserRatingOnly();
+  
+              jQuery(".review").rating({
+                "value": 3,
+                "click": function (e) {     
+                  ////console.log(e);
+                  if(typeof e.event !== "undefined"){
+                    var service_id = (e.event.target.parentNode.id).split("_")[1];
+                    //$("#starsInput").val(user_id,service_id,e.stars);
+                    insertOrUpdateVote(local_user_id,service_id,e.stars);
+                  }
+                },
+              });
       })
   }
   
