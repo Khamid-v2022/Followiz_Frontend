@@ -82,9 +82,9 @@ html {
     color: #fff !important;
     background-color: #121417;
   }
-  .theme-dark a {
+  /* .theme-dark a {
     color: #fff;
-  }
+  } */
   body .panel .deposit_page ul .deposit_icon {
     /*  width: 28%; */
   }
@@ -343,7 +343,7 @@ html {
   .theme-dark .panel .panel-body .bg_color {
     background-color: #191C21;
     color: #7E8E8D !important;
-    border: none;
+    
     /*  border-radius: 5px; */
   }
   
@@ -403,7 +403,10 @@ html {
   .theme-dark .main-menu .dropdown .dropdown-menu>li>a:hover {
     color: #2FCD94;
   }
-  
+  .theme-dark .selection_deaitls {
+    border: 1px solid #323A3A!important;
+  }
+
   .theme-dark .selection_deaitls> :nth-child(2) {
     border-left: 1px solid #323A3A;
   }
@@ -438,6 +441,15 @@ html {
     background: #535e5c;
   }
   
+
+  .theme-default a.theme-a-title{
+    color: black;
+  }
+
+  .theme-dark a.theme-a-title{
+    color: white;
+  }
+
   .theme-default .panel .panel-body .bg_color .api_document {
     /* background-color: #fff !important; */
   }
@@ -450,8 +462,9 @@ html {
   .theme-dark .panel .panel-body .ticket ul li:hover,
   .theme-dark .ticket ul li.active {
     background: #535e5c !important;
+    
   }
-  
+
   .theme-dark .ticket_poup_button {
     color: #fff;
     opacity:1;
@@ -581,7 +594,7 @@ html {
   }
   
   .theme-dark .ticket.faq_section h2 {
-    color: #2FCD94;
+    color: white;
   }
   
   
@@ -2214,7 +2227,7 @@ html {
   }
   
   .theme-dark .subject_box p{
-      color:#fff;
+      color:#ccc;
   }
   
   .request .subject_box p {
@@ -2258,29 +2271,13 @@ html {
   border: 1px solid #2FCD94;
   }*/
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   .ticket label {
     padding-bottom: 4px;
   }
   
-  
-  
-  
   .ticket-list-item{
       margin:10px 0;
+      word-break: break-all;
   }
   .ticket-list-name{
       font-size:16px;
@@ -3190,11 +3187,10 @@ html {
   
   
   /*********faq css***********/
-  
-  .faq_section ul li {
-    width: 25% !important;
+  .faq_section.ticket ul {
+    display: flex;
   }
-  
+ 
   .faq_details .card .card-header h2 button {
     font-style: normal;
     font-weight: 500;
@@ -3770,7 +3766,7 @@ html {
     min-width: 200px;
     height: 45px;
     color: #555;
-    /* border: 1px solid #ccc; */
+    border: 1px solid #323A3A;
     border-radius: 4px;
     padding: 10px;
     appearance:none;
@@ -3859,6 +3855,7 @@ html {
   .theme-dark .vip-status .icon .vip_tolltip {
     background: #191C21;
     border: 1px solid #323A3A;
+    color: white;
   }
   
   .vip-status .icon {
@@ -4024,7 +4021,7 @@ html {
   /********9-6-2021 css *****/
   .main-menu .navbar .navbar-nav li.active.dropdown .dropdown-menu li a:hover, .main-menu .navbar .navbar-nav li.active.dropdown .dropdown-menu li a:focus {
     color: #2FCD94 !important;
-    /background: none!important;
+    background: transparent!important;
   
   }
   
@@ -4772,9 +4769,18 @@ html {
   .services_news .services_updates .table-responsive{
      height: 530px;
       overflow: auto;
-          margin: 0px -20px -4px -20px;
+     margin: 0px -20px -4px -20px;
       padding: 0px 0px 0px 0px;
   }
+
+  @media screen and (max-width: 767px) {
+    .table-responsive {
+        border: none;
+        width: unset;
+        min-height: 100px;
+        height: 100px!important;
+    }
+}
   
   .services_news .latest_news .news_data {
       height: 530px;
@@ -5021,14 +5027,7 @@ html {
     .transaction_history .account_page {
       padding: 35px 35px;
     }
-    .transaction_history tbody tr td:first-child,
-    .transaction_history table tr th:first-child {
-      padding-left: 35px !important;
-    }
-    .transaction_history tbody tr td:last-child,
-    .transaction_history table tr th:last-child {
-      padding-right: 35px !important;
-    }
+    
     .order_history .well tbody tr td:first-child,
     .order_history .well thead tr th:first-child {
       padding-left: 45px !important;
@@ -6174,7 +6173,7 @@ html {
       margin: 0px 15px;
     }
     .payment_option {
-      height: 260px;
+      /* height: 260px; */
       max-height: 800px;
     }
     .deposit_page ul {
@@ -6487,10 +6486,11 @@ html {
     }
     .main-wrapper.for-dashboard .top-header ~ .main-menu .mobile_menu {
       top: 50px;
+      z-index: 11;
     }
     .main-wrapper.for-dashboard .top-header ~ .content-wrapper {
       padding: 40px 0px 25px 0px;
-      margin-top: 0px;
+      margin-top: 64px;
     }
     .main-wrapper.for-dashboard .top-header ~ .main-menu .mobile_menu button.hamburger.is-open {
       top: -26px;
@@ -6822,3 +6822,78 @@ html {
       font-size: 22px;
       min-width: 38px;
   }
+
+  .btn.border-btn {
+    background: #E4FFF5;
+    border: 1px solid #2FCD94;
+    color: black;
+  }
+   
+  .dataTables_wrapper > div.row:first-child div.col-sm-6, .dataTables_wrapper > div.row:last-child div.col-sm-6 {
+    width: unset;
+  } 
+  .dataTables_wrapper > div.row:first-child, .dataTables_wrapper > div.row:last-child {
+    margin: 0px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .dataTables_wrapper > div.row:first-child::before,
+  .dataTables_wrapper > div.row:first-child::after {
+    display: none;
+  }
+
+  .dataTables_wrapper > div.row:first-child .dataTables_filter {
+    float: right;
+  }
+ 
+  
+  .dataTables_wrapper  .pagination {
+    float: right;
+  }
+  .dataTables_wrapper .pagination>li {
+    margin: 0px 2px;
+  }
+
+ .theme-dark .dataTables_wrapper input,  .theme-dark .dataTables_wrapper select{
+    border: 1px solid #323A3A !important;
+    color: white;
+    background-color: #323A3A;
+    margin-left: 8px;
+ }
+
+ .theme-dark .dataTables_wrapper input {
+    width: 130px;
+ }
+
+ .theme-dark .main_category {
+    border: 1px solid #323A3A !important;
+ }
+ 
+ .theme-dark .viewticket-page .viewticket-client .info.text-left strong, .theme-dark .viewticket-page .viewticket-client .info strong, .theme-dark .viewticket-page .viewticket-client .message {
+    color: #ccc;
+ }
+ .theme-dark .viewticket-client {
+    border-color: #ccc;
+ }
+
+ .theme-dark .modal-title{
+    color: white !important;;
+ }
+
+ @media(max-width: 767px) { 
+    .ticket-page .nav-pills {
+        margin-top: 24px;
+    }
+ }
+
+ .login-wrapper .radio + .radio,
+ .checkbox + .checkbox {
+    margin-top: 16px;
+ }
+  .theme-dark .main-menu .navbar .navbar-nav li.active ul.dropdown-menu li.active a:focus, 
+ .theme-dark .main-menu .navbar .navbar-nav li.active ul.dropdown-menu li.active a:active,
+ .theme-dark .main-menu .navbar .navbar-nav li.active ul.dropdown-menu li.active a:hover {
+    background-color: transparent!important;
+ }
+

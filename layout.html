@@ -28,14 +28,6 @@
             return "";
         }
       </script>
-      <style>
-        .theme-default .theme_dark{
-            display:none;
-        }
-        .theme-dark .theme_default{
-            display:none;
-        }
-      </style>
       <!-- Font -->
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,18 +35,27 @@
       <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
       <!-- Followiz Fontawesome Kit -->
       
-     <script src="https://kit.fontawesome.com/28e57db20b.js" crossorigin="anonymous"></script>
+      <script src="https://kit.fontawesome.com/28e57db20b.js" crossorigin="anonymous"></script>
       <!-- Select2 css for stylish dropdown -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" />
+      
+
+      <!-- datatable -->
+      <link rel="style" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap.min.css">
       <!-- Custom css -->
       {% for style in site['styles'] %}
       <link rel="stylesheet" type="text/css" href="{{ style['href'] }}">
       {% endfor %}
    </head>
-   <body class="theme-default">
-
+   <body>
         <script>
-            document.body.classList.add(getCookie("theme_layout"));
+          	console.log(localStorage.getItem("theme_layout"));
+          	if(localStorage.getItem("theme_layout")){
+              document.body.className = localStorage.getItem("theme_layout");
+            }else{
+              document.body.className = "theme-default";
+            }
+            
         </script>
       <div class="main-wrapper {% if user['auth'] %} for-dashboard {% endif %}">
          {% if user['auth'] %}
@@ -107,92 +108,92 @@
                   <nav class="navbar">
                      <ul class="nav navbar-nav">
                         {% for menu in site['menu'] %}
-                        {% if  menu['link'] == '/' %}
-                        <li {% if menu['active'] %} class="active dropdown" {% endif %} class="dropdown">
-                        <a class="dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="supportMenu1">New Order
-                        <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="supportMenu1">
-                           {% for menu1 in site['menu'] %}
-                           {% if  menu1['link'] == "/" or menu1['link'] == '/massorder' %}
-                           <li {% if menu1['active'] %} class="active"{% endif %}>
-                           <a href="{{ menu1['link'] }}">{{ menu1['name'] }}</a>
-                           </li>
+                           {% if  menu['link'] == '/' %}
+                              <li {% if menu['active'] %} class="active dropdown" {% endif %} class="dropdown">
+                                 <a class="dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="supportMenu1">New Order
+                                    <span class="caret"></span>
+                                 </a>
+                                 <ul class="dropdown-menu" aria-labelledby="supportMenu1">
+                                    {% for menu1 in site['menu'] %}
+                                       {% if  menu1['link'] == "/" or menu1['link'] == '/massorder' %}
+                                          <li {% if menu1['active'] %} class="active"{% endif %}>
+                                             <a href="{{ menu1['link'] }}">{{ menu1['name'] }}</a>
+                                          </li>
+                                       {% endif %}
+                                    {% endfor %}
+                                 </ul>
+                              </li>
                            {% endif %}
-                           {% endfor %}
-                        </ul>
-                        </li>
-                        {% endif %}
-                        {% if  menu['link'] == '/orders' %}
-                        <li {% if menu['active'] %} class="active dropdown" {% endif %} class="dropdown">
-                        <a class="dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="supportMenu2">Order History
-                        <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="supportMenu2">
-                           {% for menu1 in site['menu'] %}
-                           {% if  menu1['link'] == "/orders" or menu1['link'] == '/subscriptions' 
-                           or menu1['link'] == "/drip-feed" or menu1['link'] == '/refill' %}
-                           <li {% if menu1['active'] %} class="active"{% endif %}>
-                           <a href="{{ menu1['link'] }}">{{ menu1['name'] }}</a>
-                           </li>
+                           {% if  menu['link'] == '/orders' %}
+                              <li {% if menu['active'] %} class="active dropdown" {% endif %} class="dropdown">
+                                 <a class="dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="supportMenu2">Order History
+                                    <span class="caret"></span>
+                                 </a>
+                                 <ul class="dropdown-menu" aria-labelledby="supportMenu2">
+                                    {% for menu1 in site['menu'] %}
+                                       {% if  menu1['link'] == "/orders" or menu1['link'] == '/subscriptions' 
+                                       or menu1['link'] == "/drip-feed" or menu1['link'] == '/refill' %}
+                                          <li {% if menu1['active'] %} class="active"{% endif %}>
+                                             <a href="{{ menu1['link'] }}">{{ menu1['name'] }}</a>
+                                          </li>
+                                       {% endif %}
+                                    {% endfor %}
+                                 </ul>
+                              </li>
                            {% endif %}
-                           {% endfor %}
-                        </ul>
-                        </li>
-                        {% endif %}
-                        {% if  menu['link'] == '/services' %}
-                        <li {% if menu['active'] %} class="active dropdown" {% endif %} class="dropdown">
-                        <a class="dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="supportMenu4">Services
-                        <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="supportMenu4">
-                           {% for menu1 in site['menu'] %}
-                           {% if  menu1['link'] == "/services" or menu1['link'] == '/updates'  %}
-                           <li {% if menu1['active'] %} class="active"{% endif %}>
-                           <a href="{{ menu1['link'] }}">{{ menu1['name'] }}</a>
-                           </li>
+                           {% if  menu['link'] == '/services' %}
+                              <li {% if menu['active'] %} class="active dropdown" {% endif %} class="dropdown">
+                                 <a class="dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="supportMenu4">Services
+                                    <span class="caret"></span>
+                                 </a>
+                                 <ul class="dropdown-menu" aria-labelledby="supportMenu4">
+                                    {% for menu1 in site['menu'] %}
+                                    {% if  menu1['link'] == "/services" or menu1['link'] == '/updates'  %}
+                                    <li {% if menu1['active'] %} class="active"{% endif %}>
+                                    <a href="{{ menu1['link'] }}">{{ menu1['name'] }}</a>
+                                    </li>
+                                    {% endif %}
+                                    {% endfor %}
+                                 </ul>
+                              </li>
                            {% endif %}
-                           {% endfor %}
-                        </ul>
-                        </li>
-                        {% endif %}
-                        {% if  menu['link'] == '/addfunds' %}
-                        <li {% if menu['active'] %} class="active d_toltip" {% else %} class="d_toltip" {% endif %}>
-                        <a href="{{ menu['link'] }}">Deposit</a>
-                        <div class="deposit_toltip" > </div>
-                        </li>
-                        {% endif %}
-                        {% if  menu['link'] == '/tickets' %}
-                        <li {% if menu['active'] %} class="active dropdown" {% endif %} class="dropdown">
-                        <a class="dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="supportMenu3">Support
-                        {% for menu1 in site['menu'] %}
-                        {% if  menu1['link'] == "/tickets"%}
-                        {{ menu1['name']|replace({'Tickets':''}) }}
-                        {% endif %}
-                        {% endfor %}
-                        <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="supportMenu3">
-                           {% for menu1 in site['menu'] %}
-                           {% if  menu1['link'] == "/tickets" or menu1['link'] == '/faq' %}
-                           <li {% if menu1['active'] %} class="active"{% endif %}>
-                           <a href="{{ menu1['link'] }}">{{ menu1['name'] }}</a>
-                           </li>
+                           {% if  menu['link'] == '/addfunds' %}
+                              <li {% if menu['active'] %} class="active d_toltip" {% else %} class="d_toltip" {% endif %}>
+                                 <a href="{{ menu['link'] }}">Deposit</a>
+                                 <div class="deposit_toltip" > </div>
+                              </li>
                            {% endif %}
-                           {% endfor %}
-                        </ul>
-                        </li>
-                        {% endif %}
-                        {% if  menu['link'] == '/child-panels' %}
-                        <li {% if menu['active'] %} class="active"{% endif %}>
-                        <a href="{{ menu['link'] }}">{{ menu['name'] }}</a>
-                        </li>
-                        {% endif %}
-                       	{% if  menu['link'] == '/api' %}
-                        <li {% if menu['active'] %} class="active"{% endif %}>
-                        <a href="{{ menu['link'] }}">{{ menu['name'] }}</a>
-                        </li>
-                        {% endif %}
+                           {% if  menu['link'] == '/tickets' %}
+                              <li {% if menu['active'] %} class="active dropdown" {% endif %} class="dropdown">
+                                 <a class="dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="supportMenu3">Support
+                                    {% for menu1 in site['menu'] %}
+                                    {% if  menu1['link'] == "/tickets"%}
+                                    {{ menu1['name']|replace({'Tickets':''}) }}
+                                    {% endif %}
+                                    {% endfor %}
+                                    <span class="caret"></span>
+                                 </a>
+                                 <ul class="dropdown-menu" aria-labelledby="supportMenu3">
+                                    {% for menu1 in site['menu'] %}
+                                    {% if  menu1['link'] == "/tickets" or menu1['link'] == '/faq' %}
+                                    <li {% if menu1['active'] %} class="active"{% endif %}>
+                                       <a href="{{ menu1['link'] }}">{{ menu1['name'] }}</a>
+                                    </li>
+                                    {% endif %}
+                                    {% endfor %}
+                                 </ul>
+                              </li>
+                           {% endif %}
+                           {% if  menu['link'] == '/child-panels' %}
+                              <li {% if menu['active'] %} class="active"{% endif %}>
+                                 <a href="{{ menu['link'] }}">{{ menu['name'] }}</a>
+                              </li>
+                           {% endif %}
+                           {% if  menu['link'] == '/api' %}
+                              <li {% if menu['active'] %} class="active"{% endif %}>
+                                 <a href="{{ menu['link'] }}">{{ menu['name'] }}</a>
+                              </li>
+                           {% endif %}
                         {% endfor %}
                      </ul>
                   </nav>
@@ -422,6 +423,8 @@
       <!-- Circle progress bar -->
       <script src="https://rawgit.com/kottenator/jquery-circle-progress/1.2.2/dist/circle-progress.js"></script>
       <script src="https://followizaddons.com/client_js/rating.js"></script>
+      <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+      <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap.min.js"></script>
       <script type="text/javascript">
          window.onscroll = function() {myFunction()};
          

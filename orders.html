@@ -1,0 +1,177 @@
+<div class="container">
+    <div class="panel order_page">
+       <div class="panel-body ">
+          <div class="order_history">
+             <ul class="nav nav-pills {% if site['rtl'] %} rtl-nav {% endif %}">
+                <li class="pull-left search">
+                   <form action="{{ page['url'] }}" method="get" id="history-search">
+                      <div class="input-group">
+                         <input type="text" name="search" class="form-control text_color1 bg_color" value="{{ search }}"
+                            placeholder="{{ lang('Search Order ID/Link (separate terms by commas) ') }}">
+                         <span class="input-group-btn">
+                         <button type="submit" class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i></button>
+                         </span>
+                      </div>
+                   </form>
+                </li>
+                <div class="catgorey_section">
+                   <li {% if 'all' == status %}class="active"{% endif %}><a href="{{ page['url'] }}" class="text_color1">{{ lang('orders.all') }}</a></li>
+                   <li {% if 'pending' == status %}class="active"{% endif %}><a href="{{ page['url'] }}/pending" class="text_color1">{{ lang('orders.status.pending') }}</a></li>
+                   <li {% if 'processing' == status %}class="active"{% endif %}><a href="{{ page['url'] }}/processing" class="text_color1">{{ lang('orders.status.processing') }}</a></li>
+                   <li {% if 'inprogress' == status %}class="active"{% endif %}><a href="{{ page['url'] }}/inprogress" class="text_color1">{{ lang('orders.status.inprogress') }}</a></li>
+                   <li {% if 'completed' == status %}class="active"{% endif %}><a href="{{ page['url'] }}/completed" class="text_color1">{{ lang('orders.status.completed') }}</a></li>
+                   <li {% if 'partial' == status %}class="active"{% endif %}><a href="{{ page['url'] }}/partial" class="text_color1">{{ lang('orders.status.partial') }}</a></li>
+                   <li {% if 'canceled' == status %}class="active"{% endif %}><a href="{{ page['url'] }}/canceled" class="text_color1">{{ lang('orders.status.canceled') }}</a></li>
+                </div>
+             </ul>
+             <div class="well well-float text_color text-color2">
+                <table class="table {% if site['rtl'] %} rtl-table {% endif %}">
+                   <thead>
+                      <tr>
+                         <th>{{ lang('orders.id') }}</th>
+                         <th class="width-20 "  >{{ lang('orders.service') }}</th>
+                         <th class="width-20th-30">{{ lang('orders.link') }}</th>
+                         <th>{{ lang('orders.quantity') }}</th>
+                         <th class="nowrap">{{ lang('orders.startcount') }}</th>
+                         <th class="width-10 ">{{ lang('orders.date') }}</th>
+                         <th>{{ lang('orders.charge') }}</th>
+                         <th>{{ lang('orders.status') }}</th>
+                         <!-- <th>{{ lang('orders.remains') }}</th> -->
+                         <th class="width-22">Action</th>
+                         {% if task == 1 %}
+                         {% endif %}
+                      </tr>
+                   </thead>
+                   <tbody>
+                      {% for order in orderList %}
+                      <tr>
+                        <td>{{ order['id'] }}
+                            <!-- <div class="reviewShowOnly" id="review_reviewShowOnly_{{ order['service_id'] }}" data-service_id="{{ order['service_id'] }}" ></div> -->
+                            <div class="review" id="review_{{ order['id'] }}" data-service_id="{{ order['service_id'] }}" data-order_id="{{ order['id'] }}" ></div>
+                        </td>
+                        <td class="width-20">{{ order['service_id'] }} - {{ order['service'] }}</td>
+                        <td class="width-30 link_tab"><a target="_blank" href="https://anon.ws?{{ order['link'] }}">{{ order['link'] }}</a></td>
+                        <td>{{ order['quantity'] }}</td>
+                        <td class="nowrap">{{ order['start_count'] }}</td>
+                        <td class="width-10">{{ order['date'] }}</td>
+                        <td>{{ order['charge'] }}</td>
+                        {% if order['status'] == 'Processing' %}
+                            {% set statusclass = 'color_processing' %}
+                        {% elseif order['status'] == 'Completed'  %}
+                            {% set statusclass = 'color_completed' %}
+                        {% elseif order['status'] == 'Pending'  %}
+                            {% set statusclass = 'color_pending' %}
+                        {% elseif order['status'] == 'In progress' %}
+                            {% set statusclass = 'color_inprogress' %}
+                        {% elseif order['status'] == 'Partial' %}
+                            {% set statusclass = 'color_partial' %}
+                        {% elseif order['status'] == 'Canceled' %}
+                            {% set statusclass = 'color_cancel' %}
+                        {%endif%}
+                        <td><span class="status {{ statusclass }}">{{ order['status'] }}</span></td>
+                       
+                        <td>
+                            <div class="order-actions">
+                                {% if order['refilling'] == 1 %}
+                                <span class="status bg-yellow">{{ lang('orders.refilling') }}</span>
+                                {% else %}
+                                
+                                    {% if order['refill'] == 1 %}
+                                        <a href="{{ page['url'] }}/{{ order['id'] }}/refill" class="btn btn-xs btn-primary">{{ lang('orders.button.refill') }}</a>
+                                    {% endif %}
+                                    
+                                    {% if order['refillAvailableTime'] %}
+                                        <button class="btn btn-xs btn-primary disabled" data-toggle="tooltip" data-placement="top" title="{{ order['refillAvailableTime'] }}">{{ lang('orders.button.refill') }}</button>
+                                    {% endif %}
+                                    
+                                    {% if order['cancel'] == 1 %}
+                                        <a href="{{ page['url'] }}/{{ order['id'] }}/cancel" class="btn btn-xs btn-default">{{ lang('orders.button.cancel') }}</a>
+                                    {% endif %}
+                                
+                                {% endif %}
+
+                                <a href="#" class="btn btn-xs border-btn mt-1 order-again-btn" data-service_id="{{ order['service_id'] }}" data-service-category="{{  order['category'] }}" data-service="{{ order['service'] }}">Order Again</a>
+                            </div>
+                        </td>
+               
+               
+                         <!--<td>
+                            {% if order['refilling'] == 1 %}
+                            <span class="status bg-yellow">{{ lang('orders.refilling') }}</span>
+                            {% else %}
+                            <span class="status {{ statusclass }}">{{ order['status'] }}</span>
+                            {%endif%}
+                         </td>
+                         <td class="width-22">
+                            
+                            {% if order['refill'] == 1 %}
+                            
+                            
+                            <a href="/orders/{{order['id']}}/refill"><span  class="new_order"><img src="https://followizaddons.com/followiz-icons/re-order_icon.svg"></span></a>
+                           
+                            {%endif%}
+                           
+                            {% if order['cancel'] == 1 %}
+                           
+                            <a href="/orders/{{order['id']}}/cancel"><span class="cancell"><img src="https://followizaddons.com/followiz-icons/cancel_white_icon.svg"></span></a>
+                           
+                            {%endif%}
+                         </td>-->
+                      </tr>
+                      {% endfor %}
+                   </tbody>
+                </table>
+             </div>
+          </div>
+            {% if pagination['count'] > 100 %}
+                {% if searchList %}
+                    {% set params = {} %}
+                    
+                    {% for search in searchList %}
+                        {% set params = params | merge([search['name'] ~ '=' ~ search['value']]) %}
+                    {% endfor %}
+                    
+                    {% set params = '?' ~ params|join('&') %}
+                {% endif %}
+                <ul class="pagination {% if site['rtl'] %} rtl-pagination {% endif %}">
+                    {% if pagination['current'] != 1 %}
+                    <li class="page_arrow">
+                        <a href="{{ page['url'] }}/{{ status }}/{{ pagination['last'] }}{{ params }}" aria-label="Previous">
+                        <span aria-hidden="true"><i class="fa fa-angle-left" aria-hidden="true"></i></span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% set r, l = 3, 3 %}
+                    
+                    {% if pagination['current'] == 1 %}
+                        {% set r = 6 %}
+                    {% endif %}
+                    
+                    {% if pagination['current'] == 2 %}
+                        {% set r = 5 %}
+                    {% endif %}
+                    
+                    {% if pagination['current'] >= pagination['pages'] %}
+                        {% set l = 5 %}
+                    {% endif %}
+                    
+                    {% for i in 1..ceil(pagination['pages']-1) %}
+                        {% if i >= (pagination['current']-l) and i <= (pagination['current']+r) %}
+                            <li{% if i == pagination['current'] %} class="active"{% endif %}><a
+                                href="{{ page['url'] }}/{{ status }}/{{ i }}{{ params }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if pagination['current'] < pagination['pages'] %}
+                        <li class="page_arrow">
+                            <a href="{{ page['url'] }}/{{ status }}/{{ pagination['next'] }}{{ params }}" aria-label="Next">
+                            <span aria-hidden="true"><i class="fa fa-angle-right" aria-hidden="true"></i></span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+       </div>
+    </div>
+ </div>

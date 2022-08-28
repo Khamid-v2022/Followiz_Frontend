@@ -1,0 +1,356 @@
+{% if user['spent'] >= 5000 %}
+	<input type="hidden" id="vip-client" value="true">
+{% endif %}
+
+<div class="container">
+
+		<div class="row panel ticket-page">
+			<h2>New Ticket</h2>
+			<div class="col-lg-8">
+			  
+			 <div class="alert alert-dismissible alert-danger ticket-danger {% if site['rtl'] %} rtl-alert {% endif %}" style="display: none">
+              <button type="button" class="close">&times;</button>
+              <div></div>
+            </div>
+			  
+			  
+			  
+				
+			<form {% if site['rtl'] %}class="rtl-form"{% endif %} method="post" action="" id="ticketsend">
+			  <div class="ticket">
+				 <p class="text-color2">Before opening a ticket,<a href="https://followiz.com/faq"  class="green_color"> check out our FAQs </a> to get an answer to your question/concerns faster!</p>
+				 <div class="order-id">
+					<!--<h5 class="text_color">Subject</h5>-->
+					<ul class="custom-radio top_radio">
+					   <li href="#tab11" data-toggle="tab" class="active" >
+						  <input type="radio" name="subject" value="Orders" class="designradio" checked="true"/>
+						  <a href="#">
+							 <div class="subject_box">
+								<span><img src="https://followizaddons.com/followiz-icons/order_icon.svg"></span>
+								<p class="text_color">Orders</p>
+							 </div>
+						  </a>
+					   </li>
+					   <li href="#tab2" data-toggle="tab" >
+						  <input type="radio" name="subject" value="Payments"  class="designradio"/>
+						 
+						  <a href="#">
+							 <div class="subject_box">
+								<span><img src="https://followizaddons.com/followiz-icons/sales-billing_icon.svg"></span>
+								<p class="text_color">Payments</p>
+							 </div>
+						  </a>
+<!--<div class="ticket_tolltip bg_color">
+							   
+<p class="text-color2">Question about your funding transaction ?</p>
+							   </div>-->
+					   </li>
+					   <li href="#tab3" data-toggle="tab">
+						  <input type="radio" name="subject" value="Service"  class="designradio"/>
+						  <a href="#">
+							 <div class="subject_box">
+								<span><img src="https://followizaddons.com/followiz-icons/services_icon.svg"></span>
+								<p class="text_color">Service</p>
+							 </div>
+						  </a>
+<!--<div class="ticket_tolltip bg_color">
+							   
+<p class="text-color2">
+Question about our services ?</p>
+							   </div>-->
+					   </li>
+					   <li href="#tab4" data-toggle="tab">
+						  <input type="radio" name="subject" value="Child-Panel"  class="designradio"/>
+						  <a href="#">
+							 <div class="subject_box">
+								<span><img src="https://followizaddons.com/followiz-icons/create-ticket_icon.svg"></span>
+								<p class="text_color">Child-Panel</p>
+							 </div>
+						  </a>
+					   </li>
+					  <li href="#tab5" data-toggle="tab">
+						  <input type="radio" name="subject" value="Request"  class="designradio"/>
+						  <a href="#">
+							 <div class="subject_box">
+								<span><img src="https://followizaddons.com/followiz-icons/request-icon.svg"></span>
+								<p class="text_color">Request</p>
+							 </div>
+						  </a>
+					   </li>
+					   <li href="#tab6" data-toggle="tab">
+						  <input type="radio" name="subject" value="Other"  class="designradio"/>
+						  <a href="#">
+							 <div class="subject_box">
+								<span><img src="https://followizaddons.com/followiz-icons/other_icon.svg"></span>
+								<p class="text_color">Other</p>
+							 </div>
+						  </a>
+					   </li>
+					</ul>
+				 </div>
+				 <div class="tab-content" id="secondTab">
+					<div class="tab-pane text-style active" id="tab11">
+					   
+					   <div class="request">
+						  <!--<h5 class="text_color">Request</h5>-->
+						  <ul class="custom-radio">
+							 <li id="refill_options" class="active">
+								<input type="radio" name="request" value="Refill"  class="designradio"  checked="true" />
+								<a href="#" id="refill">
+								   <div class="subject_box">
+									  <p class="text-color2">Refill</p>
+  
+								   </div>
+								</a>
+<!--<div class="ticket_tolltip bg_color">
+							   
+<p class="text-color2">Be Sure that the service used is Refill Guaranteed within the guarantee period</p>
+							   </div>-->
+							 </li>
+							 <li>
+								<input type="radio" name="request" value="Cancellation"  class="designradio"/>
+								<a href="#" id="refill">
+								   <div class="subject_box">
+									  <p  class="text-color2">Cancellation</p>
+								   </div>
+								</a>
+<!--<div class="ticket_tolltip bg_color">
+							   
+<p class="text-color2">Most order's can't be cancelled</p>
+							   </div>-->
+							 </li>
+							 <li>
+								<input type="radio" name="request" value="Speed Up"  class="designradio"/>
+								<a href="#" id="refill">
+								   <div class="subject_box">
+									  <p class="text-color2">Speed Up</p>
+								   </div>
+								</a>
+<!--<div class="ticket_tolltip bg_color">
+							   
+<p class="text-color2">please check start time and speed per day indicated in the service description </p>
+							   </div>-->
+							 </li>
+							
+							
+						  </ul>
+					   </div>
+					   
+					</div>
+				 <div class="tab-pane  text-style" id="tab2">
+					  
+					   <div class="request pt_0">
+						  <!--<h5 class="text_color">Request</h5>-->
+						  <ul class="custom-radio">
+						   
+							 
+							 <li id="coinpayments_request">
+								<input type="radio" name="request" value="Coinpayments"  class="designradio" />
+								<a href="javascript:void(0)" >
+								   <div class="subject_box">
+									  <p class="text-color2">Coinpayments</p>
+								   </div>
+								</a>
+							 </li>
+							 <li id="coinbase_request">
+								<input type="radio" name="request" value="Coinbase"  class="designradio"/>
+								<a href="javascript:void(0)" >
+								   <div class="subject_box">
+									  <p class="text-color2">Coinbase</p>
+								   </div>
+								</a>
+							 </li>
+							 <li id="perfect_money_request">
+								<input type="radio" name="request" value="Perfect Money"  class="designradio"/>
+								<a href="javascript:void(0)" >
+								   <div class="subject_box">
+									  <p class="text-color2">Perfect Money</p>
+								   </div>
+								</a>
+							 </li>
+							 <li id="payneer_request">
+								<input type="radio" name="request" value="Payeer"  class="designradio"/>
+								<a href="javascript:void(0)" >
+								   <div class="subject_box">
+									  <p class="text-color2">Payeer</p>
+								   </div>
+								</a>
+							 </li >
+<li id="strip_request">
+								<input type="radio" name="request" value="Stripe"  class="designradio"/>
+								<a href="javascript:void(0)" >
+								   <div class="subject_box">
+									  <p class="text-color2">Stripe</p>
+								   </div>
+								</a>
+							 </li>
+<li id="other_request">
+								<input type="radio" name="request" value="Payments Other"  class="designradio"/>
+								<a href="javascript:void(0)" >
+								   <div class="subject_box">
+									  <p class="text-color2">Other</p>
+								   </div>
+								</a>
+							 </li>
+						  </ul>
+					   </div>
+				   
+				   </div>
+				   <div class="tab-pane  text-style" id="tab3">
+					   
+					</div>
+			   <div class="tab-pane  text-style" id="tab4">
+					   
+					</div>
+			 <div class="tab-pane  text-style" id="tab5">
+					  
+					   <div class="request pt_0">
+						  <!--<h5 class="text_color">Request</h5>-->
+						  <ul class="custom-radio">
+						   
+							 
+							 <li class="btn_feature" id="btn_feature">
+								<input type="radio" name="request" value="Feature"  class="designradio"/>
+								<a href="#">
+								   <div class="subject_box">
+									  <p class="text-color2">Feature</p>
+								   </div>
+								</a>
+							 </li>
+							 <li class="btn_feature">
+								<input type="radio" name="request" value="Service "  class="designradio"/>
+								<a href="#">
+								   <div class="subject_box">
+									  <p class="text-color2">Service</p>
+								   </div>
+								</a>
+							 </li>
+							
+						  </ul>
+					   </div>
+					  
+					</div>
+			<div class="tab-pane  text-style" id="tab6">
+			  <input type="radio" style="display:none" name="TicketForm[subject]" value="other"  class="designradio"/>
+			</div>
+				 </div>
+
+			<div class="ticket-fields">
+				<div class="form-group id_order" id="txtIdInput" style="display:none">
+						  <label for="order id" class="control-label text_color">Transaction ID</label>
+						  <input type="text" class="form-control bg_color" id="txt_id" name="txt_id" placeholder="ex. 123" >
+					   </div>
+
+				 <div class="form-group id_order" id="acNumIdInput" style="display:none">
+						  <label for="order id" class="control-label text_color">Account Number/ Batch Number</label>
+						  <input type="text" class="form-control bg_color" id="acNum" name="acNum" placeholder="1111222" >
+					   </div>
+				 <div class="form-group id_order" id="opIdInput" style="display:none">
+						  <label for="order id" class="control-label text_color">Operation Id</label>
+						  <input type="text" class="form-control bg_color" id="op_id" name="op_id" placeholder="1111222" >
+					   </div>
+
+
+				
+				<div class="form-group id_order" id="orderIdInput">
+						  <label for="order id" class="control-label text_color">Order ID</label>
+						  <input type="text" class="form-control bg_color" id="order_id" name="ordernumbers" placeholder="ex. $120" >
+					   </div>
+				
+				<div class="form-group id_order" id="hidmsg">
+						  <label for="message" class="control-label text_color">{{ lang('tickets.message') }}</label>
+						  <textarea class="form-control bg_color" rows="7" id="message_box" name="TicketForm[message]" placeholder="ex. Hi there, I would like to check my recent order status."></textarea> <input type="hidden" name="_csrf" value="{{csrftoken}}">
+					   </div>
+				<div id="messageContainer"></div>
+				<input type="hidden" id="ticketSubject" name="TicketForm[subject]">
+				<button id="submitTicketBtn" type="submit" class="btn btn-primary btn-block">{{ lang('tickets.button') }}</button>
+				
+				
+				</div>
+			  </div>
+			  </form>
+			  
+			  
+			  
+			  </div>
+			  
+			  
+			  <div class="col-lg-4" class="ticket-list">
+			  {% if ticketList or search %}
+			  <!-- <div class="row">
+				<div class="col-md-11  col-md-offset-1">
+				  <div class="nav-pills {% if site['rtl'] %} rtl-search {% endif %}">
+					<form action="{{ page['url'] }}" method="get" id="history-search">
+					  <div class="input-group">
+						<input type="text" class="form-control bg_color" value="{{ search }}" name="search" placeholder="{{ lang('general.search.placeholder') }}">
+						<span class="input-group-btn">
+						   <button type="submit" class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i></button>
+						</span>
+					  </div>
+					</form>
+				  </div>
+				</div>
+			  </div> -->
+			  {% endif %}
+			  {% if ticketList %}
+				<div class="well">
+                    <h2 class="text_color">Tickets</h2>
+				    <table class="table data-table {% if site['rtl'] %} rtl-table {% endif %}">
+					<thead>
+					<tr>
+					    <th></th>
+					  <!--<th>{{ lang(tickets.id) }}</th>
+					  <th>{{ lang('tickets.subject') }}</th>
+					  <th>{{ lang('tickets.status') }}</th>
+					  <th class="nowrap">{{ lang('tickets.updated') }}</th>-->
+					<!-- </tr> -->
+					</thead>
+					<tbody>
+					{% for ticket in ticketList %}
+						<tr>
+							<td class="ticket-list-item">
+								<div class="ticket-list-name">
+								{% if ticket['new'] > 0 %}
+									<i class="fas fa-envelope" style="color:#2FCD94"></i>&nbsp;
+                                {% endif %}
+								{{ ticket['id'] }} - 
+								{% if ticket['new'] == 1 %}
+								   <a href="{{ page_url('viewticket') }}/{{ ticket['id'] }}"><strong>{{ ticket['theme'] }}</strong></a>
+								{% else %}
+								  <a href="{{ page_url('viewticket') }}/{{ ticket['id'] }}">{{ticket['theme']}}</a>
+								{% endif %}
+								
+								
+								</div>
+								
+								<div class="ticket-list-details">
+									<span class="nowrap ticket-list-time">{{ ticket['time'] }}</span>
+									<!--<span class="ticket-list-status">{{ ticket['status'] }}</span>-->
+								<div>
+								
+							</td>
+						
+						</tr>
+					{% endfor %}
+
+					</tbody>
+				  </table>
+				</div>
+			  {% endif %}
+			 
+			  </div>
+		  </div>
+	
+		{% if ticketsText %}
+		  <div class="container">
+			<div class="row">
+			  <div class="col-md-8 col-md-offset-2">
+				<div class="well {% if site['rtl'] %} rtl-content {% endif %}">
+				  {{ ticketsText }}
+				</div>
+			  </div>
+			</div>
+		  </div>
+		{% endif %}
+
+</div>
