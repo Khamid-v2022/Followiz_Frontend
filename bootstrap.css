@@ -6823,6 +6823,8 @@ button.close {
     max-height: 51px;
     margin-top: -1px;
     vertical-align: middle;
+    width: auto!important;
+    height: 51px!important;
 }
 
 .navbar-collapsed-before .navbar-header {
@@ -7494,4 +7496,8 @@ body {
 
 .w-100 {
     width: 100%;
+}
+
+.d-hide {
+    display: none;
 }
