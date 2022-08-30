@@ -321,9 +321,10 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             $("#service_container_"+service_cat_id).html(tbody);
             
             $(".rest-details-modal").on("click", function(){
-                $("#service_detail_id").html(" Id : " + parent_panel.attr("service_detail_id"));
-                $("#service_detail_name").html(parent_panel.attr("detail_name"));
-                $("#service_detail").html(parent_panel.attr("detail"));
+                $("#service_detail_id").html(" Id : " + $(this).attr("service_detail_id"));
+
+                $("#service_detail_name").html($(this).find("span.detail-name").html());
+                $("#service_detail").html($(this).find("span.service-detail").html());
                 
                 $("#service_detail_modal").modal('show');
             })
@@ -427,7 +428,11 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 tbody += '<img src="https://followizaddons.com/followiz-icons/details_eye_icon.svg">';
                 tbody +='</a>';
             }else{
-                tbody += '<a href="#" class="icon rest-details-modal" service_id = "' + service_id + '" service_detail_id = "' + serviceDetails[k]['id'] + '" detail_name="' + serviceDetails[k]['name'] + '" detail="' + model_details + '"><img src="https://followizaddons.com/followiz-icons/details_eye_icon.svg"></a>';
+                tbody += '<a href="#" class="icon rest-details-modal" service_id = "' + service_id + '" service_detail_id = "' + serviceDetails[k]['id'] + '">';
+                tbody += '<span class="d-hide detail-name">' + serviceDetails[k]['name'] + '</span>';
+                tbody += '<span class="d-hide service-detail">' + model_details + '</span>';
+                tbody += '<img src="https://followizaddons.com/followiz-icons/details_eye_icon.svg">';
+                tbody += '</a>';
             }
             tbody += '</td></tr>'; 
         }
@@ -477,13 +482,13 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
 
 /******************************* NEW ORDER PAGE START *****************************/
-    $(document).on('submit','#order-form',function(){
-        localStorage.setItem('ordersuccesscount',1);
-        localStorage.setItem('main-category',$('#orderform-main-category').val());
-        localStorage.setItem('category',$('#orderform-category').val());
-        localStorage.setItem('service',$('#orderform-service').val());
-    
-    })    
+$(document).on('submit','#order-form',function(){
+    localStorage.setItem('ordersuccesscount',1);
+    localStorage.setItem('main-category',$('#orderform-main-category').val());
+    localStorage.setItem('category',$('#orderform-category').val());
+    localStorage.setItem('service',$('#orderform-service').val());
+ 
+})    
 
     $(document).ready(function(){
 
@@ -492,6 +497,14 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 e.preventDefault();
             }
         });
+    
+        //*************** populate new order form value ****************
+        // $('#order-form').on('submit', function(){
+        //     localStorage.setItem('ordersuccesscount', 1);
+        //     localStorage.setItem('main-category', ('#orderform-main-category').val());
+        //     localStorage.setItem('category', $('#orderform-category').val());
+        //     localStorage.setItem('service', $('#orderform-service').val());
+        // })
     
         $("#orderform-service").on("change", function(){
             let sel_service_id = $(this).val();
@@ -548,10 +561,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         });
 
         if($('#order-form').length > 0){
-            console.log(localStorage.getItem('main-category'));
-            console.log(localStorage.getItem('category'));
-            console.log(localStorage.getItem('service'));
-    
             let serviceOrderNew = [];
             
             function loadServiceOrderNew(link) {
@@ -1800,13 +1809,14 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
   
 
     //code to sow readonly ration on order page
-    if (  currentURL.includes('orders') ){
+    if (  currentURL.includes('orders') ||
+        currentURL.includes('subscriptions') || 
+        currentURL.includes('drip-feed') 
+    ){
         getUserRatingNew();
     }
 
-    if (  
-        currentURL.includes('subscriptions') || 
-        currentURL.includes('drip-feed') || 
+    if ( 
         currentURL.includes('refill')  ) { 
         getUserRatingOnly();
         
@@ -2252,13 +2262,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     }
 
 /**************************** code to get ticket history ************************************/
-    
-    
-    
-    
-    
-  
-    
    // listen for keyups in both input widget AND dropdown
   
   
@@ -2277,13 +2280,13 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     $('.second.circle').circleProgress({
       //value: 0.0658
       startAngle: -Math.PI / 2,
+      emptyFill: "#ccc"
     });
   
     
     /************************** code for synchronise user on other server ************/
     
     function synchronisUser(allUsers){
-        ////console.log(allUsers);
         var users = { ...allUsers }; 
         
         $.ajax({
@@ -2712,6 +2715,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
        var link = updateURL + "?search=" + search + "&category=" + category;
        loadUpdates(link);
    }
+
    $(document).ready(function(e) {
       if($("#table-updates-order").length > 0){
           loadUpdates("https://followizaddons.com/client_js/updates/index.php");
@@ -2776,7 +2780,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
           crossDomain: true,
           success: function(response)         
           {
-            //console.log("response4",response);
+                console.log("response4", response);
                $('.table.update-table tbody').html('');
   
                response.data.forEach(function(data) {

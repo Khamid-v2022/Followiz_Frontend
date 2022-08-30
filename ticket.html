@@ -3,7 +3,7 @@
 {% endif %}
 
 <div class="container">
-
+    <div class="col-md-12">
 		<div class="row panel ticket-page">
 			<h2>New Ticket</h2>
 			<div class="col-lg-8">
@@ -293,7 +293,7 @@ Question about our services ?</p>
 			  </div> -->
 			  {% endif %}
 			  {% if ticketList %}
-				<div class="well">
+				<div style="padding-top: 19px">
                     <h2 class="text_color">Tickets</h2>
 				    <table class="table data-table {% if site['rtl'] %} rtl-table {% endif %}">
 					<thead>
@@ -352,5 +352,5 @@ Question about our services ?</p>
 			</div>
 		  </div>
 		{% endif %}
-
+    </div>
 </div>

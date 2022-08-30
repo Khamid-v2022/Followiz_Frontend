@@ -372,7 +372,8 @@ html {
       background-color:#191C21 !important;
   }
   .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus{
-      background-color:#fff !important;
+      /* background-color:#fff !important; */
+      background-color:transparent !important;
   }
   
   .theme-dark .dropdown_section form .input-group span button {
@@ -438,7 +439,15 @@ html {
   }
   
   .theme-dark .addfund_page .radio_button input:checked~.checkmark {
-    background: #535e5c;
+    /* background: #535e5c; */
+  }
+
+  .theme-dark .addfund_page .radio_button input:checked~.checkmark {
+    border: 1px solid #2FCD94
+  }
+
+  .theme-dark .addfund_page .radio_button .checkmark:hover {
+    border: 1px solid #2FCD94
   }
   
 
@@ -461,8 +470,7 @@ html {
   
   .theme-dark .panel .panel-body .ticket ul li:hover,
   .theme-dark .ticket ul li.active {
-    background: #535e5c !important;
-    
+    /* background: #535e5c !important; */
   }
 
   .theme-dark .ticket_poup_button {
@@ -1067,6 +1075,10 @@ html {
     box-sizing: border-box;
     border-radius: 5px;
     height: 50px;
+  }
+
+  .content-wrapper .panel .panel-body .form-group textarea.form-control {
+    height: 115px;
   }
   
   .content-wrapper .panel .panel-body .btn-block {
@@ -1982,7 +1994,7 @@ html {
   }
   
   .ticket ul li.active {
-    background: #E4FFF5;
+    /* background: #E4FFF5; */
     border: 1px solid #2FCD94;
   }
   
@@ -2151,9 +2163,14 @@ html {
   }
   
   .panel.ticket-page{
-      padding:40px;
+      padding:20px;
   }
-  
+
+  @media screen and (max-width: 767px) {
+    .panel.ticket-page {
+      padding: 8px;
+    }
+  }
   .ticket-page h2{
     padding: 0px 0px 20px 0px;
     border-bottom: 1px solid #DEE4E4;
@@ -2215,7 +2232,7 @@ html {
   }
   
   .ticket ul li:hover {
-    background: #E4FFF5;
+    /* background: #E4FFF5; */
     border: 1px solid #2FCD94;
   }
   
@@ -2904,6 +2921,7 @@ html {
   }
   
   .top-header {
+    display: none;
     margin: 0px 0px 0px 235px;
   }
   
@@ -2983,7 +3001,6 @@ html {
   /* When the radio button is checked, add a blue background */
   
   .radio_button input:checked~.checkmark {
-    background: rgb(228, 255, 245);
     border-width: 1px;
     border-style: solid;
     border-color: rgb(47, 205, 148);
@@ -3414,7 +3431,13 @@ html {
   .pagination {
     justify-content: center;
     display: flex;
-    padding: 20px 0px 20px 0px;
+    /* padding: 20px 0px 20px 0px; */
+  }
+
+  @media screen and (max-width: 767px) {
+    .pagination {
+      padding: 10px 0px;
+    }
   }
   
   .pagination>li.active a {
@@ -3766,7 +3789,7 @@ html {
     min-width: 200px;
     height: 45px;
     color: #555;
-    border: 1px solid #323A3A;
+    /* border: 1px solid #323A3A; */
     border-radius: 4px;
     padding: 10px;
     appearance:none;
@@ -4499,7 +4522,7 @@ html {
   
   .top-header ~ .content-wrapper {
     /* padding: 68px 0px;*/
-    padding-top:68px;
+    padding-top: 40px;
   }
   
   .theme-dark .main-menu .navbar .navbar-nav li.d_toltip a:hover ~ .deposit_toltip {
@@ -6485,16 +6508,14 @@ html {
       left: 204px;
     }
     .main-wrapper.for-dashboard .top-header ~ .main-menu .mobile_menu {
-      top: 50px;
-      z-index: 11;
+      /* top: 50px; */
+      /* z-index: 11; */
     }
     .main-wrapper.for-dashboard .top-header ~ .content-wrapper {
       padding: 40px 0px 25px 0px;
-      margin-top: 64px;
+      margin-top: 20px;
     }
-    .main-wrapper.for-dashboard .top-header ~ .main-menu .mobile_menu button.hamburger.is-open {
-      top: -26px;
-    }
+   
     .main-wrapper.for-dashboard .top-header ~ .main-menu .mobile_menu.bg_color.header.sticky {
       top: 0px;
     }
@@ -6572,6 +6593,7 @@ html {
     .navbar-brand img {
       max-width: 76px;
       max-height: 24px;
+     
     }
     .content-wrapper .panel .panel-body .page-title {
       font-size: 20px;
@@ -6832,11 +6854,22 @@ html {
   .dataTables_wrapper > div.row:first-child div.col-sm-6, .dataTables_wrapper > div.row:last-child div.col-sm-6 {
     width: unset;
   } 
-  .dataTables_wrapper > div.row:first-child, .dataTables_wrapper > div.row:last-child {
-    margin: 0px;
-    display: flex;
-    justify-content: space-between;
+  .dataTables_wrapper > div.row:first-child,
+   .dataTables_wrapper > div.row:last-child 
+  {
+      margin: 0px;
+      display: flex;
+      justify-content: space-between;
   }
+
+  @media(max-width: 767px) { 
+    .dataTables_wrapper > div.row:last-child {
+      display: block;
+      justify-content: unset;
+    }
+  }
+
+   
 
   .dataTables_wrapper > div.row:first-child::before,
   .dataTables_wrapper > div.row:first-child::after {
@@ -6861,6 +6894,14 @@ html {
     background-color: #323A3A;
     margin-left: 8px;
  }
+
+ .theme-dark .form-control.bg_color, .theme-dark select.bg_color, .theme-dark .dataTables_wrapper input, .theme-dark .dataTables_wrapper select {
+    border: 1px solid #323A3A !important;
+    color: white;
+    background-color: #323A3A;
+ }
+
+
 
  .theme-dark .dataTables_wrapper input {
     width: 130px;
@@ -6897,3 +6938,6 @@ html {
     background-color: transparent!important;
  }
 
+ .dropdown-menu {
+    background-color: transparent!important;
+ }

@@ -1,27 +1,25 @@
 DONE
-
-New Bug: In the New Order page for mobile view Services Updates Section align, border issue.
-3. Rating system in New Order page
-6. Orders Page: Add a "Order Again" button on each order. When clicking on this, it will move client to the "New Order" page and select the services that was used on the Orders page. https://i.imgur.com/NQQGEwo.png https://i.imgur.com/gMwZ90V.png
-1. New Order page: Add spacing back here: https://i.imgur.com/Au2yuWn.png
-2. View Ticket page: Can you set the previous color that was there before for the light mode? Color code: #515757 https://i.imgur.com/uMYtN5S.png
-3. FAQ Page: Fix the Categories https://i.imgur.com/x2NbcM0.png
-4. FAQ Page: Make titles white instead of green for the dark mode. https://i.imgur.com/1deHktg.png
-5. Mobile Tickets Page: Add a spacing between the Submit Ticket and Search Field (Search field goes with the ticket list below) https://i.imgur.com/1OT6pyP.png
-6. Mobile Tickets Page: Center the Tickets section https://i.imgur.com/1OT6pyP.png
-7. Mobile Ticket Page: Allign the Show X Entries on the same line as the Search Field https://i.imgur.com/iBWpSsJ.png
-8. Tickets Page: add a small spacing between Search and the field https://i.imgur.com/NNInob9.png
-9. Mobile Add Funds page: Text overlapping over the options https://i.imgur.com/Z0HFtjy.png
-10. Menu VIP: Font Color was previously White, if you can put this back on https://i.imgur.com/U1QOm2P.png
-11. Mobile Menu: Always make the menu shown even when we are on top of the page. https://i.imgur.com/pJXzjzJ.png
-12. Signin page: Position the Remember me button properly https://i.imgur.com/hqrZaA2.png
-13. Tickets Page: Add the same filters have you made on the Add funds Page on the Tickets List from the Tickets page. https://i.imgur.com/Mua7f8S.png https://i.imgur.com/OY6HlHT.png
-
-
-
-To Do
 8. Menu: Remove the white background when clicking on another sub menu item https://sharing.clickup.com/clip/p/t2295883/0ce00a19-295b-460c-9377-a743670ad461/screen-recording-2022-08-25-15%3A32.webm
+1. Services Page: Instagram - Likes [Per Minute] details is bugged. https://i.imgur.com/M9frpG5.png
+2. Menu: Add a Button to subscribe to our email. https://i.imgur.com/Uk6GjCN.png https://cdn.forms-content.sg-form.com/caf6d1c4-aecc-11ec-b78a-c2f16d6fc1ab
+3. New Order Page: Instagram Username Fields. Increase the height of the fields to about 5 line height. https://i.imgur.com/Wrfi1b8.png (Select Instagram Direct Messages)
+4. Account page: Is there a way to display the user EMAIL? I am not sure if there is a way to do that ?
+6. Dark Mode Tickets Page: Font-color and background has changed, use the left version please: https://i.imgur.com/FiQZGC3.png
+7. Dark Mode Tickets Page: Remove the Gray Background. Remove the Hover Gray Background https://i.imgur.com/AMkKD16.png
+8. Dark Move Deposit Page: Add the same Hover and Select style as on the Ticket page: https://i.imgur.com/f1lXN7P.png
+9. All Pages: Hide the top banner https://i.imgur.com/WRO4rAc.png
+11. Dark theme Services page: This was previously fixed but not anymore it seems. It's missing the borders: https://i.imgur.com/Lr2OcSX.png
+12. Menu: Logo is not the same size when switching from Light to Dark Mode https://i.imgur.com/lD5oDRN.png https://i.imgur.com/ZZVuPbd.png
+But from recent update:
+13. Mobile Menu: Close menu is not visible
+14. Mobile Tickets Page : Pagination is going out of the design
+10. Dark Mode Menu: Change the color of the dark circle as we can barely see it https://i.imgur.com/8pIdFQs.png
 
+
+
+
+New Task
+5. Subscription page: The Hover action is not the same on the Cancel and on the reorder button: https://i.imgur.com/OHkfe9o.png https://i.imgur.com/uOKsObH.png
 
 
 
