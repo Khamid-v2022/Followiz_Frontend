@@ -1,0 +1,148 @@
+<div class="container">
+    <div class="panel order_page">
+       <div class="panel-body ">
+          <div class="order_history refill_order">
+             <ul class="nav nav-pills {% if site['rtl'] %} rtl-nav {% endif %}">
+                 <li class="pull-left search">
+                   <form action="{{ page['url'] }}" method="get" id="history-search">
+                      <div class="input-group">
+                         <input type="text" name="search" class="form-control" value="{{ search }}"
+                            placeholder="{{ lang('general.search.placeholder') }}">
+                         <span class="input-group-btn">
+                         <button type="submit" class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i></button>
+                         </span>
+                      </div>
+                   </form>
+                </li>
+ 
+             <div class="catgorey_section">
+ 
+                <li {% if 'all' == status %}class="active"{% endif %}><a href="{{ page['url'] }}">{{ lang('subscriptions.status.all') }}</a></li>
+         <li {% if 'active' == status %}class="active"{% endif %}><a href="{{ page['url'] }}/active">{{ lang('subscriptions.status.active') }}</a></li>
+         <li {% if 'paused' == status %}class="active"{% endif %}><a href="{{ page['url'] }}/paused">{{ lang('subscriptions.status.paused') }}</a></li>
+         <li {% if 'completed' == status %}class="active"{% endif %}><a href="{{ page['url'] }}/completed">{{ lang('subscriptions.status.completed') }}</a></li>
+         <li {% if 'expired' == status %}class="active"{% endif %}><a href="{{ page['url'] }}/expired">{{ lang('subscriptions.status.expired') }}</a></li>
+         <li {% if 'canceled' == status %}class="active"{% endif %}><a href="{{ page['url'] }}/canceled">{{ lang('subscriptions.status.canceled') }}</a></li>
+                </div>
+             </ul>
+             <div class="well well-float text_color text-color2">
+                <table class="table {% if site['rtl'] %} rtl-table {% endif %}">
+                   <thead>
+                      <tr>
+                         <th>{{ lang('subscriptions.id') }}</th>
+                         <th class="width-20 "  >{{ lang('subscriptions.service') }}</th>
+                         <th>{{ lang('subscriptions.username') }}</th>
+                         <th>{{ lang('subscriptions.quantity') }}</th>
+                         <th>{{ lang('subscriptions.new_posts') }}</th>
+                            <th>{{ lang('subscriptions.old_posts') }}</th>
+                         <th>{{ lang('subscriptions.delay') }}</th>
+                         <th class="width-10 ">{{ lang('subscriptions.created') }}</th>
+                         <th class="width-10 ">{{ lang('subscriptions.updated') }}</th>
+                         <th class="width-10 ">{{ lang('subscriptions.expiry') }}</th>
+                         <th>{{ lang('subscriptions.status') }}</th>
+                      </tr>
+                   </thead>
+                   <tbody>
+                      {% for order in orderList  %}
+                      <tr>
+                         <td data="{{ order | json_encode() }}" >{{ order['id'] }}
+                           <!-- <div class="reviewShowOnly" id="review_reviewShowOnly_{{ order['service_id'] }}" data-service_id="{{ order['service_id'] }}" ></div>  -->
+                            <!-- <div class="review" id="review_{{ order['service_id'] }}" data-service_id="{{ order['service_id'] }}" ></div> -->
+                            <div class="review" id="review_{{ order['id'] }}" data-service_id="{{ order['id'] }}" ></div>
+                         </td>
+                         <td>{{ order['service'] }}</td>
+                         <td class="width-20"><a target="_blank" href="https://anon.ws?{{ order['link'] }}">{{ order['link'] }}</a></td>
+                         <td>{% if order['quantity_min'] == order['quantity_max'] %}{{ order['quantity_max']}}{% else %}{{ order['quantity_min'] }}-{{ order['quantity_max'] }}{% endif %}</td>
+                        <td class="nowrap">
+                 {% if order['current_count'] %}
+                   <a href="{{ page_url('orders') }}?subscription={{ order['id'] }}">{{ order['current_count'] }}</a>
+                 {% else %}
+                   {{ order['current_count'] }}
+                                 {% endif %}
+                 / {% if order['quantity'] == 0 %}&#8734;{% else %}{{ order['quantity'] }}{% endif %}</td>
+                        <td class="nowrap">
+                 {% if order['current_old_posts'] %}
+                   <a href="{{ page_url('orders') }}?subscription={{ order['id'] }}&likes_spread=1">{{ order['current_old_posts'] }}</a>
+                 {% else %}
+                   {{ order['current_old_posts'] }}
+                 {% endif %}
+                 / {{ order['old_posts'] }}</td>
+                         <td>{{ order['delay'] }}</td>
+                         <td>{{ order['date_created'] }}</td>
+                        <td>{{ order['date_updated'] }}</td>
+                         <td>{{ order['date_expiry'] }}</td>
+                         
+                         {% if order['status_name'] == 'Active' %}
+                         {% set statusclass = 'color_active' %}
+                         {% elseif order['status_name'] == 'Completed'  %}
+                         {% set statusclass = 'color_completed' %}
+                         {% elseif order['status_name'] == 'Paused'  %}
+                         {% set statusclass = 'color_paused' %}
+                         {% elseif order['status_name'] == 'Expired' %}
+                         {% set statusclass = 'color_expired' %}
+                         {% elseif order['status_name'] == 'Canceled' %}
+                         {% set statusclass = 'color_cancel' %}
+                         {%endif%}
+                        
+                         <td><span class="status {{ statusclass }}">{{ order['status_name'] }}</span></td>
+                        <td>
+                           {% if order['status'] == 1 or order['status'] == 0 %}
+                             <a href="{{ page['url'] }}/stop/{{order['id']}}" class="btn btn-primary btn-xs">{{ lang('subscriptions.button.cancel') }}</a>
+                           {% endif %}
+                           {% if order['status'] == 2 %}
+                             <a href="{{ page['url'] }}/resume/{{order['id']}}" class="btn btn-primary btn-xs">{{ lang('subscriptions.button.unpause') }}</a>
+                           {% endif %}
+                           {% if order['status'] == 3 or order['status'] == 4 or order['status'] == 5 %}
+                           <a href="{{ page['url'] }}/reorder/{{order['id']}}" class="btn btn-primary btn-xs">{{ lang('subscriptions.button.reorder') }}</a>
+                           {% endif %}
+                           </td>
+                      </tr>
+                      {% endfor %}
+                   </tbody>
+                </table>
+             </div>
+             {% if pagination['count'] > 100 %}
+             {% if searchList %}
+             {% set params = {} %}
+             {% for search in searchList %}
+             {% set params = params | merge([search['name'] ~ '=' ~ search['value']]) %}
+             {% endfor %}
+             {% set params = '?' ~ params|join('&') %}
+             {% endif %}
+             <ul class="pagination {% if site['rtl'] %} rtl-pagination {% endif %}">
+                {% if pagination['current'] != 1 %}
+                <li>
+                   <a href="{{ page['url'] }}/{{ status }}/{{ pagination['last'] }}{{ params }}" aria-label="Previous">
+                   <span aria-hidden="true">&laquo;</span>
+                   </a>
+                </li>
+                {% endif %}
+                {% set r, l = 3, 3 %}
+                {% if pagination['current'] == 1 %}
+                {% set r = 6 %}
+                {% endif %}
+                {% if pagination['current'] == 2 %}
+                {% set r = 5 %}
+                {% endif %}
+                {% if pagination['current'] >= pagination['pages'] %}
+                {% set l = 5 %}
+                {% endif %}
+                {% for i in 1..ceil(pagination['pages']) %}
+                {% if i >= (pagination['current']-l) and i <= (pagination['current']+r) %}
+                <li{% if i == pagination['current'] %} class="active"{% endif %}><a
+                   href="{{ page['url'] }}/{{ status }}/{{ i }}{{ params }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if pagination['current'] < pagination['pages'] %}
+                <li>
+                   <a href="{{ page['url'] }}/{{ status }}/{{ pagination['next'] }}{{ params }}" aria-label="Next">
+                   <span aria-hidden="true">&raquo;</span>
+                   </a>
+                </li>
+                {% endif %}
+             </ul>
+             {% endif %}
+          </div>
+       </div>
+    </div>
+ </div>
