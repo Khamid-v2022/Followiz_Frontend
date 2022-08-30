@@ -1,0 +1,11 @@
+1hour       09 ~ 10:        Bug - Remove the white background when clicking on another sub menu item
+30min    10 ~ 10:30      bug 1, 2
+1h 50min    10:30 ~ 12:20   3, 4, 6 ~ 9, 11, 12
+40min       12:20~ 13       Mobile Menu: Close menu is not visible
+                            bug-24. Mobile Tickets Page : Pagination is going out of the design
+20 min      2 ~ 2:20        bug-10. Dark Mode Menu: Change the color of the dark circle as we can barely see it
+
+-----------------
+
+Total 4h 20min
+
