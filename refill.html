@@ -1,0 +1,116 @@
+<div class="container">
+    <div class="panel order_page refill_page">
+       <div class="panel-body ">
+          <div class="order_history refill_order">
+             <ul class="nav nav-pills {% if site['rtl'] %} rtl-nav {% endif %}">
+                 <li class="pull-left search">
+                   <form action="{{ page['url'] }}" method="get" id="history-search">
+                      <div class="input-group">
+                         <input type="text" name="search" class="form-control" value="{{ search }}"
+                            placeholder="{{ lang('general.search.placeholder') }}">
+                         <span class="input-group-btn">
+                         <button type="submit" class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i></button>
+                         </span>
+                      </div>
+                   </form>
+                </li>
+ 
+             <div class="catgorey_section">
+ 
+                <li {% if 'all' == status %}class="active"{% endif %}><a href="{{ page['url'] }}" class="text_color1">{{ lang('refill.all') }}</a></li>
+                <li {% if 'pending' == status %}class="active"{% endif %}><a href="{{ page['url'] }}/pending" class="text_color1">{{ lang('refill.status.pending') }}</a></li>
+                <li {% if 'inprogress' == status %}class="active"{% endif %}><a href="{{ page['url'] }}/inprogress" class="text_color1">{{ lang('refill.status.inprogress') }}</a></li>
+                <li {% if 'completed' == status %}class="active"{% endif %}><a href="{{ page['url'] }}/completed" class="text_color1">{{ lang('refill.status.completed') }}</a></li>
+                <li {% if 'rejected' == status %}class="active"{% endif %}><a href="{{ page['url'] }}/rejected" class="text_color1">{{ lang('refill.status.rejected') }}</a></li>
+                <li {% if 'error' == status %}class="active"{% endif %}><a href="{{ page['url'] }}/error" class="text_color1">{{ lang('refill.status.error') }}</a></li>
+                </div>
+             </ul>
+             <div class="well well-float text_color text-color2">
+                <table class="table {% if site['rtl'] %} rtl-table {% endif %}">
+                   <thead>
+                      <tr>
+                         <th>{{ lang('refill.id') }}</th>
+                         <th>{{ lang('refill.service') }}</th>
+                         <th>{{ lang('refill.link') }}</th>
+                         <th>{{ lang('refill.date') }}</th>
+                         <th>{{ lang('refill.order_id') }}</th>
+                         
+                         
+                         <th>{{ lang('refill.status') }}</th>
+                      </tr>
+                   </thead>
+                   <tbody>
+                      {% for refill in refillList %}
+                      <tr>
+                         <td data="{{ refill | json_encode() }}">{{ refill['id'] }}
+                         <!-- <div class="reviewShowOnly" id="review_reviewShowOnly_{{ refill['service_id'] }}" data-service_id="{{ refill['service_id'] }}" ></div> -->
+                            <div class="review" id="review_{{ refill['service_id'] }}" data-service_id="{{ refill['service_id'] }}" ></div>
+                         </td>
+                          <td> {{ refill['service'] }}</td>
+                         <td><a target="_blank" href="https://anon.ws?{{ refill['link'] }}">{{ refill['link'] }}</a></td>
+                         <td class="width-10">{{ refill['date'] }}</td>
+                         <td>
+                            <a href="{{ page_url('orders') }}?search={{ refill['order_id'] }}">{{ refill['order_id'] }}</a>
+                         </td>
+                         {% if refill['status'] == 'Pending' %}
+                         {% set statusclass = 'color_pending' %}
+                         {% elseif refill['status'] == 'In progress'  %}
+                         {% set statusclass = 'color_inprogress' %}
+                         {% elseif refill['status'] == 'Completed' %}
+                         {% set statusclass = 'color_completed' %}
+                         {% elseif refill['status'] == 'Rejected' %}
+                         {% set statusclass = 'color_rejected' %}
+                         {% elseif refill['status'] == 'Error' %}
+                         {% set statusclass = 'color_error' %}
+                         {%endif%}
+                        <td><span class="status {{ statusclass }}">{{ refill['status'] }}</span></td>
+                      </tr>
+                      {% endfor %}
+                   </tbody>
+                </table>
+             </div>
+             {% if pagination['count'] > 100 %}
+             {% if searchList %}
+             {% set params = {} %}
+             {% for search in searchList %}
+             {% set params = params | merge([search['name'] ~ '=' ~ search['value']]) %}
+             {% endfor %}
+             {% set params = '?' ~ params|join('&') %}
+             {% endif %}
+             <ul class="pagination {% if site['rtl'] %} rtl-pagination {% endif %}">
+                {% if pagination['current'] != 1 %}
+                <li>
+                   <a href="{{ page['url'] }}/{{ status }}/{{ pagination['last'] }}{{ params }}" aria-label="Previous">
+                   <span aria-hidden="true">&laquo;</span>
+                   </a>
+                </li>
+                {% endif %}
+                {% set r, l = 3, 3 %}
+                {% if pagination['current'] == 1 %}
+                {% set r = 6 %}
+                {% endif %}
+                {% if pagination['current'] == 2 %}
+                {% set r = 5 %}
+                {% endif %}
+                {% if pagination['current'] >= pagination['pages'] %}
+                {% set l = 5 %}
+                {% endif %}
+                {% for i in 1..ceil(pagination['pages']) %}
+                {% if i >= (pagination['current']-l) and i <= (pagination['current']+r) %}
+                <li{% if i == pagination['current'] %} class="active"{% endif %}><a
+                   href="{{ page['url'] }}/{{ status }}/{{ i }}{{ params }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if pagination['current'] < pagination['pages'] %}
+                <li>
+                   <a href="{{ page['url'] }}/{{ status }}/{{ pagination['next'] }}{{ params }}" aria-label="Next">
+                   <span aria-hidden="true">&raquo;</span>
+                   </a>
+                </li>
+                {% endif %}
+             </ul>
+             {% endif %}
+          </div>
+       </div>
+    </div>
+ </div>

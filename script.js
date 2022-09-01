@@ -49,32 +49,32 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         let service_cat_id1 = $('.ticketReview').attr('data_ser_key');
         let msg_id = $('.ticketReview').attr('data_msg_id');
         
-        // $.ajax({
-        //     async: false,    
-        //     url: "https://followizaddons.com/vote/read1.php",
-        //     dataType: "json",
-        //     data:{user_id:user_id,ticket_id:service_cat_id1},    
-        //     type: "POST",
-        //     cache: false,
-        //     crossDomain: true,
-        //     success: function(response){            
-        //         for(var i =0; response.data.length >i ; i++){
-        //             msg_id = response.data[i]['msg_id'];
-        //             var sec_div = $('#msg_'+msg_id).parents('.viewticket-followiz');
-        //             let githu = '';  
-        //             let c= response.data[i]['vote'];
+         $.ajax({
+             async: false,    
+             url: "https://followizaddons.com/vote/read1.php",
+             dataType: "json",
+             data:{user_id:user_id,ticket_id:service_cat_id1},    
+             type: "POST",
+             cache: false,
+             crossDomain: true,
+             success: function(response){            
+                 for(var i =0; response.data.length >i ; i++){
+                     msg_id = response.data[i]['msg_id'];
+                     var sec_div = $('#msg_'+msg_id).parents('.viewticket-followiz');
+                     let githu = '';  
+                     let c= response.data[i]['vote'];
                     
-        //             for(j = 0; j < c; j++){ 
-        //                 githu += ' <i class="fas fa-star" style="color: rgb(252, 215, 3);cursor: pointer;" aria-hidden="true"></i>';
-        //             }
-        //             let m = 5 - c;
-        //             for(k = 0; k < m; k++){ 
-        //                 githu += '<i class="far fa-star" style="cursor: pointer;" aria-hidden="true"></i>';
-        //             }
-        //             sec_div.find('.message-rating').append(githu);
-        //         }
-        //     }
-        // }); 
+                     for(j = 0; j < c; j++){ 
+                         githu += ' <i class="fas fa-star" style="color: rgb(252, 215, 3);cursor: pointer;" aria-hidden="true"></i>';
+                     }
+                     let m = 5 - c;
+                     for(k = 0; k < m; k++){ 
+                         githu += '<i class="far fa-star" style="cursor: pointer;" aria-hidden="true"></i>';
+                     }
+                     sec_div.find('.message-rating').append(githu);
+                 }
+             }
+         }); 
     });
   
   
@@ -351,6 +351,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         for(var k in serviceDetails) {
            
             let service = serviceDetails[k];
+            console.log(service);
             let service_id = serviceDetails[k]['id'];
             
             tbody += '<tr class="tablerowid" id="trow-' + service_id + '">'; 
@@ -428,7 +429,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 tbody += '<img src="https://followizaddons.com/followiz-icons/details_eye_icon.svg">';
                 tbody +='</a>';
             }else{
-                tbody += '<a href="#" class="icon rest-details-modal" service_id = "' + service_id + '" service_detail_id = "' + serviceDetails[k]['id'] + '">';
+                tbody += '<a href="#" class="icon rest-details-modal btn" service_id = "' + service_id + '" service_detail_id = "' + serviceDetails[k]['id'] + '">';
                 tbody += '<span class="d-hide detail-name">' + serviceDetails[k]['name'] + '</span>';
                 tbody += '<span class="d-hide service-detail">' + model_details + '</span>';
                 tbody += '<img src="https://followizaddons.com/followiz-icons/details_eye_icon.svg">';
@@ -482,13 +483,19 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
 
 /******************************* NEW ORDER PAGE START *****************************/
-$(document).on('submit','#order-form',function(){
-    localStorage.setItem('ordersuccesscount',1);
-    localStorage.setItem('main-category',$('#orderform-main-category').val());
-    localStorage.setItem('category',$('#orderform-category').val());
-    localStorage.setItem('service',$('#orderform-service').val());
- 
-})    
+
+let firstSocialPlateForm = '';
+let mainCategory = [];
+let subCategory = []; 
+
+
+    $(document).on('submit','#order-form',function(){
+        localStorage.setItem('ordersuccesscount',1);
+        localStorage.setItem('main-category', $('#orderform-main-category').val());
+        localStorage.setItem('category', $('#orderform-category').val());
+        localStorage.setItem('service', $('#orderform-service').val());
+    
+    })    
 
     $(document).ready(function(){
 
@@ -497,14 +504,28 @@ $(document).on('submit','#order-form',function(){
                 e.preventDefault();
             }
         });
+
+        $("#order_searchService").on('keyup', function(e){
+            if($(this).val().length > 0){
+                console.log(getServicesId($(this).val()));
+                let selected_service = getServicesId($(this).val());
+
+                let category_name = categories[selected_service.cid];
+                let ssArr = category_name.split("-");
+                let main_category = ssArr[0].trim();
+
+                $("#orderform-main-category").val(main_category).trigger('change');
+                setTimeout(function(){
+                    $("#orderform-category").val(selected_service.cid).trigger('change');
+                }, 200);
+                setTimeout(function(){
+                    $("#orderform-service").val(selected_service.id).trigger('change');
+                }, 800);
+            }
+            // 
+        })
     
         //*************** populate new order form value ****************
-        // $('#order-form').on('submit', function(){
-        //     localStorage.setItem('ordersuccesscount', 1);
-        //     localStorage.setItem('main-category', ('#orderform-main-category').val());
-        //     localStorage.setItem('category', $('#orderform-category').val());
-        //     localStorage.setItem('service', $('#orderform-service').val());
-        // })
     
         $("#orderform-service").on("change", function(){
             let sel_service_id = $(this).val();
@@ -519,8 +540,8 @@ $(document).on('submit','#order-form',function(){
 
         
         //CODE TO CHANGE LINK TO ACCOUNT LINK  ON NEW ORDER PAGE 
-        $('#order_link').find('.control-label').text('Account Link');
-        $('#field-orderform-fields-link').attr('placeholder',"https://www.instagram.com/yourprofile")
+        //$('#order_link').find('.control-label').text('Account Link');
+        //$('#field-orderform-fields-link').attr('placeholder',"https://www.socialmedia.com/yourprofile")
         //jQuery("#order_quantity").find(".help-block").css('display','none');
         $('#field-orderform-fields-quantity').attr('placeholder',"Min: 5 - Max: 30000");
         
@@ -561,6 +582,7 @@ $(document).on('submit','#order-form',function(){
         });
 
         if($('#order-form').length > 0){
+
             let serviceOrderNew = [];
             
             function loadServiceOrderNew(link) {
@@ -582,10 +604,11 @@ $(document).on('submit','#order-form',function(){
             const serviceOrderURL = 'https://followizaddons.com/client_js/service_order/index.php';
             loadServiceOrderNew(serviceOrderURL);
     
-            // if Order Again button clicked
+            
             const params = new URLSearchParams(window.location.search);
             let selected_main_category = "";
             
+            // if Order Again button clicked
             if(params.has('service')){
                 let sel_service_id = params.get('service');
                
@@ -593,7 +616,7 @@ $(document).on('submit','#order-form',function(){
                 let ssArr = selected_category.split("-");
                 selected_main_category = ssArr[0].trim();
             } 
-             
+            
             for (const [key, value] of Object.entries(categories)) {
                 let ssArr = value.split("-");
                 let ssName = ssArr[0].trim();
@@ -608,6 +631,7 @@ $(document).on('submit','#order-form',function(){
                 }
                 subCategory[ssName][key] = value; 
                 
+                // If Order Again button click mode
                 if(params.has('service')){
                     let selected_category =  localStorage.getItem("selected_category");
                     if(selected_category == value){
@@ -676,7 +700,8 @@ $(document).on('submit','#order-form',function(){
                 
                 let sortedService = [];
                 let newSortedService = [];
-    
+
+
                 for (const [key, value] of Object.entries(orderform_service)) {			
                     let sort_order_arr = serviceOrderNew.filter((order)=>{  return order.service_id == key; });		 
                     
@@ -699,36 +724,37 @@ $(document).on('submit','#order-form',function(){
                 if(localStorage.getItem('service')){
                     service = localStorage.getItem('service');
                 }
-            
-                newSortedService.forEach((element,key) => {	
+
+                // newSortedService.forEach((element,key) => {	
                     
-                    let textVal = element['value'];
-                    let pattern = / per \d*[0-9]/;
-                    let result = pattern.test(textVal);
+                //     let textVal = element['value'];
+                //     let pattern = / per \d*[0-9]/;
+                //     let result = pattern.test(textVal);
                     
-                    if(result == true){
-                        let string = textVal.split("—");
-                        textVal = "";
+                //     if(result == true){
+                //         let string = textVal.split("—");
+                //         textVal = "";
                         
-                        for(let i =0; i < (string.length -1); i++){
-                            textVal += string[i];
-                        }
-                    }
+                //         for(let i =0; i < (string.length -1); i++){
+                //             textVal += string[i];
+                //         }
+                //     }
                     
-                    textVal = element['key']+" - " + textVal
-                    if(element['key'] == service){
-                        lsubCategoryOption += '<option selected="true" data-type="'+element['type']+'"  value="'+element['key']+'" >'+textVal+'</option> ';
-                    }else{
-                        lsubCategoryOption += '<option data-type="'+element['type']+'"  value="'+element['key']+'" >'+textVal+'</option> ';
-                    }
-                });
+                //     textVal = element['key']+" - " + textVal
+                //     if(element['key'] == service){
+                //         lsubCategoryOption += '<option selected="true" data-type="'+element['type']+'"  value="'+element['key']+'" >'+textVal+'</option> ';
+                //     }else{
+                //         lsubCategoryOption += '<option data-type="'+element['type']+'"  value="'+element['key']+'" >'+textVal+'</option> ';
+                //     }
+                // });
             
             
                 setTimeout(function(){
                     service
                 },100)
             })
-    
+            
+            // order again button mode
             if(params.has('service')){
                 setTimeout(function(){
                     let sel_service_id = params.get('service');
@@ -923,6 +949,7 @@ $(document).on('submit','#order-form',function(){
         if(serviceName.includes("fansly")){
             return "fansly.svg"
         }
+
     
         if(serviceName.includes("google")){
             return "google.svg"
@@ -992,14 +1019,20 @@ $(document).on('submit','#order-form',function(){
         }
     
         var serviceDetails = getServiceDetailsById(selected_val);
+
+        console.log(serviceDetails);
+
         jQuery(".service-description-split").html(serviceDetails.description);
         setTimeout(function(){
             let serviceDetailsMax = (parseInt(serviceDetails.max)).toLocaleString();
             let serviceDetailsmin = (parseInt(serviceDetails.min)).toLocaleString();
     
-            jQuery(".minMax-split").html(serviceDetailsmin+"/<br>"+serviceDetailsMax);
+            jQuery(".minMax-split").html(serviceDetailsmin+"<br>"+serviceDetailsMax);
             jQuery('#field-orderform-fields-quantity').attr('placeholder',"Min: "+serviceDetailsmin+" - Max: "+serviceDetailsMax); 
             jQuery(".price-split").html(serviceDetails.price);
+
+            // AVG Time set
+            $(".avg_txt").html(serviceDetails.average_time);
         }, 200);
     }
 
@@ -1046,21 +1079,24 @@ $(document).on('submit','#order-form',function(){
             
             if (datakey == "Details") {
                 if(info != '- Profile Picture'){
-                    detailsData = detailsData + info.replace("-", "") + "<br>";
+                    // detailsData = detailsData + info.replace("-", "") + "<br>";
+                    detailsData = detailsData + info + "<br>";
                 }
                 
             }
             
             if (datakey == "Profile Has") {
                 if(info != 'Profile Has:'){
-                    profileData = profileData + info.replace("-", "") + "<br>";
+                    // profileData = profileData + info.replace("-", "") + "<br>";
+                    profileData = profileData + info + "<br>";
                 }
             }
             
             if (datakey == "Quality Examples") {
                 if(info != 'Quality Examples:'){
                 
-                var link = "<p>"+info.replace("-", "")+"</p>";
+                // var link = "<p>"+info.replace("-", "")+"</p>";
+                var link = "<p>" + info + "</p>";
                 
                 QualityExamplesData = QualityExamplesData +  link ;
                 }
@@ -1133,11 +1169,12 @@ $(document).on('submit','#order-form',function(){
     }
 
     function updateRating(service_id){
-
+        let data = {user_id: user_id};
         jQuery.ajax({
             url: "https://followizaddons.com/vote/read.php",
-            type: "GET",
+            type: "POST",
             dataType: "json",
+            data: data,
             cache: false,
             crossDomain: true,
             success: function(response) {
@@ -1151,6 +1188,27 @@ $(document).on('submit','#order-form',function(){
                             "readonly": true
                         });
                         flag = true;
+                        console.log(user_rating[i].vote, user_rating[i].my_vote);
+                        // set my rate
+                        if(user_rating[i].my_vote){
+                            if(parseInt(user_rating[i].my_vote) < parseInt(user_rating[i].vote)){
+                                let count = 0;
+                                $(".reviewShowOnly").find(".fa-star").map(function(){
+                                    if(count < user_rating[i].my_vote)
+                                        $(this).addClass("green-star");
+                                    count++;
+                                })
+                            }else if(parseInt(user_rating[i].my_vote) > parseInt(user_rating[i].vote)){
+                                let count = 0;
+                                $(".reviewShowOnly").find(".fa-star").map(function(){
+                                    if(count >= user_rating[i].vote && count < user_rating[i].my_vote)
+                                        $(this).addClass("green-star");
+                                    count++;
+                                })
+                            }
+                            
+                        }
+
                     }
                 }
 
@@ -1244,10 +1302,6 @@ $(document).on('submit','#order-form',function(){
     }; 
 
     /**************************** code to for dropdown ************************************/
-    let firstSocialPlateForm = '';
-    let mainCategory = [];
-    let subCategory = []; 
-
 
     function createSubCategoryOption(mainCatOption, onload){
         let subCategoryOption = '';
@@ -1269,8 +1323,7 @@ $(document).on('submit','#order-form',function(){
         let rowSubcategory = subCategory[mainCatOption];
         let sortedService = [];
     
-        rowSubcategory.forEach((value,key)=>{
-                
+        rowSubcategory.forEach((value, key)=>{
             let sort_order_arr = categoryOrder.filter((order)=>{  return order.category_id == key; });        	
         
             if(sort_order_arr.length){
@@ -1311,6 +1364,36 @@ $(document).on('submit','#order-form',function(){
     }
 
   
+    function getServicesId(service_id_key) {
+
+        // var service_details = [];
+        // var services = window.modules.siteOrder.services;
+
+        // for (let list_service_id of Object.keys(services)) {
+
+        //     if (services[list_service_id]['cid'] == catId) {
+        //         service_details[services[list_service_id]['id']] = services[list_service_id];
+        //     }
+        // }
+        // return service_details;
+
+        var service_details = {};
+        if(typeof window.modules.siteOrder !== 'undefined'){
+            var services = window.modules.siteOrder.services;
+            
+            for (let list_service_id of Object.keys(services)) {
+         
+                // if(list_service_id == service_id_key){
+
+                if(list_service_id.search(new RegExp(service_id_key, "i")) >= 0){
+                    service_details = services[list_service_id];
+                    break;
+                }
+            }
+        }
+        
+        return service_details;
+    };
 
     function getServiceByCategoryId(catId) {
 
@@ -1477,16 +1560,16 @@ $(document).on('submit','#order-form',function(){
     }
     
     function getUserRating() {
-  
+        let data = {user_id: user_id};
         jQuery.ajax({
             url: "https://followizaddons.com/vote/read.php",
-            type: "GET",
+            type: "POST",
             dataType: "json",
+            data: data,
             cache: false,
             crossDomain: true,
             success: function(response) {
                 var user_rating = response.data;
-                console.log("Rating:", user_rating);
                 var not_exist_service_id = '';
 
                 for (i = 0; i < user_rating.length; i++) {
@@ -1515,11 +1598,12 @@ $(document).on('submit','#order-form',function(){
     }
   
   function getUserRatingOnly() {
-  
+        let data = {user_id: user_id};
       jQuery.ajax({
           url: "https://followizaddons.com/vote/read.php",
-          type: "GET",
+          type: "POST",
           dataType: "json",
+          data: data,
           cache: false,
           crossDomain: true,
           success: function(response) {
@@ -1529,6 +1613,7 @@ $(document).on('submit','#order-form',function(){
               jQuery(".reviewShowOnly1").rating({
                   "readonly": true
               });
+
   
               jQuery(".reviewShowOnly").rating({
                   "value": 3.0,
@@ -2280,7 +2365,7 @@ $(document).on('submit','#order-form',function(){
     $('.second.circle').circleProgress({
       //value: 0.0658
       startAngle: -Math.PI / 2,
-      emptyFill: "#ccc"
+      emptyFill: "#7E8E8D"
     });
   
     
@@ -2909,15 +2994,15 @@ $(document).on('submit','#order-form',function(){
                 if(country.hasOwnProperty('isoName')){
                   if(country.isoName !== "Canada"){
                      $('.addfund_page').css('display','block');
-                     $('.deposit_toltip').remove();
-                     $('.badgeLink').css('display','block');
+                    $('.deposit_toltip').remove();
+                     $('.badgeLink').css('display','inline-flex');
                      $('.badgeBtn').css('display','none');
                   }else{
                     if (currentURL.includes('addfunds')) {
                      window.location.href = homeURL;
                     }
                     $('.deposit_toltip').html("Deposits are blocked for Canadian users.");
-                    $('.badgeBtn').css('display','inline-block');
+                    $('.badgeBtn').css('display','inline-flex');
                     $('.badgeLink').css('display','none');
                   }
                 }else{
@@ -3088,16 +3173,17 @@ $(document).on('submit','#order-form',function(){
             if(typeof e.event !== "undefined"){
                 var order_id = (e.event.target.parentNode.id).split("_")[1];
                 var service_id = jQuery("#review_"+order_id).attr('data-service_id');
-                console.log("service id:", service_id);
+                
                 insertOrUpdateVote(user_id,service_id,e.stars);
             }
             },
         });
-        
+        let data = {user_id: user_id};
         jQuery.ajax({
             url: "https://followizaddons.com/vote/read.php",
-            type: "GET",
+            type: "POST",
             dataType: "json",
+            data: data,
             cache: false,
             crossDomain: true,
             success: function(response) {
