@@ -49,32 +49,32 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         let service_cat_id1 = $('.ticketReview').attr('data_ser_key');
         let msg_id = $('.ticketReview').attr('data_msg_id');
         
-         $.ajax({
-             async: false,    
-             url: "https://followizaddons.com/vote/read1.php",
-             dataType: "json",
-             data:{user_id:user_id,ticket_id:service_cat_id1},    
-             type: "POST",
-             cache: false,
-             crossDomain: true,
-             success: function(response){            
-                 for(var i =0; response.data.length >i ; i++){
-                     msg_id = response.data[i]['msg_id'];
-                     var sec_div = $('#msg_'+msg_id).parents('.viewticket-followiz');
-                     let githu = '';  
-                     let c= response.data[i]['vote'];
+        //  $.ajax({
+        //      async: false,    
+        //      url: "https://followizaddons.com/vote/read1.php",
+        //      dataType: "json",
+        //      data:{user_id:user_id,ticket_id:service_cat_id1},    
+        //      type: "POST",
+        //      cache: false,
+        //      crossDomain: true,
+        //      success: function(response){            
+        //          for(var i =0; response.data.length >i ; i++){
+        //              msg_id = response.data[i]['msg_id'];
+        //              var sec_div = $('#msg_'+msg_id).parents('.viewticket-followiz');
+        //              let githu = '';  
+        //              let c= response.data[i]['vote'];
                     
-                     for(j = 0; j < c; j++){ 
-                         githu += ' <i class="fas fa-star" style="color: rgb(252, 215, 3);cursor: pointer;" aria-hidden="true"></i>';
-                     }
-                     let m = 5 - c;
-                     for(k = 0; k < m; k++){ 
-                         githu += '<i class="far fa-star" style="cursor: pointer;" aria-hidden="true"></i>';
-                     }
-                     sec_div.find('.message-rating').append(githu);
-                 }
-             }
-         }); 
+        //              for(j = 0; j < c; j++){ 
+        //                  githu += ' <i class="fas fa-star" style="color: rgb(252, 215, 3);cursor: pointer;" aria-hidden="true"></i>';
+        //              }
+        //              let m = 5 - c;
+        //              for(k = 0; k < m; k++){ 
+        //                  githu += '<i class="far fa-star" style="cursor: pointer;" aria-hidden="true"></i>';
+        //              }
+        //              sec_div.find('.message-rating').append(githu);
+        //          }
+        //      }
+        //  }); 
     });
   
   
@@ -271,7 +271,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     }
   
     function loadServicesAuto(serviceOrder){
-        console.log("serviceOrderData", serviceByCate);
         $(".filter--text").remove();
         $(".filter--id").remove();
         $(".servie-data-panel").each(function(){
@@ -292,8 +291,10 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         });
         
     } 
-  
+    
+
     if(typeof serviceByCate != 'undefined'  ){
+        console.log('service page');
         const serviceOrderURL = 'https://followizaddons.com/client_js/service_order/index.php';
         loadServiceOrder(serviceOrderURL);   
         
@@ -334,6 +335,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             var userRatingArr = getUserRating();
             // getUserRatingOnly();
 
+            // Service Page Review star
             jQuery(".review").rating({
                 "value": 3,
                 "click": function (e) {
@@ -351,7 +353,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         for(var k in serviceDetails) {
            
             let service = serviceDetails[k];
-            console.log(service);
             let service_id = serviceDetails[k]['id'];
             
             tbody += '<tr class="tablerowid" id="trow-' + service_id + '">'; 
@@ -1183,29 +1184,37 @@ let subCategory = [];
                 for (i = 0; i < user_rating.length; i++) {
 
                     if ( user_rating[i].service_id == service_id) {
+
+                        // New Order page review star
                         $(".reviewShowOnly").rating({
                             "value": user_rating[i].vote,
                             "readonly": true
                         });
                         flag = true;
-                        console.log(user_rating[i].vote, user_rating[i].my_vote);
                         // set my rate
                         if(user_rating[i].my_vote){
-                            if(parseInt(user_rating[i].my_vote) < parseInt(user_rating[i].vote)){
+                            // if(parseInt(user_rating[i].my_vote) < parseInt(user_rating[i].vote)){
+                            //     let count = 0;
+                            //     $(".reviewShowOnly").find(".fa-star").map(function(){
+                            //         if(count < user_rating[i].my_vote)
+                            //             $(this).addClass("green-star");
+                            //         count++;
+                            //     })
+                            // }else if(parseInt(user_rating[i].my_vote) > parseInt(user_rating[i].vote)){
+                            //     let count = 0;
+                            //     $(".reviewShowOnly").find(".fa-star").map(function(){
+                            //         if(count >= user_rating[i].vote && count < user_rating[i].my_vote)
+                            //             $(this).addClass("green-star");
+                            //         count++;
+                            //     })
+                            // }
+                            
+                            $(".reviewShowOnly").find(".fa-star").map(function(){
                                 let count = 0;
-                                $(".reviewShowOnly").find(".fa-star").map(function(){
-                                    if(count < user_rating[i].my_vote)
-                                        $(this).addClass("green-star");
-                                    count++;
-                                })
-                            }else if(parseInt(user_rating[i].my_vote) > parseInt(user_rating[i].vote)){
-                                let count = 0;
-                                $(".reviewShowOnly").find(".fa-star").map(function(){
-                                    if(count >= user_rating[i].vote && count < user_rating[i].my_vote)
-                                        $(this).addClass("green-star");
-                                    count++;
-                                })
-                            }
+                                if(count < user_rating[i].my_vote)
+                                    $(this).addClass("green-star");
+                                count++;
+                            });
                             
                         }
 
@@ -1213,6 +1222,7 @@ let subCategory = [];
                 }
 
                 if(!flag){
+                    // New Order page review star
                     $(".reviewShowOnly").rating({
                         "value": 3,
                         "readonly": true
@@ -1575,10 +1585,35 @@ let subCategory = [];
                 for (i = 0; i < user_rating.length; i++) {
 
                     if (jQuery("#review_" + user_rating[i].service_id).length) {
-                        // //console.log(user_rating[i].vote);  
+                        
                         jQuery("#review_" + user_rating[i].service_id).rating({
                             "value": (user_rating[i].vote < 1) ? 3.0 : user_rating[i].vote
                         });
+
+                        if(user_rating[i].my_vote){
+                            // if(parseInt(user_rating[i].my_vote) < parseInt(user_rating[i].vote)){
+                            //     let count = 0;
+                            //     $("#review_" + user_rating[i].service_id).find(".fa-star").map(function(){
+                            //         if(count < user_rating[i].my_vote)
+                            //             $(this).addClass("green-star");
+                            //         count++;
+                            //     })
+                            // }else if(parseInt(user_rating[i].my_vote) > parseInt(user_rating[i].vote)){
+                            //     let count = 0;
+                            //     $("#review_" + user_rating[i].service_id).find(".fa-star").map(function(){
+                            //         if(count >= user_rating[i].vote && count < user_rating[i].my_vote)
+                            //             $(this).addClass("green-star");
+                            //         count++;
+                            //     })
+                            // }
+                            $("#review_" + user_rating[i].service_id).find(".fa-star").map(function(){
+                                let count = 0;
+                                if(count < user_rating[i].my_vote)
+                                    $(this).addClass("green-star");
+                                count++;
+                            })
+                            
+                        }
 
                     } else {
                         not_exist_service_id = user_rating[i].service_id;
@@ -1597,46 +1632,67 @@ let subCategory = [];
         });
     }
   
-  function getUserRatingOnly() {
+    function getUserRatingOnly() {
+        console.log("Subscription page", "Rifill page", "Drip_feed");
         let data = {user_id: user_id};
-      jQuery.ajax({
-          url: "https://followizaddons.com/vote/read.php",
-          type: "POST",
-          dataType: "json",
-          data: data,
-          cache: false,
-          crossDomain: true,
-          success: function(response) {
-              var user_rating = response.data;
-              // //console.log(user_rating);
-              var not_exist_service_id = '';
-              jQuery(".reviewShowOnly1").rating({
-                  "readonly": true
-              });
+        
+        jQuery.ajax({
+            url: "https://followizaddons.com/vote/read.php",
+            type: "POST",
+            dataType: "json",
+            data: data,
+            cache: false,
+            crossDomain: true,
+            success: function(response) {
+                var user_rating = response.data;
 
+                var not_exist_service_id = '';
+                // jQuery(".reviewShowOnly1").rating({
+                //     "readonly": true
+                // });
+
+                // jQuery(".reviewShowOnly").rating({
+                //     "value": 3.0,
+                //     "readonly": true
+                // });
+                
+                // for (i = 0; i < user_rating.length; i++) {
+    
+                //     if (jQuery("#review_reviewShowOnly_" + user_rating[i].service_id).length) {
+                //         jQuery("#review_reviewShowOnly_" + user_rating[i].service_id).rating({
+                //             "value": user_rating[i].vote,
+                //             "readonly": true
+                //         });
+                //     }
+                    
+                //     if(user_rating[i].my_vote){
+                //         if(parseInt(user_rating[i].my_vote) < parseInt(user_rating[i].vote)){
+                //             let count = 0;
+                //             $("#review_reviewShowOnly_" + user_rating[i].service_id).find(".fa-star").map(function(){
+                //                 if(count < user_rating[i].my_vote)
+                //                     $(this).addClass("green-star");
+                //                 count++;
+                //             })
+                //         }else if(parseInt(user_rating[i].my_vote) > parseInt(user_rating[i].vote)){
+                //             let count = 0;
+                //             $("#review_reviewShowOnly_" + user_rating[i].service_id).find(".fa-star").map(function(){
+                //                 if(count >= user_rating[i].vote && count < user_rating[i].my_vote)
+                //                     $(this).addClass("green-star");
+                //                 count++;
+                //             })
+                //         }
+                        
+                //     }
+                // }
+    
+    
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+            }
+        });
   
-              jQuery(".reviewShowOnly").rating({
-                  "value": 3.0,
-                  "readonly": true
-              });
-              for (i = 0; i < user_rating.length; i++) {
   
-                  if (jQuery("#review_reviewShowOnly_" + user_rating[i].service_id).length) {
-                      jQuery("#review_reviewShowOnly_" + user_rating[i].service_id).rating({
-                          "value": user_rating[i].vote,
-                          "readonly": true
-                      });
-                  }
-              }
-  
-  
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-          }
-      });
-  
-  
-  }
+    }
 
    
 
@@ -1894,15 +1950,19 @@ let subCategory = [];
   
 
     //code to sow readonly ration on order page
-    if (  currentURL.includes('orders') ||
-        currentURL.includes('subscriptions') || 
-        currentURL.includes('drip-feed') 
+    // if (  currentURL.includes('orders') ||
+    //     currentURL.includes('subscriptions') || 
+    //     currentURL.includes('drip-feed') 
+    // ){
+    if (  currentURL.includes('orders')
     ){
         getUserRatingNew();
     }
 
     if ( 
-        currentURL.includes('refill')  ) { 
+        currentURL.includes('subscriptions') ||
+        currentURL.includes('drip-feed') ||
+        currentURL.includes('refill') ) { 
         getUserRatingOnly();
         
     }
@@ -3167,17 +3227,21 @@ let subCategory = [];
   });//documentready
   
     function getUserRatingNew() {
+        console.log("Orders page", "Drip-feed page");
+        // Orders page, 
+
         jQuery(".review").rating({
             "value": 3,
             "click": function (e) {  
-            if(typeof e.event !== "undefined"){
-                var order_id = (e.event.target.parentNode.id).split("_")[1];
-                var service_id = jQuery("#review_"+order_id).attr('data-service_id');
-                
-                insertOrUpdateVote(user_id,service_id,e.stars);
-            }
+                if(typeof e.event !== "undefined"){
+                    var order_id = (e.event.target.parentNode.id).split("_")[1];
+                    var service_id = jQuery("#review_"+order_id).attr('data-service_id');
+                    
+                    insertOrUpdateVote(user_id, service_id, e.stars);
+                }
             },
         });
+
         let data = {user_id: user_id};
         jQuery.ajax({
             url: "https://followizaddons.com/vote/read.php",
@@ -3204,28 +3268,43 @@ let subCategory = [];
                                 "click": function (e) {  
                                 if(typeof e.event !== "undefined"){
                                     var order_id = (e.event.target.parentNode.id).split("_")[1];
-                                    var service_id = jQuery("#"+order_id).attr('data-service_id');
-                                    insertOrUpdateVote(user_id,service_id,e.stars);
+                                    var service_id = jQuery("#review_"+order_id).attr('data-service_id');
+                                    insertOrUpdateVote(user_id, service_id, e.stars);
                                 }
                                 },
                             });
                             
-                        });
-    
-                        /* 
-                        jQuery("#review_" + user_rating[i].service_id).rating({
-                            "value": (user_rating[i].vote < 1) ? 3.0 : user_rating[i].vote,
-                                "click": function (e) {     
-                                ////console.log(e);
-                                if(typeof e.event !== "undefined"){
-                                    var order_id = (e.event.target.parentNode.id).split("_")[1];
-                                    var service_id = jQuery("#"+order_id).attr('data-service_id');
-                                    insertOrUpdateVote(user_id,service_id,e.stars);
-                                }
-                                },
-                        }); */
-    
+                        });    
                     } 
+
+                    if(user_rating[i].my_vote){
+                        // if(parseInt(user_rating[i].my_vote) < parseInt(user_rating[i].vote)){
+                            
+                        //     let count = 0;
+                        //     $("[data-service_id="+ user_rating[i].service_id +"]").find(".fa-star").map(function(){
+                        //         if(count < user_rating[i].my_vote)
+                        //             $(this).addClass("green-star");
+                        //         count++;
+                        //     })
+                        // }else if(parseInt(user_rating[i].my_vote) > parseInt(user_rating[i].vote)){
+                        //     let count = 0;
+                        //     $("[data-service_id="+ user_rating[i].service_id +"]").find(".fa-star").map(function(){
+                        //         if(count >= user_rating[i].vote && count < user_rating[i].my_vote)
+                        //             $(this).addClass("green-star");
+                        //         count++;
+                        //     })
+                        // }
+                        
+                        $("[data-service_id="+ user_rating[i].service_id +"]").find(".fa-star").map(function(){
+                            let count = 0;
+                            if(count < user_rating[i].my_vote)
+                                $(this).addClass("green-star");
+                            count++;
+                        })
+                        
+                    }
+
+
                 }
     
     

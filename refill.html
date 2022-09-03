@@ -43,8 +43,8 @@
                       {% for refill in refillList %}
                       <tr>
                          <td data="{{ refill | json_encode() }}">{{ refill['id'] }}
-                         <!-- <div class="reviewShowOnly" id="review_reviewShowOnly_{{ refill['service_id'] }}" data-service_id="{{ refill['service_id'] }}" ></div> -->
-                            <div class="review" id="review_{{ refill['service_id'] }}" data-service_id="{{ refill['service_id'] }}" ></div>
+                            <div class="reviewShowOnly" id="review_reviewShowOnly_{{ refill['id'] }}" data-service_id="{{ refill['id'] }}" ></div>
+                            <!-- <div class="review" id="review_{{ refill['service_id'] }}" data-service_id="{{ refill['service_id'] }}" ></div> -->
                          </td>
                           <td> {{ refill['service'] }}</td>
                          <td><a target="_blank" href="https://anon.ws?{{ refill['link'] }}">{{ refill['link'] }}</a></td>

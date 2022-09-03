@@ -21,7 +21,7 @@
          <li {% if 'canceled' == status %}class="active"{% endif %}><a href="{{ page['url'] }}/canceled" class="text_color1">{{ lang('dripfeed.status.canceled') }}</a></li>
         </div>
        </ul>
-       <div class="well well-float">
+       <div class="well well-float text_color">
          <table class="table {% if site['rtl'] %} rtl-table {% endif %}">
            <thead>
            <tr>
@@ -43,8 +43,8 @@
            {% for dripFeed in dripFeedList %}
              <tr>
                <td>{{ dripFeed['id'] }}
-                <!-- <div class="reviewShowOnly" id="review_reviewShowOnly_{{ dripFeed['service_id'] }}" data-service_id="{{ dripFeed['service_id'] }}" ></div>  -->
-                    <div class="review" id="review_{{ dripFeed['id'] }}" data-service_id="{{ dripFeed['id'] }}" ></div>
+                    <div class="reviewShowOnly" id="review_reviewShowOnly_{{ dripFeed['id'] }}" data-service_id="{{ dripFeed['id'] }}" ></div> 
+                    <!-- <div class="review" id="review_{{ dripFeed['id'] }}" data-service_id="{{ dripFeed['service_id'] }}" ></div> -->
                </td>
                <td>{{ dripFeed['service'] }}</td>
                 <td class="link"><a target="_blank" href="https://anon.ws?{{ dripFeed['link'] }}">{{ dripFeed['link'] }}</a></td>

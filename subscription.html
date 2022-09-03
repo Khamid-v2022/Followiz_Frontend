@@ -46,9 +46,9 @@
                       {% for order in orderList  %}
                       <tr>
                          <td data="{{ order | json_encode() }}" >{{ order['id'] }}
+                            <div class="reviewShowOnly" id="review_reviewShowOnly_{{ order['id'] }}" data-service_id="{{ order['id'] }}" ></div>
                            <!-- <div class="reviewShowOnly" id="review_reviewShowOnly_{{ order['service_id'] }}" data-service_id="{{ order['service_id'] }}" ></div>  -->
-                            <!-- <div class="review" id="review_{{ order['service_id'] }}" data-service_id="{{ order['service_id'] }}" ></div> -->
-                            <div class="review" id="review_{{ order['id'] }}" data-service_id="{{ order['id'] }}" ></div>
+                            <!-- <div class="review" id="review_{{ order['id'] }}" data-service_id="{{ order['service_id'] }}" ></div> -->
                          </td>
                          <td>{{ order['service'] }}</td>
                          <td class="width-20"><a target="_blank" href="https://anon.ws?{{ order['link'] }}">{{ order['link'] }}</a></td>
@@ -87,13 +87,13 @@
                          <td><span class="status {{ statusclass }}">{{ order['status_name'] }}</span></td>
                         <td>
                            {% if order['status'] == 1 or order['status'] == 0 %}
-                             <a href="{{ page['url'] }}/stop/{{order['id']}}" class="btn btn-primary btn-xs">{{ lang('subscriptions.button.cancel') }}</a>
+                             <a href="{{ page['url'] }}/stop/{{order['id']}}" class="btn btn-xs">{{ lang('subscriptions.button.cancel') }}</a>
                            {% endif %}
                            {% if order['status'] == 2 %}
-                             <a href="{{ page['url'] }}/resume/{{order['id']}}" class="btn btn-primary btn-xs">{{ lang('subscriptions.button.unpause') }}</a>
+                             <a href="{{ page['url'] }}/resume/{{order['id']}}" class="btn btn-xs">{{ lang('subscriptions.button.unpause') }}</a>
                            {% endif %}
                            {% if order['status'] == 3 or order['status'] == 4 or order['status'] == 5 %}
-                           <a href="{{ page['url'] }}/reorder/{{order['id']}}" class="btn btn-primary btn-xs">{{ lang('subscriptions.button.reorder') }}</a>
+                           <a href="{{ page['url'] }}/reorder/{{order['id']}}" class="btn btn-xs">{{ lang('subscriptions.button.reorder') }}</a>
                            {% endif %}
                            </td>
                       </tr>
