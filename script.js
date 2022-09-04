@@ -332,12 +332,11 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
             //code to add rating.
             var local_user_id = user_info.id;
-            var userRatingArr = getUserRating();
-            // getUserRatingOnly();
+           
 
             // Service Page Review star
             jQuery(".review").rating({
-                "value": 3,
+                "value": 0,
                 "click": function (e) {
                     if(typeof e.event !== "undefined"){
                         var service_id = (e.event.target.parentNode.id).split("_")[1];
@@ -345,6 +344,9 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     }
                 },
             });
+
+            // getUserRatingOnly();
+            var userRatingArr = getUserRating();
         })
     }
       
@@ -357,7 +359,8 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             
             tbody += '<tr class="tablerowid" id="trow-' + service_id + '">'; 
             tbody += '<td class="id">' + service_id; 
-            tbody += '<div class="review" id="review_' + service_id + '" data-service_id="' + service_id + '"></div> </td>';
+            tbody += '<div class="rating-wrap"><div class="reviewShowOnly" id="reviewShowOnly_' + service_id + '" data-service_id="' + service_id + '"></div>';
+            tbody += '<div class="review" id="review_' + service_id + '" data-service_id="' + service_id + '"></div> </div></td>';
             tbody += '<td class="width-25 name">' + serviceDetails[k]['name'] + '</td>';;
             tbody += '<td>' + serviceDetails[k]['rate'] + ' </td>' ;
             tbody += '<td>' + serviceDetails[k]['min'] + ' / ' + serviceDetails[k]['max'] + '</td>';
@@ -1021,8 +1024,6 @@ let subCategory = [];
     
         var serviceDetails = getServiceDetailsById(selected_val);
 
-        console.log(serviceDetails);
-
         jQuery(".service-description-split").html(serviceDetails.description);
         setTimeout(function(){
             let serviceDetailsMax = (parseInt(serviceDetails.max)).toLocaleString();
@@ -1104,10 +1105,20 @@ let subCategory = [];
             }
     
         })
-            
+
+
+        if(profileData){
+            detailsData += "Profile Has:" + "<br>" + profileData;
+        }
+
+        if(QualityExamplesData){
+            detailsData += "Quality Examples:" + "<br>" + QualityExamplesData;
+        }
+        
         jQuery(".details-split").html(detailsData);
-        jQuery(".Profile-split").html(profileData);
-        jQuery(".example-split").html(QualityExamplesData);
+        // jQuery(".details-split").html(detailsData);
+        // jQuery(".Profile-split").html(profileData);
+        // jQuery(".example-split").html(QualityExamplesData);
 
         var splt1 = jQuery( ".split-class1" ).text();
         
@@ -1537,7 +1548,13 @@ let subCategory = [];
             data: formData,
             crossDomain: true,
             success: function(data, textStatus, jqXHR) {
-                ////console.log(data);
+                console.log(data);
+                if(data.status){
+                    $("#reviewShowOnly_" + service_id).rating({
+                        "value": data.data['voteavg']
+                    });
+                }
+               
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 ////console.log(jqXHR);
@@ -1581,39 +1598,28 @@ let subCategory = [];
             success: function(response) {
                 var user_rating = response.data;
                 var not_exist_service_id = '';
+                
+                jQuery(".reviewShowOnly").rating({
+                    "value": 3.0,
+                    "readonly": true
+                });
 
                 for (i = 0; i < user_rating.length; i++) {
 
                     if (jQuery("#review_" + user_rating[i].service_id).length) {
                         
                         jQuery("#review_" + user_rating[i].service_id).rating({
-                            "value": (user_rating[i].vote < 1) ? 3.0 : user_rating[i].vote
+                            "value": user_rating[i].my_vote ? user_rating[i].my_vote : 0
                         });
 
-                        if(user_rating[i].my_vote){
-                            // if(parseInt(user_rating[i].my_vote) < parseInt(user_rating[i].vote)){
+                        // if(user_rating[i].my_vote){
+                            // $("#review_" + user_rating[i].service_id).find(".fa-star").map(function(){
                             //     let count = 0;
-                            //     $("#review_" + user_rating[i].service_id).find(".fa-star").map(function(){
-                            //         if(count < user_rating[i].my_vote)
-                            //             $(this).addClass("green-star");
-                            //         count++;
-                            //     })
-                            // }else if(parseInt(user_rating[i].my_vote) > parseInt(user_rating[i].vote)){
-                            //     let count = 0;
-                            //     $("#review_" + user_rating[i].service_id).find(".fa-star").map(function(){
-                            //         if(count >= user_rating[i].vote && count < user_rating[i].my_vote)
-                            //             $(this).addClass("green-star");
-                            //         count++;
-                            //     })
-                            // }
-                            $("#review_" + user_rating[i].service_id).find(".fa-star").map(function(){
-                                let count = 0;
-                                if(count < user_rating[i].my_vote)
-                                    $(this).addClass("green-star");
-                                count++;
-                            })
-                            
-                        }
+                            //     if(count < user_rating[i].my_vote)
+                            //         $(this).addClass("green-star");
+                            //     count++;
+                            // })
+                        // }
 
                     } else {
                         not_exist_service_id = user_rating[i].service_id;
@@ -1622,6 +1628,13 @@ let subCategory = [];
 
                             //notExistServiceID(not_exist_service_id);
                         }
+                    }
+
+                    if (jQuery("#reviewShowOnly_" + user_rating[i].service_id).length) {
+                        jQuery("#reviewShowOnly_" + user_rating[i].service_id).rating({
+                            "value": user_rating[i].vote?user_rating[i].vote:3,
+                            "readonly": true
+                        });
                     }
                 }
 
@@ -1651,39 +1664,39 @@ let subCategory = [];
                 //     "readonly": true
                 // });
 
-                // jQuery(".reviewShowOnly").rating({
-                //     "value": 3.0,
-                //     "readonly": true
-                // });
+                jQuery(".reviewShowOnly").rating({
+                    "value": 3.0,
+                    "readonly": true
+                });
                 
-                // for (i = 0; i < user_rating.length; i++) {
+                for (i = 0; i < user_rating.length; i++) {
     
-                //     if (jQuery("#review_reviewShowOnly_" + user_rating[i].service_id).length) {
-                //         jQuery("#review_reviewShowOnly_" + user_rating[i].service_id).rating({
-                //             "value": user_rating[i].vote,
-                //             "readonly": true
-                //         });
-                //     }
+                    if (jQuery("#review_reviewShowOnly_" + user_rating[i].service_id).length) {
+                        jQuery("#review_reviewShowOnly_" + user_rating[i].service_id).rating({
+                            "value": user_rating[i].vote,
+                            "readonly": true
+                        });
+                    }
                     
-                //     if(user_rating[i].my_vote){
-                //         if(parseInt(user_rating[i].my_vote) < parseInt(user_rating[i].vote)){
-                //             let count = 0;
-                //             $("#review_reviewShowOnly_" + user_rating[i].service_id).find(".fa-star").map(function(){
-                //                 if(count < user_rating[i].my_vote)
-                //                     $(this).addClass("green-star");
-                //                 count++;
-                //             })
-                //         }else if(parseInt(user_rating[i].my_vote) > parseInt(user_rating[i].vote)){
-                //             let count = 0;
-                //             $("#review_reviewShowOnly_" + user_rating[i].service_id).find(".fa-star").map(function(){
-                //                 if(count >= user_rating[i].vote && count < user_rating[i].my_vote)
-                //                     $(this).addClass("green-star");
-                //                 count++;
-                //             })
-                //         }
+                    // if(user_rating[i].my_vote){
+                    //     if(parseInt(user_rating[i].my_vote) < parseInt(user_rating[i].vote)){
+                    //         let count = 0;
+                    //         $("#review_reviewShowOnly_" + user_rating[i].service_id).find(".fa-star").map(function(){
+                    //             if(count < user_rating[i].my_vote)
+                    //                 $(this).addClass("green-star");
+                    //             count++;
+                    //         })
+                    //     }else if(parseInt(user_rating[i].my_vote) > parseInt(user_rating[i].vote)){
+                    //         let count = 0;
+                    //         $("#review_reviewShowOnly_" + user_rating[i].service_id).find(".fa-star").map(function(){
+                    //             if(count >= user_rating[i].vote && count < user_rating[i].my_vote)
+                    //                 $(this).addClass("green-star");
+                    //             count++;
+                    //         })
+                    //     }
                         
-                //     }
-                // }
+                    // }
+                }
     
     
             },
