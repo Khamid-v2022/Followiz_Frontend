@@ -4676,7 +4676,10 @@ html {
   
   .service_container .tablerowid td.id .review {
     font-size: 11px;
-    width: 62px;
+    width: 97px;
+    letter-spacing: 7px;
+    margin-left: 3px;
+    margin-top: -20px;
   }
   
   .service_container .tablerowid td.id {
@@ -4687,8 +4690,9 @@ html {
     color: #fff;
   }
   .order_history .well tbody tr td .reviewShowOnly {
-    font-size: 11px;
-    width: 62px;
+    font-size: 17px;
+    width: 97px;
+    color: #32af82!important;
   }
   
   .order_history .well tbody tr td .review {
@@ -7196,9 +7200,17 @@ html {
     position: initial;
   }
 
-  .fa-star.green-star:before {
-    /* color: #2FCD94; */
+  /* .fa-star.green-star:before {
     background: #32af82;
     border-radius: 50%;
     border: 3px solid #32af82;
+  } */
+
+  .service_container .reviewShowOnly .far.fa-star{
+    /* color: #32af82!important; */
+    display: none;
+  }
+
+  .service_container .id {
+    min-width: 100px;
   }
