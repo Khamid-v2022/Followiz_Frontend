@@ -5,7 +5,11 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
 /**************** Toggle Menu open menu after redirect page  *****************/
     $(document).ready(function(){  
-        $('.data-table').DataTable();
+        $('.data-table').DataTable({
+            "bInfo": false,
+            // dom: '<"top"fl>t<"bottom"p><"clear">',
+            dom: '<"top"f>t<"bottom"p><"clear">',
+        });
 
         $('.navbar-nav li').each(function(){
             if($(this).hasClass('active')) {
@@ -1202,31 +1206,18 @@ let subCategory = [];
                             "readonly": true
                         });
                         flag = true;
+
                         // set my rate
-                        if(user_rating[i].my_vote){
-                            // if(parseInt(user_rating[i].my_vote) < parseInt(user_rating[i].vote)){
-                            //     let count = 0;
-                            //     $(".reviewShowOnly").find(".fa-star").map(function(){
-                            //         if(count < user_rating[i].my_vote)
-                            //             $(this).addClass("green-star");
-                            //         count++;
-                            //     })
-                            // }else if(parseInt(user_rating[i].my_vote) > parseInt(user_rating[i].vote)){
-                            //     let count = 0;
-                            //     $(".reviewShowOnly").find(".fa-star").map(function(){
-                            //         if(count >= user_rating[i].vote && count < user_rating[i].my_vote)
-                            //             $(this).addClass("green-star");
-                            //         count++;
-                            //     })
-                            // }
-                            
-                            $(".reviewShowOnly").find(".fa-star").map(function(){
-                                let count = 0;
-                                if(count < user_rating[i].my_vote)
-                                    $(this).addClass("green-star");
-                                count++;
+                        if(user_rating[i].my_vote){                            
+                            $(".reviewShowOnly-my-vote").rating({
+                                "value": user_rating[i].my_vote,
+                                "readonly": true
                             });
-                            
+                        }else{
+                            $(".reviewShowOnly-my-vote").rating({
+                                "value": 0,
+                                "readonly": true
+                            });
                         }
 
                     }
@@ -1548,7 +1539,6 @@ let subCategory = [];
             data: formData,
             crossDomain: true,
             success: function(data, textStatus, jqXHR) {
-                console.log(data);
                 if(data.status){
                     $("#reviewShowOnly_" + service_id).rating({
                         "value": data.data['voteavg']
@@ -1660,10 +1650,6 @@ let subCategory = [];
                 var user_rating = response.data;
 
                 var not_exist_service_id = '';
-                // jQuery(".reviewShowOnly1").rating({
-                //     "readonly": true
-                // });
-
                 jQuery(".reviewShowOnly").rating({
                     "value": 3.0,
                     "readonly": true
@@ -1677,25 +1663,6 @@ let subCategory = [];
                             "readonly": true
                         });
                     }
-                    
-                    // if(user_rating[i].my_vote){
-                    //     if(parseInt(user_rating[i].my_vote) < parseInt(user_rating[i].vote)){
-                    //         let count = 0;
-                    //         $("#review_reviewShowOnly_" + user_rating[i].service_id).find(".fa-star").map(function(){
-                    //             if(count < user_rating[i].my_vote)
-                    //                 $(this).addClass("green-star");
-                    //             count++;
-                    //         })
-                    //     }else if(parseInt(user_rating[i].my_vote) > parseInt(user_rating[i].vote)){
-                    //         let count = 0;
-                    //         $("#review_reviewShowOnly_" + user_rating[i].service_id).find(".fa-star").map(function(){
-                    //             if(count >= user_rating[i].vote && count < user_rating[i].my_vote)
-                    //                 $(this).addClass("green-star");
-                    //             count++;
-                    //         })
-                    //     }
-                        
-                    // }
                 }
     
     
@@ -1976,7 +1943,7 @@ let subCategory = [];
         currentURL.includes('subscriptions') ||
         currentURL.includes('drip-feed') ||
         currentURL.includes('refill') ) { 
-        getUserRatingOnly();
+        // getUserRatingOnly();
         
     }
   
@@ -3240,7 +3207,7 @@ let subCategory = [];
   });//documentready
   
     function getUserRatingNew() {
-        console.log("Orders page", "Drip-feed page");
+        console.log("Orders page");
         // Orders page, 
 
         jQuery(".review").rating({

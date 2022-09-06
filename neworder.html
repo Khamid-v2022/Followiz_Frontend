@@ -142,7 +142,11 @@
                     <div class="row selection_right">
                         <div class="mb-3">
                             <span class="heading text_color">Details</span>
-                            <span class="reviewShowOnly me-5" style="float:right;color: rgb(252, 215, 3);"></span>
+                            <!-- <span class="reviewShowOnly me-5" style="float:right;color: rgb(252, 215, 3);"></span> -->
+                            <div class="review-wrapper">
+                                <div class="reviewShowOnly me-5"></div>
+                                <div class="reviewShowOnly-my-vote me-5"></div>
+                            </div>
                         </div>
 
                         <div class="col-md-6">
@@ -186,7 +190,7 @@
                                 <p class="avg_txt">  {{ service['average_time'] }}
                                 </p>
                                 <div class="minute text-color2">
-                                    Average Time
+                                    Average Time {{ service['average_time'] }}
                                     <span class="info">
                                     <img src="https://followizaddons.com/followiz-icons/average-time_backicon.svg"> 
                                     <div class="average_toltip text_color ">

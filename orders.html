@@ -47,9 +47,12 @@
                       <tr>
                         <td>{{ order['id'] }}
                             <!-- <div class="reviewShowOnly" id="review_reviewShowOnly_{{ order['service_id'] }}" data-service_id="{{ order['service_id'] }}" ></div> -->
-                            <div class="review" id="review_{{ order['id'] }}" data-service_id="{{ order['service_id'] }}" data-order_id="{{ order['id'] }}" ></div>
+                            <div class="review-wrapper">
+                                <div class="reviewShowOnly" id="reviewShowOnly_{{ order['id'] }}" data-service_id="{{ order['service_id'] }}" data-order_id="{{ order['id'] }}" ></div>
+                                <div class="review" id="review_{{ order['id'] }}" data-service_id="{{ order['service_id'] }}" data-order_id="{{ order['id'] }}" ></div>
+                            </div>
                         </td>
-                        <td class="width-20">{{ order['service_id'] }} - {{ order['service'] }}</td>
+                        <td class="width-20"><a href="#" class="order-again-btn" data-service_id="{{ order['service_id'] }}" data-service-category="{{  order['category'] }}" data-service="{{ order['service'] }}">{{ order['service_id'] }} - {{ order['service'] }}</a></td>
                         <td class="width-30 link_tab"><a target="_blank" href="https://anon.ws?{{ order['link'] }}">{{ order['link'] }}</a></td>
                         <td>{{ order['quantity'] }}</td>
                         <td class="nowrap">{{ order['start_count'] }}</td>
@@ -77,20 +80,19 @@
                                 {% else %}
                                 
                                     {% if order['refill'] == 1 %}
-                                        <a href="{{ page['url'] }}/{{ order['id'] }}/refill" class="btn btn-xs btn-primary">{{ lang('orders.button.refill') }}</a>
+                                        <a href="{{ page['url'] }}/{{ order['id'] }}/refill" class="btn btn-xs">{{ lang('orders.button.refill') }}</a>
                                     {% endif %}
-                                    
+
                                     {% if order['refillAvailableTime'] %}
-                                        <button class="btn btn-xs btn-primary disabled" data-toggle="tooltip" data-placement="top" title="{{ order['refillAvailableTime'] }}">{{ lang('orders.button.refill') }}</button>
+                                        <button class="btn btn-xs disabled" data-toggle="tooltip" data-placement="top" title="{{ order['refillAvailableTime'] }}">{{ lang('orders.button.refill') }}</button>
                                     {% endif %}
-                                    
+
                                     {% if order['cancel'] == 1 %}
                                         <a href="{{ page['url'] }}/{{ order['id'] }}/cancel" class="btn btn-xs btn-default">{{ lang('orders.button.cancel') }}</a>
                                     {% endif %}
-                                
                                 {% endif %}
 
-                                <a href="#" class="btn btn-xs border-btn mt-1 order-again-btn" data-service_id="{{ order['service_id'] }}" data-service-category="{{  order['category'] }}" data-service="{{ order['service'] }}">Order Again</a>
+                                <!-- <a href="#" class="btn btn-xs border-btn mt-1 order-again-btn" data-service_id="{{ order['service_id'] }}" data-service-category="{{  order['category'] }}" data-service="{{ order['service'] }}">Order Again</a> -->
                             </div>
                         </td>
                
