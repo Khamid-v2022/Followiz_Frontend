@@ -334,23 +334,10 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 $("#service_detail_modal").modal('show');
             })
 
-            //code to add rating.
-            var local_user_id = user_info.id;
-           
-
             // Service Page Review star
-            jQuery(".review").rating({
-                "value": 0,
-                "click": function (e) {
-                    if(typeof e.event !== "undefined"){
-                        var service_id = (e.event.target.parentNode.id).split("_")[1];
-                        insertOrUpdateVote(local_user_id,service_id,e.stars);
-                    }
-                },
-            });
-
-            // getUserRatingOnly();
             var userRatingArr = getUserRating();
+
+           
         })
     }
       
@@ -362,7 +349,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             let service_id = serviceDetails[k]['id'];
             
             tbody += '<tr class="tablerowid" id="trow-' + service_id + '">'; 
-            tbody += '<td class="id">' + service_id; 
+            tbody += '<td class="id review-hover-zone">' + service_id; 
             tbody += '<div class="rating-wrap"><div class="reviewShowOnly" id="reviewShowOnly_' + service_id + '" data-service_id="' + service_id + '"></div>';
             tbody += '<div class="review" id="review_' + service_id + '" data-service_id="' + service_id + '"></div> </div></td>';
             tbody += '<td class="width-25 name">' + serviceDetails[k]['name'] + '</td>';;
@@ -1209,17 +1196,16 @@ let subCategory = [];
 
                         // set my rate
                         if(user_rating[i].my_vote){                            
-                            $(".reviewShowOnly-my-vote").rating({
+                            $(".review").rating({
                                 "value": user_rating[i].my_vote,
                                 "readonly": true
                             });
                         }else{
-                            $(".reviewShowOnly-my-vote").rating({
+                            $(".review").rating({
                                 "value": 0,
                                 "readonly": true
                             });
                         }
-
                     }
                 }
 
@@ -1230,6 +1216,19 @@ let subCategory = [];
                         "readonly": true
                     });
                 }
+
+                review_hover();
+                
+                $(".reviewShowOnly").mouseover(function(){
+                    $(this).css("display", "none");
+                    $(this).parents(".review-wrapper").find(".review").css("display", "block");
+                })
+
+                $(".review").mouseout(function(){
+                    $(this).css("display", "none");
+                    $(this).parents(".review-wrapper").find(".reviewShowOnly").css("display", "block");
+                })
+
             },
             error: function(jqXHR, textStatus, errorThrown) {
             }
@@ -1552,6 +1551,38 @@ let subCategory = [];
             }
         });
     }
+
+    function insertOrUpdateVoteForOrder(user_id, service_id, vote) {
+  
+        if (user_id == '') {
+            user_id = 0;
+        }
+  
+        var formData = {
+            "user_id": user_id,
+            "service_id": service_id,
+            "vote": vote
+        }; //Array 
+  
+        jQuery.ajax({
+            url: "https://followizaddons.com/vote/insertOrUpdateVote.php",
+            type: "POST",
+            dataType: "json",
+            cache: false,
+            data: formData,
+            crossDomain: true,
+            success: function(data, textStatus, jqXHR) {
+                if(data.status){
+                    $(".reviewShowOnly[data-service_id='" + service_id + "']").rating({
+                        "value":  data.data['voteavg']
+                    })
+                }
+               
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+            }
+        });
+    }
   
     function notExistServiceID(service_id) {
         return;
@@ -1577,6 +1608,28 @@ let subCategory = [];
     }
     
     function getUserRating() {
+
+        $(".review").rating({
+            "value": 0,
+            "click": function (e) {
+                if(typeof e.event !== "undefined"){
+                    var service_id = (e.event.target.parentNode.id).split("_")[1];
+                    
+                    insertOrUpdateVote(user_id, service_id, e.stars);
+                    
+                    $("#review_" + service_id).rating({
+                        "value":e.stars
+                    })
+                    $("#review_" + service_id).addClass('setted-own');
+                }
+            },
+        });
+
+        $(".reviewShowOnly").rating({
+            "value": 3.0,
+            "readonly": true
+        });
+
         let data = {user_id: user_id};
         jQuery.ajax({
             url: "https://followizaddons.com/vote/read.php",
@@ -1587,48 +1640,43 @@ let subCategory = [];
             crossDomain: true,
             success: function(response) {
                 var user_rating = response.data;
-                var not_exist_service_id = '';
-                
-                jQuery(".reviewShowOnly").rating({
-                    "value": 3.0,
-                    "readonly": true
-                });
 
                 for (i = 0; i < user_rating.length; i++) {
 
-                    if (jQuery("#review_" + user_rating[i].service_id).length) {
+                    if ($("#review_" + user_rating[i].service_id).length) {
                         
-                        jQuery("#review_" + user_rating[i].service_id).rating({
+                        $("#review_" + user_rating[i].service_id).rating({
                             "value": user_rating[i].my_vote ? user_rating[i].my_vote : 0
                         });
 
-                        // if(user_rating[i].my_vote){
-                            // $("#review_" + user_rating[i].service_id).find(".fa-star").map(function(){
-                            //     let count = 0;
-                            //     if(count < user_rating[i].my_vote)
-                            //         $(this).addClass("green-star");
-                            //     count++;
-                            // })
-                        // }
-
-                    } else {
-                        not_exist_service_id = user_rating[i].service_id;
-
-                        if (not_exist_service_id != '') {
-
-                            //notExistServiceID(not_exist_service_id);
+                        if(user_rating[i].my_vote){
+                            $("#review_" + user_rating[i].service_id).addClass("setted-own");
                         }
-                    }
 
-                    if (jQuery("#reviewShowOnly_" + user_rating[i].service_id).length) {
-                        jQuery("#reviewShowOnly_" + user_rating[i].service_id).rating({
+                    } 
+
+                    if ($("#reviewShowOnly_" + user_rating[i].service_id).length) {
+                        $("#reviewShowOnly_" + user_rating[i].service_id).rating({
                             "value": user_rating[i].vote?user_rating[i].vote:3,
                             "readonly": true
                         });
                     }
                 }
 
+                review_hover();
 
+                $(".reviewShowOnly").mouseover(function(){
+                    let service_id = $(this).attr("data-service_id");
+                    $(this).css("display", "none");
+                    $("#review_" + service_id).css("display", "block");
+                })
+    
+                $(".review").mouseout(function(){
+                    let service_id = $(this).attr("data-service_id");
+                    $(this).css("display", "none");
+                    $("#reviewShowOnly_" + service_id).css("display", "block");
+                })
+    
             },
             error: function(jqXHR, textStatus, errorThrown) {
             }
@@ -1936,7 +1984,7 @@ let subCategory = [];
     // ){
     if (  currentURL.includes('orders')
     ){
-        getUserRatingNew();
+        getUserRatingForOrder();
     }
 
     if ( 
@@ -2843,9 +2891,11 @@ let subCategory = [];
 
    $(document).ready(function(e) {
       if($("#table-updates-order").length > 0){
-          loadUpdates("https://followizaddons.com/client_js/updates/index.php");
-      }
+        // loadUpdates("https://followizaddons.com/client_js/updates/index.php");
+        loadUpdatesNew("https://followizaddons.com/client_js/updates/updates_service.php");
+    }
    });
+   
    $(document).on("click",'.loadmore',function(e) {
           var page = parseInt($(this).attr("data-current")) +1;
           var total = parseInt($(this).attr("data-total"));
@@ -2855,6 +2905,7 @@ let subCategory = [];
           $(this).attr("data-current",page);
           loadUpdatesPage("https://followizaddons.com/client_js/updates/index.php?_=1643094253933&type=main&page="+page);
    });
+
     function loadUpdatesPage(link) {
        $.ajax({
           url: link,      
@@ -2895,6 +2946,7 @@ let subCategory = [];
            }
       });
    }
+   
    function loadUpdates(link) {
    
        $.ajax({
@@ -2948,6 +3000,49 @@ let subCategory = [];
       });
    }
   
+    function loadUpdatesNew(link){
+        $.ajax({
+            url: link+'?type=main',      
+            type: "GET",
+            dataType: "json",
+            cache: false,
+            crossDomain: true,
+            success: function(response)         
+            {
+                // console.log("Updates Services: ", response);
+                $('.table.update-table tbody').html('');
+
+                response.data.forEach(function(data) {
+                    var type = "";
+
+                    if (data.UPDATE_STATUS == "updates-service-decreased") type = "blue";
+                    if (data.UPDATE_STATUS == "updates-service-increased") type = "orange";
+                    if (data.UPDATE_STATUS == "updates-service-enabled") type = "green";
+                    if (data.UPDATE_STATUS == "updates-service-disabled") type = "danger";
+
+                    var service = data.SERVICE.split("-")
+                    var id = service[0].trim();
+                    var service_name = service[1].trim();
+
+                    $('.table.update-table tbody').append("" +
+                        "<tr class='data-services'>" +
+                        "  <td class='text-center'><div class='id-boxi'>" + id + "</div></td>" +
+                        "    <td>" + data.SERVICE + "</td>" +
+                        "    <td>" + data.DATE + "</td>" +
+                        "    <td><span class='color-" + type + "'>" + data.STATUS + "</span></td>" + 
+                        "</tr> "                                                   
+                    ); 
+                
+                    
+                });
+                // if($("#table-updates").length > 0){
+                
+                //     $("#table-updates").after("<div class='text-center'><div class='loadmore btn btn-primary btn-auto' data-current='1' data-total='"+response.totalPage+"'><span>Load more</span></div>");
+                // }
+                // populatePaginaiton(response);
+            }
+        });
+    }
   
   
    if (currentURL.includes("updates"))  {
@@ -3206,20 +3301,32 @@ let subCategory = [];
   
   });//documentready
   
-    function getUserRatingNew() {
-        console.log("Orders page");
+    function getUserRatingForOrder() {
         // Orders page, 
-
-        jQuery(".review").rating({
-            "value": 3,
+        console.log("Orders page");
+       
+        $(".review").rating({
+            "value": 0,
             "click": function (e) {  
                 if(typeof e.event !== "undefined"){
                     var order_id = (e.event.target.parentNode.id).split("_")[1];
                     var service_id = jQuery("#review_"+order_id).attr('data-service_id');
                     
-                    insertOrUpdateVote(user_id, service_id, e.stars);
+                    insertOrUpdateVoteForOrder(user_id, service_id, e.stars);
+
+                    $(".review[data-service_id='" + service_id + "']").each(function(){
+                        $(this).rating({
+                            value: e.stars
+                        })
+                        $(this).addClass('setted-own');
+                    })
                 }
             },
+        });
+
+        $(".reviewShowOnly").rating({
+            "value": 3,
+            "readonly": true
         });
 
         let data = {user_id: user_id};
@@ -3232,66 +3339,62 @@ let subCategory = [];
             crossDomain: true,
             success: function(response) {
                 var user_rating = response.data;
-                var not_exist_service_id = '';
-    
                 for (i = 0; i < user_rating.length; i++) {
-    
-                    //if (jQuery("#review_" + user_rating[i].service_id).length) {
-                    if (jQuery("[data-service_id="+ user_rating[i].service_id +"]").length) {
-    
-                        let vote = parseInt(user_rating[i].vote);
-    
-                        jQuery("[data-service_id="+ user_rating[i].service_id +"]").each(function(i, obj) {
-                            let objId = jQuery(obj).attr('id');
-                            jQuery("#" + objId).rating({
-                            "value": (vote < 1) ? 3 : vote,
-                                "click": function (e) {  
-                                if(typeof e.event !== "undefined"){
-                                    var order_id = (e.event.target.parentNode.id).split("_")[1];
-                                    var service_id = jQuery("#review_"+order_id).attr('data-service_id');
-                                    insertOrUpdateVote(user_id, service_id, e.stars);
-                                }
-                                },
+
+                    $(".review").each(function(){
+                        if($(this).attr('data-service_id') == user_rating[i].service_id){
+                            $(this).rating({
+                                "value": user_rating[i].my_vote ? user_rating[i].my_vote : 0,
                             });
-                            
-                        });    
-                    } 
 
-                    if(user_rating[i].my_vote){
-                        // if(parseInt(user_rating[i].my_vote) < parseInt(user_rating[i].vote)){
-                            
-                        //     let count = 0;
-                        //     $("[data-service_id="+ user_rating[i].service_id +"]").find(".fa-star").map(function(){
-                        //         if(count < user_rating[i].my_vote)
-                        //             $(this).addClass("green-star");
-                        //         count++;
-                        //     })
-                        // }else if(parseInt(user_rating[i].my_vote) > parseInt(user_rating[i].vote)){
-                        //     let count = 0;
-                        //     $("[data-service_id="+ user_rating[i].service_id +"]").find(".fa-star").map(function(){
-                        //         if(count >= user_rating[i].vote && count < user_rating[i].my_vote)
-                        //             $(this).addClass("green-star");
-                        //         count++;
-                        //     })
-                        // }
-                        
-                        $("[data-service_id="+ user_rating[i].service_id +"]").find(".fa-star").map(function(){
-                            let count = 0;
-                            if(count < user_rating[i].my_vote)
-                                $(this).addClass("green-star");
-                            count++;
-                        })
-                        
-                    }
+                            if(user_rating[i].my_vote){
+                                $(this).addClass("setted-own");
+                            }
+                        }
+                       
+                    })
 
+                    $(".reviewShowOnly").each(function(){
+                        if($(this).attr('data-service_id') == user_rating[i].service_id){
+                            $(this).rating({
+                                "value": user_rating[i].vote ? user_rating[i].vote : 0,
+                                "readonly": true
+                            });
+                        }
+                    })
 
+    
                 }
+                review_hover();
+
+                $(".reviewShowOnly").mouseover(function(){
+                    $(this).css("display", "none");
+                    $(this).parents(".review-wrapper").find(".review").css("display", "block");
+                })
+
+            
     
-    
+                $(".review").mouseout(function(){
+                    $(this).css("display", "none");
+                    $(this).parents(".review-wrapper").find(".reviewShowOnly").css("display", "block");
+                })
+
+          
+                
             },
             error: function(jqXHR, textStatus, errorThrown) {
             }
         }); 
     }// JavaScript Document
+
+    function review_hover(){
+        $(".review-hover-zone").on("mousemove", function(event){
+            let classname = event.target.parentNode.className;
+            if(classname.search(new RegExp("review", "i")) < 0){
+                $(".review").css("display", "none");
+                $(".reviewShowOnly").css("display", "block");
+            }
+        })
+    }
   
   

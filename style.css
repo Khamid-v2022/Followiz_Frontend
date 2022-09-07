@@ -1530,6 +1530,7 @@ html {
     color: #2FCD94 !important;
   }
   
+  
   .order_history .well .link_tab a:hover {
     color: #369875;
   }
@@ -4692,14 +4693,6 @@ html {
     box-shadow: none;
   }
   
-  .service_container .tablerowid td.id .review {
-    font-size: 11px;
-    width: 97px;
-    letter-spacing: 7px;
-    margin-left: 3px;
-    margin-top: -20px;
-  }
-  
   .service_container .tablerowid td.id {
     padding: 0px 5px;
   }
@@ -4707,12 +4700,7 @@ html {
   .theme-dark .modal_services .modal_detail p {
     color: #fff;
   }
-  .order_history .well tbody tr td .reviewShowOnly {
-    font-size: 17px;
-    width: 97px;
-    color: #32af82!important;
-  }
-  
+
   .order_history .well tbody tr td .review {
     width: 60px;
     font-size: 10px;
@@ -5356,6 +5344,10 @@ html {
   
   a:hover {
     text-decoration: none;
+  }
+
+  .theme-dark a:hover{
+    color: white;
   }
   
   .alert-primary {
@@ -7225,17 +7217,6 @@ html {
     position: initial;
   }
 
-  /* .fa-star.green-star:before {
-    background: #32af82;
-    border-radius: 50%;
-    border: 3px solid #32af82;
-  } */
-
-  .service_container .reviewShowOnly .far.fa-star, .new_order .reviewShowOnly .far.fa-star{
-    /* color: #32af82!important; */
-    display: none;
-  }
-
   .service_container .id {
     min-width: 100px;
   }
@@ -7245,15 +7226,7 @@ html {
   }
 
   .new_order .reviewShowOnly {
-    font-size: 20px;
-    /* width: 97px; */
     color: #32af82!important;
-  }
-
-  .new_order .reviewShowOnly-my-vote{
-    margin: 3px -20px 0 0;
-    margin: -25px 0px 0px 3px;
-    letter-spacing: 7px;
   }
 
   .new_order .review-wrapper {
@@ -7261,12 +7234,44 @@ html {
     position: relative;
   }
 
+  .new_order .review {
+    display: none;
+  }
+
   .order_page .review-wrapper {
     position: relative;
   }
 
-  .order_page .reviewShowOnly{
-    font-size: 17px;
-    width: 97px;
+  .order_page .reviewShowOnly {
+    font-size: 10px;
     color: #32af82!important;
+    width: 60px;
   }
+
+  .order_page .reviewShowOnly:hover {
+    display: none;
+  }
+
+  .order_page .review {
+    display: none;
+  }
+
+  .order_page .review:hover{
+    display: block;
+  }
+
+    .color-blue {
+        color: #30B1FA;
+    }
+
+    .color-orange {
+        color: #EC9E2A;
+    }
+
+    .color-green {
+        color: #2FCD94;
+    }
+
+    .color-danger {
+        color: #E93E3E;
+    }

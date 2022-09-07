@@ -45,8 +45,7 @@
                    <tbody>
                       {% for order in orderList %}
                       <tr>
-                        <td>{{ order['id'] }}
-                            <!-- <div class="reviewShowOnly" id="review_reviewShowOnly_{{ order['service_id'] }}" data-service_id="{{ order['service_id'] }}" ></div> -->
+                        <td class="review-hover-zone">{{ order['id'] }}
                             <div class="review-wrapper">
                                 <div class="reviewShowOnly" id="reviewShowOnly_{{ order['id'] }}" data-service_id="{{ order['service_id'] }}" data-order_id="{{ order['id'] }}" ></div>
                                 <div class="review" id="review_{{ order['id'] }}" data-service_id="{{ order['service_id'] }}" data-order_id="{{ order['id'] }}" ></div>
