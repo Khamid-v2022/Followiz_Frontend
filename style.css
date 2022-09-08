@@ -713,13 +713,21 @@ html {
   .main-menu .dropdown.open .btn {
     color: #2FCD94;
   }
-  
+
   .main-menu .user-amount {
     width: 100%;
     float: left;
     text-align: center;
     margin-top: 15px;
   }
+  .main-menu .mobile_menu .user-amount  {
+    display: none;
+  }
+  .main-menu #wrapper .user-amount {
+    display: block;
+  }
+  
+
   
   .main-menu .user-amount .badge {
     /*background: none;*/
@@ -1524,15 +1532,6 @@ html {
     min-width: 90px;
     width: 16%;
     word-break: break-all;
-  }
-  
-  .order_history .well .link_tab a {
-    color: #2FCD94 !important;
-  }
-  
-  
-  .order_history .well .link_tab a:hover {
-    color: #369875;
   }
   
   .btn-block:hover {
@@ -4349,18 +4348,9 @@ html {
   .theme-dark .service_page #searchService:focus{
     border-color:#323a3a !important; 
   }
+
   .theme-dark .main-menu .dropdown .dropdown-menu {
     background: #191C21 !important; 
-    /* border: 1px solid #323A3A; */
-  }
-  
-  @media(max-width:768px){
-    .theme-dark .main-menu .dropdown.account-dropdown .dropdown-menu {
-        border: 1px solid #323A3A;
-    }
-    .theme-default .main-menu .dropdown.account-dropdown .dropdown-menu {
-        border: 1px solid #ccc;
-    }
   }
   
   .theme-dark .send_button {
@@ -4368,9 +4358,6 @@ html {
     border: 1px solid #323A3A;
   }
   
-  .order_history .pull-left .input-group-btn button:hover{
-    /*background:none;*/
-  }
   .theme-dark .send_button .form-group .ticket_msg:focus{
     outline:none !important;
     box-shadow:none !important;
@@ -5005,12 +4992,12 @@ html {
       padding: 20px 20px;
       border-radius: 4px;
   }
-  .services_news .services_updates .table-responsive{
-     height: 530px;
-      overflow: auto;
-     margin: 0px -20px -4px -20px;
-      padding: 0px 0px 0px 0px;
-  }
+    .services_news .services_updates .table-responsive{
+        height: 530px!important;
+        overflow: auto;
+        margin: 0px -20px -4px -20px;
+        padding: 0px 0px 0px 0px;
+    }
   
   @media screen and (max-width: 767px) {
     .table-responsive {
@@ -5145,8 +5132,10 @@ html {
       padding-right: 5px;
   }
   
-  .services_news .services_updates td a {width: 100%; cursor: default;}
-  
+  .services_news .services_updates td a {width: 100%; color:white}
+  .services_news .services_updates td a:hover {
+    color:#2FCD94;
+  }
   .services_news .services_updates td a span {
       display: block;
       padding-top: 2px;
@@ -5155,6 +5144,10 @@ html {
   .services_news .services_updates  .table-responsive tr td a .previous_price {
       font-size: 13px;
       font-weight: 400;
+  }
+  
+  .theme-dark .services_updates .data-services{
+	color:#7E8E8D;
   }
   
   
@@ -5342,12 +5335,16 @@ html {
     margin: 0 auto;
   }
   
+  .order_page a {
+    color: white;
+  }
+
   a:hover {
     text-decoration: none;
   }
 
   .theme-dark a:hover{
-    color: white;
+    color: #2FCD94;
   }
   
   .alert-primary {
@@ -6004,7 +6001,8 @@ html {
       display: block !important;
     }
     .hamburger {
-      position: absolute;
+      /* position: absolute; */
+      position: relative;
       top: 20px;
       z-index: 1211;
       display: block;
@@ -6192,7 +6190,7 @@ html {
       display: none;
     }
     .toogle_menu .navbar {
-      margin-top: 60px;
+      /* margin-top: 60px; */
       margin-bottom: -10px;
     }
     .mobile_menu {
@@ -6213,10 +6211,17 @@ html {
       /* z-index: 1111; */
       z-index: 10;
     }
-    .main-menu .user-amount {
-      width: 55%;
+    .main-menu .mobile_menu .user-amount {
+      /* width: 55%;
       text-align: center;
-      margin-top: 16px;
+      margin-top: 16px; */
+      text-align: right;
+      display: block;
+      margin-right: 10px;
+    }
+
+    .main-menu #wrapper .user-amount {
+        display: none;
     }
     .main-menu .user-dropdown {
       width: 20%;
@@ -6236,11 +6241,13 @@ html {
       font-weight: 500;
     }
     .main-menu .navbar-brand {
-      margin-top: 4px !important;
-      padding: 0px 1px 48px 0px;
-      width: 25%;
-      margin-left: 55px;
+        /* margin-top: 4px !important;
+        padding: 0px 1px 48px 0px;
+        width: 25%;
+        margin-left: 55px; */
+        margin-top: 70px!important;
     }
+   
     .footer .container-fluid.for-dashboard {
       padding-left: 0px;
     }
@@ -6665,11 +6672,6 @@ html {
       z-index: 11;
     }
   
-    button.hamburger.is-open {
-      position: absolute;
-      top: -32px;
-      /* left: 204px; */
-    }
     .hamburger {
       margin-left: 20px;
     }
@@ -6738,14 +6740,10 @@ html {
       padding: 0px 0px 25px 0px;
       margin-top: 55px;
     }
-    .main-wrapper.for-dashboard .main-menu .mobile_menu button.hamburger.is-open {
-      position: absolute;
-      top: 26px;
-      /* left: 204px; */
-    }
+ 
     .main-wrapper.for-dashboard .top-header ~ .main-menu .mobile_menu {
       /* top: 50px; */
-      /* z-index: 11; */
+      z-index: 11;
     }
     .main-wrapper.for-dashboard .top-header ~ .content-wrapper {
       padding: 40px 0px 25px 0px;
@@ -6826,11 +6824,7 @@ html {
       font-size: 12px;
       padding: 8px 0px;
     }
-    .navbar-brand img {
-      max-width: 76px;
-      max-height: 24px;
-     
-    }
+   
     .content-wrapper .panel .panel-body .page-title {
       font-size: 20px;
       font-weight: bold;
@@ -7031,9 +7025,7 @@ html {
     .deposit_page ul{
       height: 85%;
     }
-    .main-menu .user-amount {
-      width: 38%;
-    }
+   
     .service .order_page select.selectpicker.all_socialmedia{
       background-position: 287px 18px !important;
     }

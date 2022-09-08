@@ -8,7 +8,7 @@
         <meta name="keywords" content="{{ site['seo_key'] }}">
         <meta name="description" content="{{ site['seo_desc'] }}">
         {% if site['favicon'] %}
-        <link rel="shortcut icon" type="image/ico" href="{{ site['favicon'] }}" />
+            <link rel="shortcut icon" type="image/ico" href="{{ site['favicon'] }}" />
         {% endif %}
         {{ site['custom_header'] }}
         <script>
@@ -19,32 +19,31 @@
                 for(var i = 0; i < ca.length; i++) {
                     var c = ca[i];
                     while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
+                        c = c.substring(1);
                     }
                     if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
+                        return c.substring(name.length, c.length);
                     }
                 }
                 return "";
             }
         </script>
+        
         <!-- Font -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-        <!-- Followiz Fontawesome Kit -->
         
+        <!-- Followiz Fontawesome Kit -->
         <script src="https://kit.fontawesome.com/28e57db20b.js" crossorigin="anonymous"></script>
         <!-- Select2 css for stylish dropdown -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" />
-        
-
         <!-- datatable -->
         <link rel="style" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap.min.css">
+        
         <!-- Custom css -->
         {% for style in site['styles'] %}
-        <link rel="stylesheet" type="text/css" href="{{ style['href'] }}">
+            <link rel="stylesheet" type="text/css" href="{{ style['href'] }}">
         {% endfor %}
     </head>
     <body>
@@ -57,359 +56,277 @@
         </script>
         <div class="main-wrapper {% if user['auth'] %} for-dashboard {% endif %}">
             {% if user['auth'] %}
-            <div class="top-header">
-                <a href="https://followiz.com/tickets" style="color:#fff">New Design: Found a bug or something you don't like? Let us know via Tickets! <i class="fas fa-lightbulb"></i></a>
-            </div>
-            <div class="main-menu" >
-                <div class="mobile_menu bg_color header" id="myHeader">
-                    <button type="button" class="hamburger is-closed" data-toggle="offcanvas">
-                    <span class="hamb-top"></span>
-                    <span class="hamb-middle"></span>
-                    <span class="hamb-bottom"></span>
-                    </button>
-                    <a class="navbar-brand" href="{{ page_url('index') }}">
-                    {% if site['logo'] %}
-                    <img src="{{ site['logo'] }}" alt="{{ site['name'] }}" title="" class="theme_default">
-                    <img src="https://followizaddons.com/followiz-icons/darkmode_logo.png" alt="{{ site['name'] }}" title="" class="theme_dark">
-                    {% else %}
-                    {{ site['name'] }}
-                    {% endif %}
-                    </a>
-                    <nav class="navbar open-menu">
-                        <ul class="nav navbar-nav">
-                            <li class="dropdown account-dropdown">
-                                <a class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                {{ user['username'] }}
-                                <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                {% for menu in site['account_menu'] %}
-                                {% if  menu['link'] != '' %}
-                                <li{% if menu['active'] %} class="active" {% endif %}><a href="{{ menu['link'] }}" {% if menu['external'] %} target="_blank" {% endif %}>{{ menu['name'] }}</a></li>
+                <div class="top-header">
+                    <a href="https://followiz.com/tickets" style="color:#fff">New Design: Found a bug or something you don't like? Let us know via Tickets! <i class="fas fa-lightbulb"></i></a>
+                </div>
+                <div class="main-menu" >
+                    <div class="mobile_menu bg_color header" id="myHeader">
+                        <button type="button" class="hamburger is-closed" data-toggle="offcanvas">
+                            <span class="hamb-top"></span>
+                            <span class="hamb-middle"></span>
+                            <span class="hamb-bottom"></span>
+                        </button>
+                        
+                        <div class="user-amount">
+                            <span class="badge badgeBtn btn" style="display:none">{{ user['balance_formatted'] }}</span>
+                            <span class="badgeLink"><a class="badge btn" href="/addfunds">{{ user['balance_formatted'] }}</a></span>
+                        </div>
+                    </div>
+                    <div id="wrapper">
+                        <div class="overlay"></div>
+                        <div class="toogle_menu bg_color">
+                            <a class="navbar-brand" href="{{ page_url('index') }}">
+                                {% if site['logo'] %}
+                                    <img src="https://cdn.mypanel.link/f909ae/tjxcdcy8jdrow1pj.png" alt="Followiz" title="" class="theme_default">
+                                    <img src="https://followizaddons.com/followiz-icons/darkmode_logo.png" alt="Followiz" title="" class="theme_dark">
+                                {% else %}
+                                    {{ site['name'] }}
                                 {% endif %}
-                                {% endfor %}
+                            </a>
+                            <nav class="navbar open-menu">
+                                <ul class="nav navbar-nav">
+                                    <li class="dropdown account-dropdown">
+                                        <a class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            {{ user['username'] }}
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                            {% for menu in site['account_menu'] %}
+                                                {% if  menu['link'] != '' %}
+                                                    <li{% if menu['active'] %} class="active" {% endif %}><a href="{{ menu['link'] }}" {% if menu['external'] %} target="_blank" {% endif %}>{{ menu['name'] }}</a></li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
                                 </ul>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="user-amount">
-                        <span class="badge badgeBtn btn" style="display:none">{{ user['balance_formatted'] }}</span>
-                        <span class="badgeLink"><a class="badge btn" href="/addfunds">{{ user['balance_formatted'] }}</a></span>
+                            </nav>
+                            <div class="user-amount">
+                                <span class="badge badgeBtn btn" style="display:none">{{ user['balance_formatted'] }}</span>
+                                <span class="badgeLink"><a class="badge btn" href="/addfunds">{{ user['balance_formatted'] }}</a></span>
+                            </div>
+                            <div class="divide">
+                                <hr>
+                            </div>
+                            <nav class="navbar">
+                                <ul class="nav navbar-nav">
+                                    {% for menu in site['menu'] %}
+                                        {% if  menu['link'] == '/' %}
+                                            <li {% if menu['active'] %} class="active dropdown" {% endif %} class="dropdown">
+                                                <a class="dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="supportMenu1">New Order
+                                                    <span class="caret"></span>
+                                                </a>
+                                                <ul class="dropdown-menu" aria-labelledby="supportMenu1">
+                                                    {% for menu1 in site['menu'] %}
+                                                        {% if  menu1['link'] == "/" or menu1['link'] == '/massorder' %}
+                                                            <li {% if menu1['active'] %} class="active"{% endif %}>
+                                                                <a href="{{ menu1['link'] }}">{{ menu1['name'] }}</a>
+                                                            </li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                        {% endif %}
+                                        {% if  menu['link'] == '/orders' %}
+                                            <li {% if menu['active'] %} class="active dropdown" {% endif %} class="dropdown">
+                                                <a class="dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="supportMenu2">Order History
+                                                    <span class="caret"></span>
+                                                </a>
+                                                <ul class="dropdown-menu" aria-labelledby="supportMenu2">
+                                                    {% for menu1 in site['menu'] %}
+                                                    {% if  menu1['link'] == "/orders" or menu1['link'] == '/subscriptions' 
+                                                    or menu1['link'] == "/drip-feed" or menu1['link'] == '/refill' %}
+                                                        <li {% if menu1['active'] %} class="active"{% endif %}>
+                                                            <a href="{{ menu1['link'] }}">{{ menu1['name'] }}</a>
+                                                        </li>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                        {% endif %}
+                                        {% if  menu['link'] == '/services' %}
+                                            <li {% if menu['active'] %} class="active dropdown" {% endif %} class="dropdown">
+                                                <a class="dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="supportMenu4">Services
+                                                    <span class="caret"></span>
+                                                </a>
+                                                <ul class="dropdown-menu" aria-labelledby="supportMenu4">
+                                                    {% for menu1 in site['menu'] %}
+                                                    {% if  menu1['link'] == "/services" or menu1['link'] == '/updates'  %}
+                                                    <li {% if menu1['active'] %} class="active"{% endif %}>
+                                                    <a href="{{ menu1['link'] }}">{{ menu1['name'] }}</a>
+                                                    </li>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                        {% endif %}
+                                        {% if  menu['link'] == '/addfunds' %}
+                                            <li {% if menu['active'] %} class="active d_toltip" {% else %} class="d_toltip" {% endif %}>
+                                                <a href="{{ menu['link'] }}">Deposit</a>
+                                                <div class="deposit_toltip" > </div>
+                                            </li>
+                                        {% endif %}
+                                        {% if  menu['link'] == '/tickets' %}
+                                            <li {% if menu['active'] %} class="active dropdown" {% endif %} class="dropdown">
+                                                <a class="dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="supportMenu3">Support
+                                                    {% for menu1 in site['menu'] %}
+                                                        {% if  menu1['link'] == "/tickets"%}
+                                                            {{ menu1['name']|replace({'Tickets':''}) }}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    <span class="caret"></span>
+                                                </a>
+                                                <ul class="dropdown-menu" aria-labelledby="supportMenu3">
+                                                    {% for menu1 in site['menu'] %}
+                                                        {% if  menu1['link'] == "/tickets" or menu1['link'] == '/faq' %}
+                                                            <li {% if menu1['active'] %} class="active"{% endif %}>
+                                                                <a href="{{ menu1['link'] }}">{{ menu1['name'] }}</a>
+                                                            </li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                        {% endif %}
+                                        {% if  menu['link'] == '/child-panels' %}
+                                            <li {% if menu['active'] %} class="active"{% endif %}>
+                                                <a href="{{ menu['link'] }}">{{ menu['name'] }}</a>
+                                            </li>
+                                        {% endif %}
+                                        {% if  menu['link'] == '/api' %}
+                                            <li {% if menu['active'] %} class="active"{% endif %}>
+                                                <a href="{{ menu['link'] }}">{{ menu['name'] }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </nav>
+                            <div class="divide">
+                                <hr>
+                            </div>
+                            <a href="/vip">
+                                <div class="vip-status">
+                                    <div class="second circle" 
+                                    data-value="{{ ((( user['spent'] /5000)*100)/100) |number_format(2) }}" data-size="172" data-thickness="6" data-fill= "{&quot;color&quot;: &quot;rgba(47, 205, 148, 1)&quot;}" data-reverse="true">
+                                        <span class="diamond_icon">
+                                            <img src="https://followizaddons.com/followiz-icons/Orion_diamond.svg">
+                                        </span>
+                                        <span class="label text-color2">VIP Status</span>
+                                        <strong class="spent-value">${{ user['spent']|number_format }}</strong>
+                                        <span class="total-value">/5000</span>
+                                        <span class="icon">
+                                            <i class="fa fa-info"></i>
+                                            <div class="vip_tolltip bg_color">
+                                                <h6 class="text-color2">VIP Status</h6>
+                                                <strong class="text-color2">${{ user['spent']|number_format }}/$5000</strong>
+                                                <p class="text-color2">Get new perks by becoming a VIP! Spend at least $5000 to get the VIP Status.</p>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="divide">
+                                <hr>
+                            </div>
+                            <div class="material-switch bg_color">
+                                <input id="themeMode" name="themeModeOption" type="checkbox" value="true"/>
+                                <label for="themeMode" class="label-success">Dark Mode</label>
+                            </div>
+                            <div class="social-icons text-center mt-5" style="margin-top: 20px">
+                                <a class="btn icon-btn me-2" href="skype:followiz?add" target="_blank">
+                                    <i class="fa-brands fa-skype"></i>
+                                </a>
+                                <a class="btn icon-btn me-2" href="https://t.me/FollowizNews" target="_blank">
+                                    <i class="fa-brands fa-telegram"></i>
+                                </a>
+                                <a class="btn icon-btn" href="https://api.whatsapp.com/send?phone=12262707373" target="_blank">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </a>
+                            </div>
+                            <div class="social-icons text-center mt-5" style="margin-top: 20px">
+                                <a class="btn" href="https://cdn.forms-content.sg-form.com/caf6d1c4-aecc-11ec-b78a-c2f16d6fc1ab" target="_blank">
+                                    Subscribe
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div id="wrapper">
-                    <div class="overlay"></div>
-                    <div class="toogle_menu bg_color">
-                        <div class="divide">
-                            <hr>
-                        </div>
-                        <nav class="navbar">
-                            <ul class="nav navbar-nav">
-                                {% for menu in site['menu'] %}
-                                {% if  menu['link'] == '/' %}
-                                    <li {% if menu['active'] %} class="active dropdown" {% endif %} class="dropdown">
-                                        <a class="dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="supportMenu1">New Order
-                                            <span class="caret"></span>
-                                        </a>
-                                        <ul class="dropdown-menu" aria-labelledby="supportMenu1">
-                                            {% for menu1 in site['menu'] %}
-                                            {% if  menu1['link'] == "/" or menu1['link'] == '/massorder' %}
-                                                <li {% if menu1['active'] %} class="active"{% endif %}>
-                                                    <a href="{{ menu1['link'] }}">{{ menu1['name'] }}</a>
-                                                </li>
-                                            {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                    </li>
-                                {% endif %}
-                                {% if  menu['link'] == '/orders' %}
-                                    <li {% if menu['active'] %} class="active dropdown" {% endif %} class="dropdown">
-                                        <a class="dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="supportMenu2">Order History
-                                            <span class="caret"></span>
-                                        </a>
-                                        <ul class="dropdown-menu" aria-labelledby="supportMenu2">
-                                            {% for menu1 in site['menu'] %}
-                                            {% if  menu1['link'] == "/orders" or menu1['link'] == '/subscriptions' 
-                                            or menu1['link'] == "/drip-feed" or menu1['link'] == '/refill' %}
-                                                <li {% if menu1['active'] %} class="active"{% endif %}>
-                                                    <a href="{{ menu1['link'] }}">{{ menu1['name'] }}</a>
-                                                </li>
-                                            {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                    </li>
-                                {% endif %}
-                                {% if  menu['link'] == '/services' %}
-                                    <li {% if menu['active'] %} class="active dropdown" {% endif %} class="dropdown">
-                                        <a class="dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="supportMenu4">Services
-                                            <span class="caret"></span>
-                                        </a>
-                                        <ul class="dropdown-menu" aria-labelledby="supportMenu4">
-                                            {% for menu1 in site['menu'] %}
-                                            {% if  menu1['link'] == "/services" or menu1['link'] == '/updates'  %}
-                                            <li {% if menu1['active'] %} class="active"{% endif %}>
-                                            <a href="{{ menu1['link'] }}">{{ menu1['name'] }}</a>
-                                            </li>
-                                            {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                    </li>
-                                {% endif %}
-                                {% if  menu['link'] == '/addfunds' %}
-                                    <li {% if menu['active'] %} class="active d_toltip" {% else %} class="d_toltip" {% endif %}>
-                                        <a href="{{ menu['link'] }}">Deposit</a>
-                                        <div class="deposit_toltip" > </div>
-                                    </li>
-                                {% endif %}
-                                {% if  menu['link'] == '/tickets' %}
-                                    <li {% if menu['active'] %} class="active dropdown" {% endif %} class="dropdown">
-                                        <a class="dropdown-toggle" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="supportMenu3">Support
-                                            {% for menu1 in site['menu'] %}
-                                            {% if  menu1['link'] == "/tickets"%}
-                                            {{ menu1['name']|replace({'Tickets':''}) }}
-                                            {% endif %}
-                                            {% endfor %}
-                                            <span class="caret"></span>
-                                        </a>
-                                        <ul class="dropdown-menu" aria-labelledby="supportMenu3">
-                                            {% for menu1 in site['menu'] %}
-                                            {% if  menu1['link'] == "/tickets" or menu1['link'] == '/faq' %}
-                                            <li {% if menu1['active'] %} class="active"{% endif %}>
-                                            <a href="{{ menu1['link'] }}">{{ menu1['name'] }}</a>
-                                            </li>
-                                            {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                    </li>
-                                {% endif %}
-                                {% if  menu['link'] == '/child-panels' %}
-                                    <li {% if menu['active'] %} class="active"{% endif %}>
-                                        <a href="{{ menu['link'] }}">{{ menu['name'] }}</a>
-                                    </li>
-                                {% endif %}
-                                {% if  menu['link'] == '/api' %}
-                                    <li {% if menu['active'] %} class="active"{% endif %}>
-                                        <a href="{{ menu['link'] }}">{{ menu['name'] }}</a>
-                                    </li>
-                                {% endif %}
-                                {% endfor %}
-                            </ul>
-                        </nav>
-                        <div class="divide">
-                            <hr>
-                        </div>
-                        <a href="/vip">
-                            <div class="vip-status">
-                                <div class="second circle" 
-                                data-value="{{ ((( user['spent'] /5000)*100)/100) |number_format(2) }}" data-size="172" data-thickness="6" data-fill= "{&quot;color&quot;: &quot;rgba(47, 205, 148, 1)&quot;}" data-reverse="true">
-                                <span class="diamond_icon">
-                                <img src="https://followizaddons.com/followiz-icons/Orion_diamond.svg">
-                                </span>
-                                <span class="label text-color2">VIP Status</span>
-                                <strong class="spent-value">${{ user['spent']|number_format }}</strong>
-                                <span class="total-value">/5000</span>
-                                <span class="icon">
-                                    <i class="fa fa-info"></i>
-                                    <div class="vip_tolltip bg_color">
-                                        <h6 class="text-color2">VIP Status</h6>
-                                        <strong class="text-color2">${{ user['spent']|number_format }}/$5000</strong>
-                                        <p class="text-color2">Get new perks by becoming a VIP! Spend at least $5000 to get the VIP Status.</p>
-                                    </div>
-                                </span>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="divide">
-                            <hr>
-                        </div>
-                        <div class="material-switch bg_color">
-                            <input id="themeMode" name="themeModeOption" type="checkbox" value="true"/>
-                            <label for="themeMode" class="label-success">Dark Mode</label>
-                        </div>
-                        <div class="social-icons text-center mt-5" style="margin-top: 20px">
-                        <a class="btn icon-btn me-2" href="skype:followiz?add" target="_blank">
-                            <i class="fa-brands fa-skype"></i>
-                        </a>
-                        <a class="btn icon-btn me-2" href="https://t.me/FollowizNews" target="_blank">
-                            <i class="fa-brands fa-telegram"></i>
-                        </a>
-                        <a class="btn icon-btn" href="https://api.whatsapp.com/send?phone=12262707373" target="_blank">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </a>
-                        </div>
-                        <div class="social-icons text-center mt-5" style="margin-top: 20px">
-                            <a class="btn" href="https://cdn.forms-content.sg-form.com/caf6d1c4-aecc-11ec-b78a-c2f16d6fc1ab" target="_blank">
-                                Subscribe
+            {% else %}
+                <!--<section class="alert alert-dismissible text-center alert-primary" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+                    Save up to 50% when you use the coupon code “WELCOME50”
+                </section>-->
+                <section class="logo-wrapper text-center">
+                    <a href="{{ page_url('index') }}">
+                        <!-- FOLLOWIZ -->
+                        <img src="{{ site['logo'] }}" alt="{{ site['name'] }}" title="" class="theme_default">
+                        <img src="https://followizaddons.com/followiz-icons/darkmode_logo.png" alt="{{ site['name'] }}" title="" class="theme_dark">
+                    </a>
+                </section>
+                <nav class="navbar navbar-default navbar-static-top hidden {% if site['rtl'] %} rtl-navbar {% endif %}">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="{{ page_url('index') }}">
+                            {% if site['logo'] %}
+                                <img src="{{ site['logo'] }}" alt="{{ site['name'] }}" title="" class="theme_default">
+                            {% else %}
+                                <img src="https://followizaddons.com/followiz-icons/darkmode_logo.png" alt="{{ site['name'] }}" title="" class="theme_dark">
+                                {{ site['name'] }}
+                            {% endif %}
                             </a>
                         </div>
-                </div>
-                </div>
-            </div>
-            {% else %}
-            <!--<section class="alert alert-dismissible text-center alert-primary" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                aria-hidden="true">&times;</span></button>
-                Save up to 50% when you use the coupon code “WELCOME50”
-                </section>-->
-            <section class="logo-wrapper text-center">
-                <a href="{{ page_url('index') }}">
-                <!-- FOLLOWIZ -->
-                <img src="{{ site['logo'] }}" alt="{{ site['name'] }}" title="" class="theme_default">
-                <img src="https://followizaddons.com/followiz-icons/darkmode_logo.png" alt="{{ site['name'] }}" title="" class="theme_dark">
-                </a>
-            </section>
-            <nav class="navbar navbar-default navbar-static-top hidden {% if site['rtl'] %} rtl-navbar {% endif %}">
-                <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="{{ page_url('index') }}">
-                    {% if site['logo'] %}
-                        <img src="{{ site['logo'] }}" alt="{{ site['name'] }}" title="" class="theme_default">
-                    {% else %}
-                        <img src="https://followizaddons.com/followiz-icons/darkmode_logo.png" alt="{{ site['name'] }}" title="" class="theme_dark">
-                    {{ site['name'] }}
-                    {% endif %}
-                    </a>
-                </div>
-                <div id="navbar" class="collapse navbar-collapse">
-                    {% if site['languages']|length > 1 %}
-                    <ul class="nav navbar-nav navbar-left-block">
-                        <li class="dropdown">
-                            {% for lang in site['languages'] %}
-                            {% if lang['active'] %}
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> {{ lang['name'] }} <span class="caret"></span></a>
+                        <div id="navbar" class="collapse navbar-collapse">
+                            {% if site['languages']|length > 1 %}
+                                <ul class="nav navbar-nav navbar-left-block">
+                                    <li class="dropdown">
+                                        {% for lang in site['languages'] %}
+                                            {% if lang['active'] %}
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> {{ lang['name'] }} <span class="caret"></span></a>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <ul class="dropdown-menu dropdown-max-height">
+                                            {% for lang in site['languages'] %}
+                                                <li{% if lang['active'] %} class="active"{% endif %}><a href="/{{ lang['code'] }}">{{ lang['name'] }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                </ul>
                             {% endif %}
-                            {% endfor %}
-                            <ul class="dropdown-menu dropdown-max-height">
-                            {% for lang in site['languages'] %}
-                            <li{% if lang['active'] %} class="active"{% endif %}><a href="/{{ lang['code'] }}">{{ lang['name'] }}</a></li>
-                            {% endfor %}
+                            <ul class="nav navbar-nav navbar-right">
+                                {% for menu in site['menu'] %}
+                                    <li{% if menu['active'] %} class="active" {% endif %}>
+                                        <a href="{{ menu['link'] }}" {% if menu['external'] %} target="_blank" {% endif %}>
+                                            {% if menu['icon'] %}<i class="navbar-icon {{ menu['icon'] }}"></i>{% endif %}
+                                            {{ menu['name'] }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
                             </ul>
-                        </li>
-                    </ul>
-                    {% endif %}
-                    <ul class="nav navbar-nav navbar-right">
-                        {% for menu in site['menu'] %}
-                        <li{% if menu['active'] %} class="active" {% endif %}>
-                        <a href="{{ menu['link'] }}" {% if menu['external'] %} target="_blank" {% endif %}>
-                        {% if menu['icon'] %}<i class="navbar-icon {{ menu['icon'] }}"></i>{% endif %}
-                        {{ menu['name'] }}
-                        </a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                </div>
-            </nav>
+                        </div>
+                    </div>
+                </nav>
             {% endif %}
             <!-- Main variables *content* -->
             <div  {% if user['auth'] %} class= "content-wrapper"  {% else %} class= "content-wrapper-user" {% endif %} >
-            {{ content }}
-        </div>
-        </div>
-        <!-- body *end* --> 
-        <!-- <div class="main-menu-bg"></div> -->
-        <!--  <footer class="footer" >
-            <div class="container-fluid for-dashboard">
-                <div class="row">
-                <div class="col-md-3 footer-widget-1">
-                    <h4>FOLLOWIZ</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
-                    </p>
-                    <ul class="list-inline social-link">
-                        <li class="">
-                            <a href="#">
-                            <svg width="16" height="14" viewBox="0 0 16 14" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M16 2.29854C15.4248 2.57304 14.8081 2.75044 14.175 2.82354C14.8186 2.39088 15.3019 1.7583 15.55 1.02354C15.075 1.32354 14.025 1.74854 13.5 1.74854C12.8613 1.11457 11.9999 0.755653 11.1 0.748537C10.6665 0.748109 10.2372 0.833174 9.83664 0.998863C9.43607 1.16455 9.07211 1.40761 8.76559 1.71413C8.45908 2.02065 8.21602 2.38461 8.05033 2.78518C7.88464 3.18574 7.79957 3.61505 7.8 4.04854C7.7989 4.29219 7.82405 4.53526 7.875 4.77354C5.4 4.69854 2.5 3.47354 0.875 1.34854C0.467017 2.0672 0.343389 2.91274 0.528535 3.71813C0.713682 4.52351 1.19414 5.23018 1.875 5.69854C1.5 5.74854 0.775 5.67354 0.45 5.34854C0.425 6.49854 0.975 8.02354 3 8.57354C2.6 8.77354 1.925 8.72354 1.625 8.67354C1.725 9.64854 3.1 10.9235 4.575 10.9235C4.05 11.5235 2.25 12.6485 0 12.2985C1.55947 13.2471 3.3497 13.7487 5.175 13.7485C6.42618 13.7568 7.6659 13.5098 8.81836 13.0226C9.97081 12.5354 11.0118 11.8183 11.8776 10.915C12.7434 10.0118 13.4159 8.94138 13.8539 7.76934C14.2919 6.59731 14.4862 5.34824 14.425 4.09854V3.97354C15.058 3.52766 15.5939 2.9578 16 2.29854Z"
-                                    fill="#2FCD94" />
-                            </svg>
-                            </a>
-                        </li>
-                        <li class="">
-                            <a href="#">
-                            <svg width="8" height="16" viewBox="0 0 8 16" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M5.95 3.05H8V0H5.575C2.65 0.125 2.05 1.775 2 3.5V5.025H0V8H2V16H5V8H7.475L7.95 5.025H5V4.1C4.99198 3.96835 5.01033 3.83643 5.05397 3.71196C5.09762 3.5875 5.16569 3.47301 5.25417 3.37521C5.34266 3.2774 5.44979 3.19826 5.56928 3.14241C5.68877 3.08657 5.81821 3.05515 5.95 3.05Z"
-                                    fill="#2FCD94" />
-                            </svg>
-                            </a>
-                        </li>
-                        <li class="">
-                            <a href="#">
-                            <svg width="16" height="16" viewBox="0 0 16 12" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M12.677 0.250017H3.323C2.44451 0.247227 1.60089 0.593516 0.977717 1.21271C0.35454 1.8319 0.00284653 2.67328 0 3.55177L0 8.19827C0.00284653 9.07675 0.35454 9.91813 0.977717 10.5373C1.60089 11.1565 2.44451 11.5028 3.323 11.5H12.677C13.5555 11.5028 14.3991 11.1565 15.0223 10.5373C15.6455 9.91813 15.9972 9.07675 16 8.19827V3.55177C15.9972 2.67328 15.6455 1.8319 15.0223 1.21271C14.3991 0.593516 13.5555 0.247227 12.677 0.250017ZM10.4298 6.10002L6.0545 8.17502C6.02782 8.18793 5.9983 8.19386 5.96871 8.19224C5.93911 8.19063 5.91041 8.18152 5.8853 8.16578C5.86019 8.15003 5.83949 8.12817 5.82513 8.10224C5.81078 8.07631 5.80325 8.04716 5.80325 8.01752V3.74052C5.80323 3.71051 5.81093 3.68101 5.8256 3.65484C5.84027 3.62866 5.86143 3.6067 5.88703 3.59106C5.91264 3.57542 5.94183 3.56663 5.97182 3.56553C6.0018 3.56443 6.03156 3.57105 6.05825 3.58477L10.4333 5.78777C10.4622 5.80263 10.4864 5.82526 10.5032 5.85314C10.52 5.88101 10.5287 5.91301 10.5283 5.94555C10.5279 5.97809 10.5185 6.00988 10.501 6.03734C10.4836 6.0648 10.4588 6.08685 10.4295 6.10102L10.4298 6.10002Z"
-                                    fill="#2FCD94" />
-                            </svg>
-                            </a>
-                        </li>
-                        <li class="">
-                            <a href="#">
-                            <svg width="20" height="20" viewBox="0 -2 16 16" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <g clip-path="url(#clip0)">
-                                    <path
-                                        d="M6.62102 6.39233C6.18673 6.39233 5.84387 6.77329 5.84387 7.23805C5.84387 7.70281 6.19435 8.08377 6.62102 8.08377C7.0553 8.08377 7.39816 7.70281 7.39816 7.23805C7.40578 6.77329 7.0553 6.39233 6.62102 6.39233ZM9.40197 6.39233C8.96768 6.39233 8.62483 6.77329 8.62483 7.23805C8.62483 7.70281 8.9753 8.08377 9.40197 8.08377C9.83625 8.08377 10.1791 7.70281 10.1791 7.23805C10.1791 6.77329 9.83625 6.39233 9.40197 6.39233Z"
-                                        fill="#2FCD94" />
-                                    <path
-                                        d="M13.1048 0H2.89528C2.03433 0 1.33337 0.700952 1.33337 1.56952V11.8705C1.33337 12.739 2.03433 13.44 2.89528 13.44H11.5353L11.1315 12.0305L12.1067 12.9371L13.0286 13.7905L14.6667 15.2381V1.56952C14.6667 0.700952 13.9658 0 13.1048 0ZM10.1639 9.95048C10.1639 9.95048 9.88957 9.62286 9.66099 9.33333C10.6591 9.05143 11.04 8.42667 11.04 8.42667C10.7277 8.63238 10.4305 8.77714 10.1639 8.87619C9.7829 9.03619 9.41718 9.14286 9.05909 9.20381C8.32766 9.34095 7.65718 9.30286 7.08576 9.19619C6.65147 9.11238 6.27814 8.99048 5.96576 8.86857C5.79052 8.8 5.60004 8.71619 5.40956 8.60952C5.38671 8.59429 5.36385 8.58667 5.34099 8.57143C5.32576 8.56381 5.31814 8.55619 5.31052 8.54857C5.17337 8.47238 5.09718 8.41905 5.09718 8.41905C5.09718 8.41905 5.4629 9.02857 6.43052 9.3181C6.20195 9.60762 5.92004 9.95048 5.92004 9.95048C4.23623 9.89714 3.59623 8.79238 3.59623 8.79238C3.59623 6.33905 4.69337 4.35048 4.69337 4.35048C5.79052 3.52762 6.83433 3.55048 6.83433 3.55048L6.91052 3.64191C5.53909 4.0381 4.90671 4.64 4.90671 4.64C4.90671 4.64 5.07433 4.54857 5.35623 4.41905C6.17147 4.06095 6.81909 3.9619 7.08576 3.93905C7.13147 3.93143 7.16957 3.92381 7.21528 3.92381C7.68004 3.86286 8.20576 3.84762 8.75433 3.90857C9.47814 3.99238 10.2553 4.20571 11.0477 4.64C11.0477 4.64 10.4458 4.06857 9.15052 3.67238L9.25718 3.55048C9.25718 3.55048 10.301 3.52762 11.3981 4.35048C11.3981 4.35048 12.4953 6.33905 12.4953 8.79238C12.4953 8.79238 11.8477 9.89714 10.1639 9.95048Z"
-                                        fill="#2FCD94" />
-                                </g>
-                                <defs>
-                                    <clipPath id="clip0">
-                                        <rect width="16" height="16" fill="white" />
-                                    </clipPath>
-                                </defs>
-                            </svg>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-5 footer-navigation">
-                    <h5>Site Navigation</h5>
-                    <ul class="nav-footer row">
-                        <li class="col-xs-6 col-md-6 col-lg-5 nav-footer-item"><a href="/">New Order</a> </li>
-                        <li class="col-xs-6 col-md-6 col-lg-5 nav-footer-item"><a href="/tickets">Tickets</a> </li>
-                        <li class="col-xs-6 col-md-6 col-lg-5 nav-footer-item"><a href="/orders">Order History</a> </li>
-                        <li class="col-xs-6 col-md-6 col-lg-5 nav-footer-item"><a href="#">Resellers</a> </li>
-                        <li class="col-xs-6 col-md-6 col-lg-5 nav-footer-item"><a href="/services">Services</a> </li>
-                        <li class="col-xs-6 col-md-6 col-lg-5 nav-footer-item"><a href="/api">API</a> </li>
-                        <li class="col-xs-6 col-md-6 col-lg-5 nav-footer-item"><a href="/addfunds">Deposit</a> </li>
-                        <li class="col-xs-6 col-md-6 col-lg-5 nav-footer-item"><a href="#">Terms of Service</a> </li>
-                        <li class="col-xs-6 col-md-6 col-lg-5 nav-footer-item"><a href="/account">My Account</a> </li>
-                        <li class="col-xs-6 col-md-6 col-lg-5 nav-footer-item"><a href="#">Privacy Policy</a> </li>
-                        <li class="col-xs-6 col-md-6 col-lg-5 nav-footer-item"><a href="/faq">FAQs</a> </li>
-                    </ul>
-                </div>
-                <div class="col-md-4 footer-widget-1">
-                    <h5>Are You a Provider?</h5>
-                    <p>Would you like to make more money by adding your services at Followiz? If you are a provider,
-                        send us your website url below!
-                    </p>
-                    <a class="send-link" href="#">SEND US YOUR WEBSITE </a>
-                </div>
-                </div>
+                {{ content }}
             </div>
-            </footer> -->
-        {{ site['custom_footer'] }}
+        </div>
         
+        {{ site['custom_footer'] }}
         
         {% for script in site['scripts'] %}
             <script type="text/javascript" {% if script['src'] %}src="{{ script['src'] }}"{% endif %}>
                 {% if script['code'] %} {{ script['code'] }} {% endif %}
             </script>
         {% endfor %}
+        
         <script src="https://followizaddons.com/client_js/rating.js"></script><!--need to change-->
+        
         <script>
             //PLEASE DO NOT REMOVE FOLLOWING CODE IT IS USED IN OTHER SCRIPT
             const api_end_point = "https://followizaddons.com/client_js";
@@ -417,7 +334,6 @@
             const user_info =  {{ user | json_encode }}; 
             const user_id = "{{ user['id'] }}";
         </script>
-        
         
         <!-- select2 js -->
         <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous"></script> -->
@@ -428,23 +344,21 @@
         <script src="https://followizaddons.com/client_js/rating.js"></script>
         <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap.min.js"></script>
+        
         <script type="text/javascript">
-         
             window.onscroll = function() {myFunction()};
             
             var header = document.getElementById("myHeader");
             var sticky = header.offsetTop;
             
             function myFunction() {
-            if (window.pageYOffset > sticky) {
-                header.classList.add("sticky");
-            } else {
-                header.classList.remove("sticky");
-            }
+                if (window.pageYOffset > sticky) {
+                    header.classList.add("sticky");
+                } else {
+                    header.classList.remove("sticky");
+                }
             }
             const serverURL = "https://followizaddons.com/";
-            
-            
         </script>
     </body>
 </html>

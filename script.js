@@ -22,7 +22,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             }
         });
 
-    
         var checkThemeMode = localStorage.getItem("theme_layout");
         if (checkThemeMode != "") { 
             if(checkThemeMode == "theme-dark"){
@@ -321,9 +320,12 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     sortedService[sort_val.sort_order] = value;
                 }                
             }
-    
-            let tbody = getTbodyForService(sortedService);
-            $("#service_container_"+service_cat_id).html(tbody);
+            
+            let category_name = $(this).parents('.servie-data-panel').attr("data-category");
+            let tbody = getTbodyForService(sortedService, category_name);
+            $("#service_container_" + service_cat_id).html(tbody);
+
+            orderAgainBtn_action();
             
             $(".rest-details-modal").on("click", function(){
                 $("#service_detail_id").html(" Id : " + $(this).attr("service_detail_id"));
@@ -336,23 +338,24 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
             // Service Page Review star
             var userRatingArr = getUserRating();
-
+            TRowHoverAction();
            
         })
     }
       
-    function getTbodyForService(serviceDetails){
+    function getTbodyForService(serviceDetails, category_name){
         let tbody = '';
         for(var k in serviceDetails) {
            
             let service = serviceDetails[k];
             let service_id = serviceDetails[k]['id'];
-            
+
             tbody += '<tr class="tablerowid" id="trow-' + service_id + '">'; 
             tbody += '<td class="id review-hover-zone">' + service_id; 
             tbody += '<div class="rating-wrap"><div class="reviewShowOnly" id="reviewShowOnly_' + service_id + '" data-service_id="' + service_id + '"></div>';
             tbody += '<div class="review" id="review_' + service_id + '" data-service_id="' + service_id + '"></div> </div></td>';
-            tbody += '<td class="width-25 name">' + serviceDetails[k]['name'] + '</td>';;
+            tbody += '<td class="width-25 name"><a href="#" class="order-again-btn" data-service_id="' + service_id + '" data-service-category="' + category_name + '">' + serviceDetails[k]['name'] + '</a></td>';
+            
             tbody += '<td>' + serviceDetails[k]['rate'] + ' </td>' ;
             tbody += '<td>' + serviceDetails[k]['min'] + ' / ' + serviceDetails[k]['max'] + '</td>';
             tbody += '<td><div class="service-description service-description-split" id="' + service_id + '"></div>';
@@ -435,30 +438,18 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         return tbody;
         
     }
-       
-    function getTbodyForService1(serviceDetails){
-        let tbody = '';
-        for(var k in serviceDetails) {
-            let service = serviceDetails[k];
-            let service_id = serviceDetails[k]['id'];
-            tbody += '<tr class="tablerowid" id="trow-'+service_id+'">'; 
-            tbody += '<td class="id">'+service_id; 
-            tbody += '<div class="review" id="review_'+service_id+'" data-service_id="'+service_id+'"></div> </td>';
-            tbody += '<td class="width-25 name">'+serviceDetails[k]['name']+'</td>';;
-            tbody += '<td>'+serviceDetails[k]['rate'] +' </td>' ;
-            tbody += '<td>'+serviceDetails[k]['min'] +' / '+ serviceDetails[k]['max']+'</td>';
-            tbody += '<td><div class="service-description service-description-split" id="'+service_id+'"></div>';
-            
-            let quality = start_time = speed_per_day = min_max = refill_available = price_per_1000 = details =  drop = model_details = '';
-            
-            tbody += '<a href="#" class="icon" data-toggle="modal" data-target="#serviceDetails'+service_id+'" class="rest-details-model" ><img src="https://followizaddons.com/followiz-icons/details_eye_icon.svg"></a>';
-            tbody +='<div class="modal fade" id="serviceDetails'+service_id+'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"><div class="modal-dialog selection modal_services" role="document"><div class="modal-content bg_color"><div class="modal-header"><h5 class="modal-title text_color" id="exampleModalLabel"><span> Id : '+serviceDetails[k]['id']+'</span> - '+serviceDetails[k]['name']+'</h5><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body text-left"><div class="modal_detail"><p class="detail-data details-split-'+service_id+'">'+model_details+' </p> <p class="text-color2 details-split"></p></div></div></div></div></div>';
-            tbody += '</td></tr>'; 
-        }
-      
-        return tbody;
-    }
   
+    function TRowHoverAction(){
+        $(".tablerowid").mouseover(function(){
+            $(this).find(".reviewShowOnly").css("display", "none");
+            $(this).find(".review").css("display", "block");
+        })
+
+        $(".tablerowid").mouseout(function(){
+            $(this).find(".reviewShowOnly").css("display", "block");
+            $(this).find(".review").css("display", "none");
+        })
+    }
 /******************************* SERVICES PAGE END *****************************/
 
 
@@ -466,6 +457,10 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
 /******************************* ORDER PAGE START *****************************/
     $(document).ready(function(){
+        orderAgainBtn_action();
+    });
+
+    function orderAgainBtn_action(){
         $(".order-again-btn").click(function(e){
             let service_id = $(this).attr("data-service_id");
             let selected_category = $(this).attr("data-service-category");
@@ -473,7 +468,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
             location.href = homeURL + '?service=' + service_id;
         })
-    });
+    }
 /******************************* ORDER PAGE END *****************************/
 
 
@@ -489,7 +484,6 @@ let subCategory = [];
         localStorage.setItem('main-category', $('#orderform-main-category').val());
         localStorage.setItem('category', $('#orderform-category').val());
         localStorage.setItem('service', $('#orderform-service').val());
-    
     })    
 
     $(document).ready(function(){
@@ -502,23 +496,25 @@ let subCategory = [];
 
         $("#order_searchService").on('keyup', function(e){
             if($(this).val().length > 0){
-                console.log(getServicesId($(this).val()));
-                let selected_service = getServicesId($(this).val());
-
-                let category_name = categories[selected_service.cid];
-                let ssArr = category_name.split("-");
-                let main_category = ssArr[0].trim();
-
-                $("#orderform-main-category").val(main_category).trigger('change');
-                setTimeout(function(){
-                    $("#orderform-category").val(selected_service.cid).trigger('change');
-                }, 200);
-                setTimeout(function(){
-                    $("#orderform-service").val(selected_service.id).trigger('change');
-                }, 800);
+                selectServiceByServiceIDManually($(this).val());
             }
-            // 
         })
+
+        function selectServiceByServiceIDManually(service_id){
+            let selected_service = getServicesId(service_id);
+
+            let category_name = categories[selected_service.cid];
+            let ssArr = category_name.split("-");
+            let main_category = ssArr[0].trim();
+
+            $("#orderform-main-category").val(main_category).trigger('change');
+            setTimeout(function(){
+                $("#orderform-category").val(selected_service.cid).trigger('change');
+            }, 200);
+            setTimeout(function(){
+                $("#orderform-service").val(selected_service.id).trigger('change');
+            }, 800);
+        }
     
         //*************** populate new order form value ****************
     
@@ -535,9 +531,6 @@ let subCategory = [];
 
         
         //CODE TO CHANGE LINK TO ACCOUNT LINK  ON NEW ORDER PAGE 
-        //$('#order_link').find('.control-label').text('Account Link');
-        //$('#field-orderform-fields-link').attr('placeholder',"https://www.socialmedia.com/yourprofile")
-        //jQuery("#order_quantity").find(".help-block").css('display','none');
         $('#field-orderform-fields-quantity').attr('placeholder',"Min: 5 - Max: 30000");
         
         setTimeout(function() {
@@ -551,14 +544,6 @@ let subCategory = [];
             selected_val = $("#orderform-service").prop("selectedIndex", 0).val();
         }
           
-      
-
-        //$(document).on('change','#field-orderform-fields-check,.select2-hidden-accessible',function(){
-        //	//jQuery("#charge").val("$0.00");
-        //	//setTimeout(function(){jQuery("#charge").val("$0.00");},0);
-        //	//setTimeout(function(){jQuery("#charge").val("$0.00");},500);;
-        // }); 
-        
         $('#field-orderform-fields-check').on('click', function(){
             $('#dripfeed-options').find('p').remove();
         })
@@ -576,6 +561,12 @@ let subCategory = [];
             templateResult: formatState,
         });
 
+        $("#orderform-main-category, #orderform-category, #orderform-service").on("select2:open", hideSelect2Keyboard);
+
+        $("#orderform-main-category, #orderform-category, #orderform-service").on("select2:close",function(){
+            setTimeout(hideSelect2Keyboard, 50);
+        });
+
         if($('#order-form').length > 0){
 
             let serviceOrderNew = [];
@@ -591,7 +582,6 @@ let subCategory = [];
                     success: function(response)         
                     {
                         serviceOrderNew = response.data;
-                        // console.log(serviceOrderNew);
                     }
                 });
             } 
@@ -760,7 +750,10 @@ let subCategory = [];
         
     });
     
-
+    function hideSelect2Keyboard(e){
+        $('.select2-search input, :focus,input').prop('focus',false).blur();
+    }
+    
     function getImageName(serviceName){
         let type = "";
         if($("#orderform-main-category").length > 0){
@@ -1172,45 +1165,34 @@ let subCategory = [];
     }
 
     function updateRating(service_id){
-        let data = {user_id: user_id};
+        let data = {user_id: user_id, service_id: service_id};
+
         jQuery.ajax({
-            url: "https://followizaddons.com/vote/read.php",
+            url: "https://followizaddons.com/vote/read_one.php",
             type: "POST",
             dataType: "json",
             data: data,
             cache: false,
             crossDomain: true,
             success: function(response) {
-                var user_rating = response.data;
-                let flag = false;
-                for (i = 0; i < user_rating.length; i++) {
+                if(response.status){
+                    var user_rating = response.data;
 
-                    if ( user_rating[i].service_id == service_id) {
+                    $(".reviewShowOnly").rating({
+                        "value": user_rating.vote ? user_rating.vote : 3,
+                        "readonly": true
+                    });
 
-                        // New Order page review star
-                        $(".reviewShowOnly").rating({
-                            "value": user_rating[i].vote,
-                            "readonly": true
-                        });
-                        flag = true;
-
-                        // set my rate
-                        if(user_rating[i].my_vote){                            
-                            $(".review").rating({
-                                "value": user_rating[i].my_vote,
-                                "readonly": true
-                            });
-                        }else{
-                            $(".review").rating({
-                                "value": 0,
-                                "readonly": true
-                            });
-                        }
-                    }
+                    $(".review").rating({
+                        "value": user_rating.my_vote ? user_rating.my_vote : 0,
+                        "readonly": true
+                    });
                 }
-
-                if(!flag){
-                    // New Order page review star
+                else {
+                    $(".review").rating({
+                        "value": 0,
+                        "readonly": true
+                    });
                     $(".reviewShowOnly").rating({
                         "value": 3,
                         "readonly": true
@@ -1616,11 +1598,10 @@ let subCategory = [];
                     var service_id = (e.event.target.parentNode.id).split("_")[1];
                     
                     insertOrUpdateVote(user_id, service_id, e.stars);
-                    
-                    $("#review_" + service_id).rating({
-                        "value":e.stars
-                    })
-                    $("#review_" + service_id).addClass('setted-own');
+                    // $("#review_" + service_id).rating({
+                    //     "value":e.stars
+                    // })
+                    // $("#review_" + service_id).addClass('setted-own');
                 }
             },
         });
@@ -1649,9 +1630,9 @@ let subCategory = [];
                             "value": user_rating[i].my_vote ? user_rating[i].my_vote : 0
                         });
 
-                        if(user_rating[i].my_vote){
-                            $("#review_" + user_rating[i].service_id).addClass("setted-own");
-                        }
+                        // if(user_rating[i].my_vote){
+                        //     $("#review_" + user_rating[i].service_id).addClass("setted-own");
+                        // }
 
                     } 
 
@@ -1662,67 +1643,12 @@ let subCategory = [];
                         });
                     }
                 }
-
-                review_hover();
-
-                $(".reviewShowOnly").mouseover(function(){
-                    let service_id = $(this).attr("data-service_id");
-                    $(this).css("display", "none");
-                    $("#review_" + service_id).css("display", "block");
-                })
-    
-                $(".review").mouseout(function(){
-                    let service_id = $(this).attr("data-service_id");
-                    $(this).css("display", "none");
-                    $("#reviewShowOnly_" + service_id).css("display", "block");
-                })
     
             },
             error: function(jqXHR, textStatus, errorThrown) {
             }
         });
     }
-  
-    function getUserRatingOnly() {
-        console.log("Subscription page", "Rifill page", "Drip_feed");
-        let data = {user_id: user_id};
-        
-        jQuery.ajax({
-            url: "https://followizaddons.com/vote/read.php",
-            type: "POST",
-            dataType: "json",
-            data: data,
-            cache: false,
-            crossDomain: true,
-            success: function(response) {
-                var user_rating = response.data;
-
-                var not_exist_service_id = '';
-                jQuery(".reviewShowOnly").rating({
-                    "value": 3.0,
-                    "readonly": true
-                });
-                
-                for (i = 0; i < user_rating.length; i++) {
-    
-                    if (jQuery("#review_reviewShowOnly_" + user_rating[i].service_id).length) {
-                        jQuery("#review_reviewShowOnly_" + user_rating[i].service_id).rating({
-                            "value": user_rating[i].vote,
-                            "readonly": true
-                        });
-                    }
-                }
-    
-    
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-            }
-        });
-  
-  
-    }
-
-   
 
   /************************  FUNCTION FOR USER RATING ***************************/
   
@@ -1978,26 +1904,20 @@ let subCategory = [];
   
 
     //code to sow readonly ration on order page
-    // if (  currentURL.includes('orders') ||
-    //     currentURL.includes('subscriptions') || 
-    //     currentURL.includes('drip-feed') 
-    // ){
-    if (  currentURL.includes('orders')
-    ){
+    if (currentURL.includes('orders')) {
         getUserRatingForOrder();
+        TRowHoverAction();
     }
 
     if ( 
         currentURL.includes('subscriptions') ||
         currentURL.includes('drip-feed') ||
         currentURL.includes('refill') ) { 
-        // getUserRatingOnly();
-        
     }
   
     
        
-    $(document).on("click",".rest-details",function(){
+    $(document).on("click", ".rest-details", function(){
         if ($(this).hasClass('Model-fill')){
             return;
         }
@@ -2005,47 +1925,6 @@ let subCategory = [];
         $(this).addClass('Model-fill');
   
         return; //overide function show palin details
-        
-        
-        let eleId = $(this).attr('data-serviceid');
-      
-        lines = jQuery(".details-split-"+eleId).html().split("<br>");
-        
-        jQuery(".details-split-"+eleId).html('');
-        jQuery(".details-split-"+eleId).html('<div>' + lines.join("</div><div>") + '</div>');
-    
-        var i = 1;
-            jQuery(".details-split-"+eleId+' div').each(function(){
-            if(i < 6) {
-            jQuery(this).addClass('split-class'+i);
-            i++;
-            }else{
-            jQuery(this).addClass('split-class-extra'+eleId);
-            }
-        });
-        
-        var extraData = '';
-        var info = '';
-        var infoArr = {};
-        var infoStr = '';
-        
-        //CODE TO GET DETAILS DATA
-    
-        var detailsData = '';
-        var profileData = '';
-        var QualityExamplesData = '';
-        var datakey = 'Details';
-
-        $('.split-class-extra'+eleId).each(function() {
-            
-            info = $(this).text();
-            infoArr = info.split(":");
-            infoStr = '';
-            
-            detailsData = detailsData + info.replace("-", "") + "<br>";
-        })
-                
-        jQuery(".details-split").html(detailsData);
     })
     
     
@@ -2091,7 +1970,7 @@ let subCategory = [];
               $("#payPal_content").hide();
             }
     
-          //For CoinPayments
+            //For CoinPayments
             if(paymentTitle == 'Coinpayments'){
                 $("#coinPayments_content").show();
             }else{
@@ -2895,6 +2774,56 @@ let subCategory = [];
         loadUpdatesNew("https://followizaddons.com/client_js/updates/updates_service.php");
     }
    });
+
+   
+    function loadUpdatesNew(link){
+        $.ajax({
+            url: link+'?type=main',      
+            type: "GET",
+            dataType: "json",
+            cache: false,
+            crossDomain: true,
+            success: function(response)         
+            {
+                console.log("Updates Services: ", response.data);
+                $('.table.update-table tbody').html('');
+
+                response.data.forEach(function(data) {
+                    var type = "";
+                    if (data.update_status == "updates-service-decreased") type = "blue";
+                    if (data.update_status == "updates-service-increased") type = "orange";
+                    if (data.update_status == "updates-service-enabled") type = "green";
+                    if (data.update_status == "updates-service-disabled") type = "danger";
+
+                    var service = data.service.split("-");
+                    var id = service[0].trim();
+
+                    var service_name = service.splice(1);
+                    service_name = service_name.join('-');
+
+                    $('.table.update-table tbody').append("" +
+                        "<tr class='data-services'>" +
+                        "  <td class='text-center'><div class='id-boxi'>" + id + "</div></td>" +
+                        "    <td><a href='#' class='updated-service' data-service_id='" + id + "'>" + service_name + "</a></td>" +
+                        "    <td>" + data.date + "</td>" +
+                        "    <td><span class='color-" + type + "'>" + data.status + "</span></td>" + 
+                        "</tr> "                                                   
+                    ); 
+                });
+
+                $(".updated-service").on('click', function(){
+                    let service_id = $(this).attr("data-service_id");
+                    $("#order_searchService").val(service_id).trigger('keyup');
+                    location.href = "#order_searchService";
+                })
+                // if($("#table-updates").length > 0){
+                
+                //     $("#table-updates").after("<div class='text-center'><div class='loadmore btn btn-primary btn-auto' data-current='1' data-total='"+response.totalPage+"'><span>Load more</span></div>");
+                // }
+                // populatePaginaiton(response);
+            }
+        });
+    }
    
    $(document).on("click",'.loadmore',function(e) {
           var page = parseInt($(this).attr("data-current")) +1;
@@ -3000,49 +2929,6 @@ let subCategory = [];
       });
    }
   
-    function loadUpdatesNew(link){
-        $.ajax({
-            url: link+'?type=main',      
-            type: "GET",
-            dataType: "json",
-            cache: false,
-            crossDomain: true,
-            success: function(response)         
-            {
-                // console.log("Updates Services: ", response);
-                $('.table.update-table tbody').html('');
-
-                response.data.forEach(function(data) {
-                    var type = "";
-
-                    if (data.UPDATE_STATUS == "updates-service-decreased") type = "blue";
-                    if (data.UPDATE_STATUS == "updates-service-increased") type = "orange";
-                    if (data.UPDATE_STATUS == "updates-service-enabled") type = "green";
-                    if (data.UPDATE_STATUS == "updates-service-disabled") type = "danger";
-
-                    var service = data.SERVICE.split("-")
-                    var id = service[0].trim();
-                    var service_name = service[1].trim();
-
-                    $('.table.update-table tbody').append("" +
-                        "<tr class='data-services'>" +
-                        "  <td class='text-center'><div class='id-boxi'>" + id + "</div></td>" +
-                        "    <td>" + data.SERVICE + "</td>" +
-                        "    <td>" + data.DATE + "</td>" +
-                        "    <td><span class='color-" + type + "'>" + data.STATUS + "</span></td>" + 
-                        "</tr> "                                                   
-                    ); 
-                
-                    
-                });
-                // if($("#table-updates").length > 0){
-                
-                //     $("#table-updates").after("<div class='text-center'><div class='loadmore btn btn-primary btn-auto' data-current='1' data-total='"+response.totalPage+"'><span>Load more</span></div>");
-                // }
-                // populatePaginaiton(response);
-            }
-        });
-    }
   
   
    if (currentURL.includes("updates"))  {
@@ -3310,16 +3196,19 @@ let subCategory = [];
             "click": function (e) {  
                 if(typeof e.event !== "undefined"){
                     var order_id = (e.event.target.parentNode.id).split("_")[1];
-                    var service_id = jQuery("#review_"+order_id).attr('data-service_id');
+                    var service_id = $("#review_" + order_id).attr('data-service_id');
                     
                     insertOrUpdateVoteForOrder(user_id, service_id, e.stars);
-
-                    $(".review[data-service_id='" + service_id + "']").each(function(){
-                        $(this).rating({
-                            value: e.stars
+                    
+                    setTimeout(function(){
+                        $(".review[data-service_id='" + service_id + "']").each(function(){
+                            $(this).rating({
+                                value: e.stars
+                            })
+                            // $(this).addClass('setted-own');
                         })
-                        $(this).addClass('setted-own');
-                    })
+                    }, 100)
+                   
                 }
             },
         });
@@ -3347,9 +3236,9 @@ let subCategory = [];
                                 "value": user_rating[i].my_vote ? user_rating[i].my_vote : 0,
                             });
 
-                            if(user_rating[i].my_vote){
-                                $(this).addClass("setted-own");
-                            }
+                            // if(user_rating[i].my_vote){
+                            //     $(this).addClass("setted-own");
+                            // }
                         }
                        
                     })
@@ -3365,21 +3254,6 @@ let subCategory = [];
 
     
                 }
-                review_hover();
-
-                $(".reviewShowOnly").mouseover(function(){
-                    $(this).css("display", "none");
-                    $(this).parents(".review-wrapper").find(".review").css("display", "block");
-                })
-
-            
-    
-                $(".review").mouseout(function(){
-                    $(this).css("display", "none");
-                    $(this).parents(".review-wrapper").find(".reviewShowOnly").css("display", "block");
-                })
-
-          
                 
             },
             error: function(jqXHR, textStatus, errorThrown) {
