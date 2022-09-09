@@ -1,0 +1,1 @@
+* */6 * * * /followiz-env/cron.sh >> /followiz-env/log.txt 2>&1
