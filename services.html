@@ -102,9 +102,34 @@
           </div>
        </div>
     </div>
- </div>
- {% if servicesText %}
- <div class="container">
+</div>
+
+<!-- detail modal -->
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="service_detail_modal">
+    <div class="modal-dialog selection modal_services" role="document">
+        <div class="modal-content bg_color">
+            <div class="modal-header">
+                <h5 class="modal-title text_color" id="exampleModalLabel">
+                    <span id="service_detail_id"></span> - <span id="service_detail_name"></span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" data-backdrop="false" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-left">
+                <div class="modal_detail">
+                    <p class="detail-data details-split" id="service_detail">
+                        
+                    </p> 
+                    <p class="text-color2 details-split"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if servicesText %}
+<div class="container">
     <div class="row">
        <div class="col-md-8 col-md-offset-2">
           <div class="well {% if site['rtl'] %} rtl-content {% endif %}">
@@ -112,8 +137,8 @@
           </div>
        </div>
     </div>
- </div>
- {% endif %}
- <script>
+</div>
+{% endif %}
+<script>
     const serviceByCate = {{serviceByCate | json_encode() }};
- </script>
+</script>

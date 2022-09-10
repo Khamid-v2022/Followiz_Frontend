@@ -73,7 +73,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             navbarResizerFunc();
         }
 
-        // $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="tooltip"]').tooltip();
 
         var trigger = $('.hamburger'),
             overlay = $('.overlay'),
@@ -115,9 +115,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     });
   
 /**************** header *****************/
-  
-/**************** User Rating Code DRM Start*****************/
-  
+
     $(document).ready( function () {
         let service_cat_id1 = $('.ticketReview').attr('data_ser_key');
         let msg_id = $('.ticketReview').attr('data_msg_id');
@@ -150,9 +148,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         //  }); 
     });
   
-  
-/**************** User Rating Code DRM End*****************/
-  
+
 /**************** Pdf Open Popup Code DRM *****************/
   
     function drm_nav11(pid){
@@ -192,86 +188,8 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 /**************** Pdf Open Popup Code DRM *****************/
   
 
-       
-  /**************** header *****************/
-/*************** FAQ PAGE SLIDE NEW CODE *****************/
-  
   
 /******************************* SERVICES PAGE START *****************************/
-      
-    // search category
-    $(document).on("change", ".selectpicker",function() {
-  
-        // Retrieve the input field text and reset the count to zero
-        var filter = $(this).val(),
-            count = 0;
-          
-        // Loop through the comment list
-        $('.well .servie-data-panel').each(function() {
-            if(filter == "all"){
-                $(this).show();
-            }
-            else{
-                // If the list item does not contain the text phrase fade it out
-                if ($(this).text().search(new RegExp(filter, "i")) < 0) {
-                    $(this).hide();  // MY CHANGE
-                    // Show the list item if the phrase matches and increase the count by 1
-                } else {
-                     $(this).show(); // MY CHANGE
-                    count++;
-                }
-            }
-        });
-    });
-  
-    // search key
-    $(document).on("keyup","#searchService",function() {
-  
-        // Retrieve the input field text and reset the count to zero
-        var filter = $(this).val(),
-            count = 0;
-        let flag = false;
-          
-        $('.well .servie-data-panel a.list-item').each(function() {
-            let texts = $(this).find(".filter--text").html();
-            let ids =  $(this).find(".filter--id").html();
-        
-            if (texts.search(new RegExp(filter, "i")) < 0 && ids.search(new RegExp(filter, "i")) < 0) {
-                if(!$(this).hasClass("collapsed")){
-                    $(this).parents(".servie-data-panel").find(".panel-collapse").collapse('toggle');
-                }
-                $(this).hide();  // MY CHANGE
-                // Show the list item if the phrase matches and increase the count by 1
-            } else {
-                $(this).show(); // MY CHANGE
-
-                if(filter.length == 0 && !$(this).hasClass("collapsed")){
-                    $(this).parents(".servie-data-panel").find(".panel-collapse").collapse('toggle');
-                }
-                if(filter.length != 0 && !flag ){
-                    flag = true;
-                    $(this).parents(".servie-data-panel").click();
-                    if($(this).hasClass("collapsed")){
-                        $(this).parents(".servie-data-panel").find(".panel-collapse").collapse('toggle');
-                    }
-                }
-            } 
-        });
-      
-        // Loop through the comment list
-        $('.well .servie-data-panel tr').each(function() {
-            // If the list item does not contain the text phrase fade it out
-            if ($(this).html().search(new RegExp(filter, "i")) < 0) {
-                $(this).hide();  // MY CHANGE
-            // Show the list item if the phrase matches and increase the count by 1
-            } else {
-                $(this).show(); // MY CHANGE
-                count++;
-            }
-        });
-    });
-  
-  
   
     /****************************** code to append service into table *********/
     let serviceOrder = [];
@@ -311,55 +229,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             
         });
         
-    } 
-    
-
-    if(typeof serviceByCate != 'undefined'  ){
-        console.log('service page');
-        const serviceOrderURL = 'https://followizaddons.com/client_js/service_order/index.php';
-        loadServiceOrder(serviceOrderURL);   
-        
-        $(".servie-data-panel .list-item").click(function(){
-            
-            let inputed_val = $("#searchService").val();
-            let parent_panel = $(this).parents('.servie-data-panel');
-            let service_cat_id = parent_panel.attr('data-cat_key');
-            
-            let serviceContent = $("#service_container_"+service_cat_id).text().trim();
-            
-            //  searchService
-            let sortedService = {};
-            let service_of_cat = serviceByCate[service_cat_id];
-            
-            for (const [key, value] of Object.entries(service_of_cat)) {
-                if(value['id'].search(new RegExp(inputed_val, "i")) >= 0 || value['name'].search(new RegExp(inputed_val, "i")) >= 0 ){
-                    let sort_order_arr = serviceOrder.filter((order)=>{  return order.service_id == key; });				
-                    let sort_val = sort_order_arr[0]
-                    sortedService[sort_val.sort_order] = value;
-                }                
-            }
-            
-            let category_name = $(this).parents('.servie-data-panel').attr("data-category");
-            let tbody = getTbodyForService(sortedService, category_name);
-            $("#service_container_" + service_cat_id).html(tbody);
-
-            orderAgainBtn_action();
-            
-            $(".rest-details-modal").on("click", function(){
-                $("#service_detail_id").html(" Id : " + $(this).attr("service_detail_id"));
-
-                $("#service_detail_name").html($(this).find("span.detail-name").html());
-                $("#service_detail").html($(this).find("span.service-detail").html());
-                
-                $("#service_detail_modal").modal('show');
-            })
-
-            // Service Page Review star
-            var userRatingArr = getUserRating();
-            TRowHoverAction();
-           
-        })
-    }
+    }    
       
     function getTbodyForService(serviceDetails, category_name){
         let tbody = '';
@@ -470,14 +340,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     }
 /******************************* SERVICES PAGE END *****************************/
 
-
-
-
 /******************************* ORDER PAGE START *****************************/
-    $(document).ready(function(){
-        orderAgainBtn_action();
-    });
-
     function orderAgainBtn_action(){
         $(".order-again-btn").click(function(e){
             let service_id = $(this).attr("data-service_id");
@@ -490,27 +353,26 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 /******************************* ORDER PAGE END *****************************/
 
 
-/******************************* NEW ORDER PAGE START *****************************/
-
-let firstSocialPlateForm = '';
-let mainCategory = [];
-let subCategory = []; 
-let myFavoriteServices = [];
 
 
-    $(document).on('submit','#order-form',function(){
-        localStorage.setItem('ordersuccesscount',1);
-        localStorage.setItem('main-category', $('#orderform-main-category').val());
-        localStorage.setItem('category', $('#orderform-category').val());
-        localStorage.setItem('service', $('#orderform-service').val());
-    })    
+    let firstSocialPlateForm = '';
+    let mainCategory = [];
+    let subCategory = []; 
+    let myFavoriteServices = [];
 
     $(document).ready(function(){
-
+    
         /********************************************* NEW ORDER PAGE START ***************************************************/
             if($('#order-form').length > 0){
                 
                 /***************** Initialize New Order Page Component START **********************/
+                    $(document).on('submit','#order-form',function(){
+                        localStorage.setItem('ordersuccesscount',1);
+                        localStorage.setItem('main-category', $('#orderform-main-category').val());
+                        localStorage.setItem('category', $('#orderform-category').val());
+                        localStorage.setItem('service', $('#orderform-service').val());
+                    })     
+                
                     $('#orderform-main-category').on('keydown', function(e) {
                         if (e.originalEvent && e.which == 40) {
                             e.preventDefault();
@@ -590,6 +452,7 @@ let myFavoriteServices = [];
 
     
                 /**************** get category ordeing and save in local ******************/
+                
                 function loadCategoryOrderLocal(link) {
                     $.ajax({
                         async: false,
@@ -609,7 +472,6 @@ let myFavoriteServices = [];
                     const categoryOrderURLlocal = 'https://followizaddons.com/client_js/service_order/category.php'; 
                     loadCategoryOrderLocal(categoryOrderURLlocal);
                 }
-
 
                 let serviceOrderNew = [];
                 function loadServiceOrderNew(link) {
@@ -631,25 +493,14 @@ let myFavoriteServices = [];
                 loadServiceOrderNew(serviceOrderURL);
 
 
-                // get my favorite services vote = 5
-                let data = {user_id: user_id};
-                jQuery.ajax({
-                    async: false,
-                    url: "https://followizaddons.com/vote/myfavorite_services.php",
-                    type: "POST",
-                    dataType: "json",
-                    data: data,
-                    cache: false,
-                    crossDomain: true,
-                    success: function(response) {
-                        if(response.status){
-                            myFavoriteServices = response.data;
-                        }
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                    }
-                });
+                getMyFavoriteServices();
                 
+                // Services Update panel
+                if($("#table-updates-order").length > 0){
+                    // loadUpdates("https://followizaddons.com/client_js/updates/index.php");
+                    loadUpdatesNew("https://followizaddons.com/client_js/updates/updates_service.php");
+                }
+
                 const params = new URLSearchParams(window.location.search);
                 let selected_main_category = "";
                 
@@ -788,11 +639,11 @@ let myFavoriteServices = [];
                                 }
                             }
                             
-                            textVal = element['key']+" - " + textVal
+                            // textVal = element['key']+" - " + textVal;
                             if(element['key'] == service){
-                                lsubCategoryOption += '<option selected="true" data-type="'+element['type']+'"  value="'+element['key']+'" >'+textVal+'</option> ';
+                                lsubCategoryOption += '<option selected="true" data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
                             }else{
-                                lsubCategoryOption += '<option data-type="'+element['type']+'"  value="'+element['key']+'" >'+textVal+'</option> ';
+                                lsubCategoryOption += '<option data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
                             }
                         });
                     
@@ -812,8 +663,659 @@ let myFavoriteServices = [];
                 }
             }
         /********************************************* NEW ORDER PAGE END ***************************************************/
-    });
+
+
+
+        /********************************************* SERVICE PAGE START ***************************************************/
+            if($('.service_page').length > 0){
+                console.log('service page');
+                // search category
+                $(document).on("change", ".selectpicker",function() {
+            
+                    // Retrieve the input field text and reset the count to zero
+                    var filter = $(this).val(),
+                        count = 0;
+                    
+                    // Loop through the comment list
+                    $('.well .servie-data-panel').each(function() {
+                        if(filter == "all"){
+                            $(this).show();
+                        }
+                        else{
+                            // If the list item does not contain the text phrase fade it out
+                            if ($(this).text().search(new RegExp(filter, "i")) < 0) {
+                                $(this).hide();  // MY CHANGE
+                                // Show the list item if the phrase matches and increase the count by 1
+                            } else {
+                                $(this).show(); // MY CHANGE
+                                count++;
+                            }
+                        }
+                    });
+                });
+            
+                // search key
+                $(document).on("keyup", "#searchService",function() {
+            
+                    // Retrieve the input field text and reset the count to zero
+                    var filter = $(this).val(),
+                        count = 0;
+                    let flag = false;
+                    
+                    $('.well .servie-data-panel a.list-item').each(function() {
+                        let texts = $(this).find(".filter--text").html();
+                        let ids =  $(this).find(".filter--id").html();
+                    
+                        if (texts.search(new RegExp(filter, "i")) < 0 && ids.search(new RegExp(filter, "i")) < 0) {
+                            if(!$(this).hasClass("collapsed")){
+                                $(this).parents(".servie-data-panel").find(".panel-collapse").collapse('toggle');
+                            }
+                            $(this).hide();  // MY CHANGE
+                            // Show the list item if the phrase matches and increase the count by 1
+                        } else {
+                            $(this).show(); // MY CHANGE
+
+                            if(filter.length == 0 && !$(this).hasClass("collapsed")){
+                                $(this).parents(".servie-data-panel").find(".panel-collapse").collapse('toggle');
+                            }
+                            if(filter.length != 0 && !flag ){
+                                flag = true;
+                                if($(this).hasClass("collapsed")){
+                                    $(this).click();
+                                }
+                            }
+                        } 
+                    });
+                
+                    // Loop through the comment list
+                    $('.well .servie-data-panel tr').each(function() {
+                        // If the list item does not contain the text phrase fade it out
+                        if ($(this).html().search(new RegExp(filter, "i")) < 0) {
+                            $(this).hide();  // MY CHANGE
+                        // Show the list item if the phrase matches and increase the count by 1
+                        } else {
+                            $(this).show(); // MY CHANGE
+                            count++;
+                        }
+                    });
+                });
+
+                $(document).on("click", ".rest-details", function(){
+                    if ($(this).hasClass('Model-fill')){
+                        return;
+                    }
+                    $(this).addClass('Model-fill');
+                    return; //overide function show palin details
+                })
+
+                if(typeof serviceByCate != 'undefined'  ){
+                    const serviceOrderURL = 'https://followizaddons.com/client_js/service_order/index.php';
+                    loadServiceOrder(serviceOrderURL);   
+                    
+                    $(".servie-data-panel .list-item").click(function(){
+                        
+                        let inputed_val = $("#searchService").val();
+                        let parent_panel = $(this).parents('.servie-data-panel');
+                        let service_cat_id = parent_panel.attr('data-cat_key');
+                        
+                        let serviceContent = $("#service_container_"+service_cat_id).text().trim();
+                        
+                        //  searchService
+                        let sortedService = {};
+                        let service_of_cat = serviceByCate[service_cat_id];
+                        
+                        for (const [key, value] of Object.entries(service_of_cat)) {
+                            if(value['id'].search(new RegExp(inputed_val, "i")) >= 0 || value['name'].search(new RegExp(inputed_val, "i")) >= 0 ){
+                                let sort_order_arr = serviceOrder.filter((order)=>{  return order.service_id == key; });				
+                                let sort_val = sort_order_arr[0]
+                                sortedService[sort_val.sort_order] = value;
+                            }                
+                        }
+                        
+                        let category_name = $(this).parents('.servie-data-panel').attr("data-category");
+                        let tbody = getTbodyForService(sortedService, category_name);
+                        $("#service_container_" + service_cat_id).html(tbody);
+            
+                        orderAgainBtn_action();
+                        
+                        $(".rest-details-modal").on("click", function(){
+                            $("#service_detail_id").html(" Id : " + $(this).attr("service_detail_id"));
+            
+                            $("#service_detail_name").html($(this).find("span.detail-name").html());
+                            $("#service_detail").html($(this).find("span.service-detail").html());
+                            
+                            $("#service_detail_modal").modal('show');
+                        })
+            
+                        // Service Page Review star
+                        var userRatingArr = getUserRating();
+                        TRowHoverAction();
+                    
+                    })
+                }
+            }
+        /********************************************* SERVICE PAGE END ***************************************************/
+
+
+
+        /********************************************* ORDER PAGE START ***************************************************/
+            // ORDER, Services page
+            if($('.order_page').length > 0){ 
+                orderAgainBtn_action();
+            }
+        
+            //code to sow readonly ration on order page
+            if (currentURL.includes('orders')) {
+                getUserRatingForOrder();
+                TRowHoverAction();
+            }
+        /********************************************* ORDER PAGE END ***************************************************/
+
+          
+
+        /********************************************* FAQ PAGE START ***************************************************/
+            if($('.faq-section').length > 0){
+            
+                $(".ques_1").css("display","none");
+                
+                $("h2.show_anser").click(function(e){
+                    
+                    if($(this).hasClass('active')){
+                        $(this).removeClass('active');
+                        $(this).next().slideUp();
+                    }else{
+                        $("h2.show_anser").removeClass('active');
+                        $("h2.show_anser").next().slideUp();
+                        $(this).addClass('active');
+                        $(this).next().slideDown();
+                    }
+                })
+
+                // Add minus icon for collapse element which is open by default
+                $(".collapse.show").each(function(){
+                    $(this).prev(".card-header").find(".fa").addClass("fa-minus").removeClass("fa-plus");
+                });
+                
+                // Toggle plus minus icon on show hide of collapse element
+                $(".collapse").on('show.bs.collapse', function(){
+                    $(this).prev(".card-header").find(".fa").removeClass("fa-plus").addClass("fa-minus");
+                }).on('hide.bs.collapse', function(){
+                    $(this).prev(".card-header").find(".fa").removeClass("fa-minus").addClass("fa-plus");
+                }); 
+            }
+        /********************************************* FAQ PAGE END ***************************************************/
+        
+        
+        
+        /********************************************* TICKET PAGE START ***************************************************/
+        // $(".custom-tabing .tab-panel:first-child h2").first().addClass("active");
+            if($(".ticket-page").length > 0){
+                $(document).on('click', '.custom-radio li', function(e) {
+                    $(this).parents('.custom-radio').find("li").removeClass("active");
+                    $(this).addClass("active");
+                    $(this).find("input").prop("checked",true);
+                });
+
+                $('.order-id  ul li').click(function(){
+                    var ind = $(this).index();
+                    $(".custom-tabing .tab-panel").hide();
+                    $(".custom-tabing .tab-panel").removeClass("active");
+                    $(".custom-tabing .tab-panel").eq(ind).show();
+                    $(".custom-tabing .tab-panel").eq(ind).addClass("active");
+                }); 
+
+                //CODE FOR TICKET FORM 	
+                $(".top_radio > li").click(function(){
+                    $(".custom-radio > li").removeClass('active');
+                    //hide all extra field
+                    $("#txtIdInput").attr('style','display:none');
+                    $("#acNumIdInput").attr('style','display:none');
+                    $("#opIdInput").attr('style','display:none');
+                    $("#message_box").val('');
+                    $("#txtIdInput").val('');
+                    $("#acNumIdInput").val('');
+                    $("#opIdInput").val('');
+                    
+                    $(".designradio").removeAttr('checked');
+                    $(this).find(".designradio").attr('checked','checked');
+                    
+                    //show order id on tab11 hide on rest
+                        
+                    if($(this).attr('href') =="#tab11" ){
+                        $("#orderIdInput").attr("style","display:block");
+                    }else{
+                        $("#orderIdInput").attr("style","display:none");
+                    }  
+                
+                    if($(this).attr('href') =="#tab11" ){
+                        $("#refill_options").trigger("click");
+                    }
+                    
+                    if($(this).attr('href') =="#tab2" ){
+                        $("#coinpayments_request").trigger("click");
+                    }
+                    
+                    if($(this).attr('href') =="#tab2" ){
+                        
+                        $("#txtIdInput").attr('style','display:block');
+                    }
+                    
+                    if($(this).attr('href') =="#tab5" ){
+                        $("#btn_feature").trigger("click");
+                    }
+                        
+                });
+                
+                //code to manage inpute field on payment tab
+                $("#coinpayments_request").click(function(){
+                    $("#txtIdInput").attr('style','display:block');
+                    $("#acNumIdInput").attr('style','display:none');
+                    $("#opIdInput").attr('style','display:none');            
+                });
+            
+                $("#coinbase_request").click(function(){      
+                    $("#txtIdInput").attr('style','display:block');
+                    $("#acNumIdInput").attr('style','display:none');
+                    $("#opIdInput").attr('style','display:none');         
+                });
+        
+                $("#perfect_money_request").click(function(){
+                    $("#txtIdInput").attr('style','display:none');
+                    $("#acNumIdInput").attr('style','display:block');
+                    $("#opIdInput").attr('style','display:none');
+                });
+            
+                $("#payneer_request").click(function(){    
+                    $("#txtIdInput").attr('style','display:none');
+                    $("#acNumIdInput").attr('style','display:none');
+                    $("#opIdInput").attr('style','display:block');
+                });
+                
+                $("#strip_request, #other_request").click(function(){
+                    $("#txtIdInput").attr('style','display:none');
+                    $("#acNumIdInput").attr('style','display:none');
+                    $("#opIdInput").attr('style','display:none');
+                });
+                
+                //code to process ticket form befor submit
+                /*$("#txt_id").change(function(){
+                    let msgVal = "TXT ID :: "+ $("#txt_id").val();
+                    $("#message_box").val(msgVal);
+                })
+                        
+                $("#acNum").change(function(){
+                    let msgVal = "Account Number :: "+ $("#acNum").val();
+                    $("#message_box").val(msgVal);
+                })
+            
+                $("#op_id").change(function(){
+                    let msgVal = "Operation ID :: "+ $("#op_id").val();
+                    $("#message_box").val(msgVal);
+                })*/
+
+
+
+
+                //var clickedBtn = false;      
+                $(document).on("click","#submitTicketBtn", function(e){
+                    e.preventDefault();
+                    var subject = $("input:radio[name=subject]:checked").val();
+                    var request = $("input:radio[name=request]:checked").val();
+                
+                    var ticketSubject = '';
+                
+                    if(subject == 'Orders'){
+                
+                        /*if(request == 'Coinpayments' || request == 'Coinbase' || request == 'Perfect Money' || request == 'Payeer' || request == ''){
+                            request = 'Refill';
+                        }*/
+                        if($('#order_id').val() == ''){
+                            $('.alert-danger').show();
+                            $('.alert-danger > div').html('<div>Order ID cannot be blank.</div>');
+                            return;
+                        }
+                
+                        let order_id = $("#order_id").val();
+                        if(order_id != ''){
+                            ticketSubject = subject+" - "+request+" - "+order_id;
+                        }
+                
+                    } else if(subject == 'Payments'){
+                        
+                        
+                        if(request == 'Coinpayments'){
+                            if($('#txt_id').val() == ''){
+                                $('.alert-danger').show();
+                                $('.alert-danger > div').html('<div>Transaction ID cannot be blank.</div>');
+                                return;
+                            }else{
+                                let txt_id = $("#txt_id").val();
+                                if(txt_id != ''){
+                                    ticketSubject = subject+" - "+request+" - "+txt_id;
+                                }
+                            }
+                        }else if(request == 'Coinbase'){
+                            if($('#txt_id').val() == ''){
+                                $('.alert-danger').show();
+                                $('.alert-danger > div').html('<div>Transaction ID cannot be blank.</div>');
+                                return;
+                            }else{
+                                let txt_id = $("#txt_id").val();
+                                if(txt_id != ''){
+                                    ticketSubject = subject+" - "+request+" - "+txt_id;
+                                }
+                            }
+                        }else if(request == 'Perfect Money'){
+                            if($('#acNum').val() == ''){
+                                $('.alert-danger').show();
+                                $('.alert-danger > div').html('<div>Account Number/ Batch Number cannot be blank.</div>');
+                                return;
+                            }else{
+                                let acNum = $("#acNum").val();
+                                if(acNum != ''){
+                                    ticketSubject = subject+" - "+request+" - "+acNum;
+                                }
+                            }
+                        }else if(request == 'Payeer'){
+                            if($('#op_id').val() == ''){
+                                $('.alert-danger').show();
+                                $('.alert-danger > div').html('<div>Operation ID cannot be blank.</div>');
+                                return;
+                            }else{
+                                let op_id = $("#op_id").val();
+                                if(op_id != ''){
+                                    ticketSubject = subject+" - "+request+" - "+op_id;
+                                }
+                            }
+                        } else {
+                            ticketSubject = subject+" - "+request;
+                        }
+                
+                    }else if( subject=='Request'){
+                        ticketSubject = subject+" - "+request;
+                    }else{
+                        ticketSubject = subject;
+                    }
+                    
+                        if($("#vip-client").val() == "true"){
+                        ticketSubject = "VIP: " + ticketSubject;
+                    }
+                    
+                    $("#ticketSubject").val(ticketSubject);
+                
+                    $("#submitTicketBtn").submit();
+                })
+            }
+        /********************************************* TICKET PAGE END ***************************************************/
+
+
+        /********************************************* DEPOSIT PAGE START ***************************************************/
+            if($(".deposit_page").length > 0){
+                $(".payment_tab_link").click(function(){
+                    var paymentTitle = $(this).attr("data-paymentName");
+                    $("#form_payment_name").text(paymentTitle);
+                
+                    //For Perfectmoney EUR
+                    if(paymentTitle == 'Perfect Money EUR'){
+                        $("#perfect_eur_content").show();
+                    }else{
+                        $("#perfect_eur_content").hide();
+                    }
+                
+                    //For Perfectmoney USD
+                    if(paymentTitle == 'Perfect Money USD'){
+                        $("#perfect_usd_content").show();
+                    }else{
+                        $("#perfect_usd_content").hide();
+                    }
+                
+                    //For Stripe / Credit Card  
+                    if(paymentTitle == 'Stripe / Credit Card'){
+                        $("#stripe_content").show();
+                    }else{
+                        $("#stripe_content").hide();
+                    }
+                
+                    //For Perfectmoney  
+                    if(paymentTitle == 'PayPal Invoice'){
+                        $("#payPal_invoice_content").show();
+                    }else{
+                        $("#payPal_invoice_content").hide();
+                    }
+                
+                    //For Perfectmoney  
+                    if(paymentTitle == 'PayPal'){
+                        $("#payPal_content").show();
+                    }else{
+                        $("#payPal_content").hide();
+                    }
+            
+                    //For CoinPayments
+                    if(paymentTitle == 'Coinpayments'){
+                        $("#coinPayments_content").show();
+                    }else{
+                        $("#coinPayments_content").hide();
+                    }
+                
+                    //For payeer_content  
+                    if(paymentTitle == 'Payeer'){
+                        $("#payeer_content").show();
+                    }else{
+                        $("#payeer_content").hide();
+                    } 
+            
+                    //For Perfectmoney  
+                    if(paymentTitle == 'PayPal Invoice'){
+                        $("#payPal_invoice_content").show();
+                    }else{
+                        $("#payPal_invoice_content").hide();
+                    }
+                    
+                    //For Cryptocurrency  
+                    if(paymentTitle == 'CryptoCurrency'){
+                        $("#cryptocurrency_content").show();
+                    }else{
+                        $("#cryptocurrency_content").hide();
+                    }
+            
+                    //For Skrill  
+                    if(paymentTitle == 'Skrill'){
+                        $("#skrill_content").show();
+                    }else{
+                        $("#skrill_content").hide();
+                    }
+            
+                    //For Stripe  
+                    if(paymentTitle == 'Stripe / Credit Card'){
+                        $("#stripe_content").show();
+                    }else{
+                        $("#stripe_content").hide();
+                    }
+                
+                    //For payeer  
+                    //  if(paymentTitle == 'Payoneer'){
+                    //    $("#payeer_content").show();
+                    //  }else{
+                    //    $("#payeer_content").hide();
+                    //  }
+                
+                    $("#method").val($(this).attr("data-paymentId")).change();
+                
+                });
+
+                $(".getInvoiceBtn").click(function(){
+        
+                    var data = {};
+                    
+                    data.payment_id = $(this).attr('data-payment-id');
+                    data.payment_date = $(this).attr('data-payment-date');
+                    data.payment_method = $(this).attr('data-payment-method');
+                    data.payment_amount = $(this).attr('data-payment-amount');
+                    data.user_id = user_info.id;
+                    data.user_name = user_info.username;
+                    data.first_name = user_info.first_name;
+                    data.last_name = user_info.last_name;
+                    data.email = user_info.email;
+                    
+                    generateInvoice(data);
+                
+                })
+            }
+        /********************************************* DEPOSIT PAGE END ***************************************************/
+
+
+        if ( 
+            currentURL.includes('subscriptions') ||
+            currentURL.includes('drip-feed') ||
+            currentURL.includes('refill') ) { 
+        }
+
+        if (currentURL.includes("updates"))  {
+            $('#search').click(function(e) {
+                var parentOffset = $(this).parent().offset();
+                var relX = e.pageX - parentOffset.left;
+        
+                if (relX < 30) {
+                    search = $(this).val();
+        
+                    var link = updateURL + "?search=" + search + "&category=" + category;
+                    loadUpdates(link);
+                }
+            });
+        
+            $('#search').on('change', function() {
+                search = $(this).val();
+        
+                var link = updateURL + "?search=" + search + "&category=" + category;
+                loadUpdates(link);
+            });
+        
+            loadUpdates(updateURL);
+        };
+
+        if (currentURL.includes("extra-feature")) 
+        {
+            //code to save user on our server
+            $.get( 'https://followizdev.com/admin/api/users/list', function( response ) {
+                processUsers(response.data.pagination.pages);
+            });	
+          
+            //code to update serive 
+            //$.get( 'https://followizdev.com/admin/services/list', function( response ) {
+            $.get('https://followizdev.com/admin/api/services/list', function( response ) {
+                setTimeout(function(){
+                    processCategoryOrder(response.data);
+                },1500);
+                
+                setTimeout(function(){
+                    processServices(response.data);
+                },3000);
+                
+                setTimeout(function(){
+                    processServicesOrder(response.data);
+                },4500);            
+            });
+          
+          
+            //code to generate invoice for client
+            $("body").prepend('<div id="paymentInfo" style="display:none"></div>');
+            let paymentInfo = [];
+            $.get( 'https://followizdev.com/admin/payments', function( data ) {
+                $("#paymentInfo").html('');
+                $("#paymentInfo" ).html( $(data).find('table').clone() );
+            
+          
+                setTimeout(function(){
+                    $("#paymentInfo" ).find('tr').each(function() {
+                        var data = {};
+                        $(this).find('td').each(function(index, td) { 
+                        
+                            if(index == 0){
+                                data.payment_id = parseInt($(this).text());
+                            }
+                            if(index == 1){
+                                data.username = $(this).text();
+                            }
+                            if(index == 4){
+                                data.payment_method = $(this).text();
+                            }
+                            if(index == 8){
+                                data.payment_date = $(this).text();
+                            }
+                            if(index == 3){
+                                data.payment_amount = parseFloat($(this).text());
+                            }
+                            if(index == 11){
+                                ////console.log(data);
+                                paymentInfo.push(data);
+                                
+                            }
+                        });
+                     
+                    });
+                    generateAllInvoice(paymentInfo);
+                }, 200)
+            });
+              
+        }
     
+        if (currentURL.includes("extra-feature11")) 
+        {
+            //code to save user on our server
+            $.get( 'https://followizdev.com/admin/api/users/list', function( response ) {
+                processUsers(response.data.pagination.pages)
+            });	
+            
+            //code to update serive 
+            $.get( 'https://followizdev.com/admin/services/list', function( response ) {
+                    processServices(response.data.categories);
+            });
+            
+            
+            //code to generate invoice for client
+            $("body").prepend('<div id="paymentInfo" style="display:none"></div>');
+            
+            let paymentInfo = [];  
+            $.get( 'https://followizdev.com/admin/payments', function( data ) {
+                $("#paymentInfo").html('');
+                $("#paymentInfo" ).html( $(data).find('table').clone() );
+               
+                setTimeout(function(){
+                    $("#paymentInfo" ).find('tr').each(function() {
+                        
+                        var data = {};
+                        $(this).find('td').each(function(index, td) { 
+                    
+                            if(index == 0){
+                                data.payment_id = parseInt($(this).text());
+                            }
+                            if(index == 1){
+                                data.username = $(this).text();
+                            }
+                            if(index == 4){
+                                data.payment_method = $(this).text();
+                            }
+                            if(index == 8){
+                                data.payment_date = $(this).text();
+                            }
+                            if(index == 3){
+                                data.payment_amount = parseFloat($(this).text());
+                            }
+                            if(index == 11){
+                                ////console.log(data);
+                                paymentInfo.push(data);
+                                
+                            }
+                        });
+                        
+                    });
+                    generateAllInvoice(paymentInfo);
+                }, 200)
+            });
+        }
+    });
+
+/******************************* NEW ORDER PAGE START *****************************/
     function hideSelect2Keyboard(e){
         $('.select2-search input, :focus,input').prop('focus',false).blur();
     }
@@ -995,71 +1497,75 @@ let myFavoriteServices = [];
         }
     
         if(serviceName.includes("dribble")){
-            return "dribble.svg"
+            return "dribble.svg";
         }
     
         if(serviceName.includes("fansly")){
-            return "fansly.svg"
+            return "fansly.svg";
         }
 
     
         if(serviceName.includes("google")){
-            return "google.svg"
+            return "google.svg";
         }
     
         if(serviceName.includes("kwai")){
-            return "kwai.svg"
+            return "kwai.svg";
         }
     
         if(serviceName.includes("nft")){
-            return "nft.svg"
+            return "nft.svg";
         }
     
         if(serviceName.includes("onlyfans")){
-            return "onlyfans.svg"
+            return "onlyfans.svg";
         }
     
         if(serviceName.includes("podcast")){
-            return "podcast.svg"
+            return "podcast.svg";
         }
     
         if(serviceName.includes("sitejabber")){
-            return "sitejabber.svg"
+            return "sitejabber.svg";
         }
     
         if(serviceName.includes("tidal")){
-            return "tidal.svg"
+            return "tidal.svg";
         }
     
         if(serviceName.includes("trust")){
-            return "trust.svg"
+            return "trust.svg";
         }
     
         if(serviceName.includes("steam")){
-            return "steam.svg"
+            return "steam.svg";
         }
     
         if(serviceName.includes("yellow")){
-            return "yellow.svg"
+            return "yellow.svg";
         }
     
         if(serviceName.includes("random")){
-            return "random.svg"
+            return "random.svg";
+        }
+
+        if(serviceName.includes("your favorite")){
+            return "favorite.svg";
         }
     
-        return "marketing.svg"
+        return "marketing.svg";
     }
 
     function formatState(state) {
         if (!state.id) {
           return state.text;
         }
-        var baseUrl = serverURL+"followiz-categories-icon";
+        var baseUrl = serverURL + "followiz-categories-icon";
         
         let imageURL = getImageName(state.element.text.toLowerCase());
       
         var $state = $(
-          '<span><img src="' + baseUrl + '/' + imageURL  + '" class="img-flag" /> ' + state.text + '</span>'
+            '<span><img src="' + baseUrl + '/' + imageURL  + '" class="img-flag" /> ' + state.text + '</span>'
         );
         return $state;
     };
@@ -1229,6 +1735,9 @@ let myFavoriteServices = [];
     }
 
     function updateRating(service_id){
+        $(".reviewShowOnly").attr("data-service_id", service_id);
+        $(".review").attr("data-service_id", service_id);
+
         let data = {user_id: user_id, service_id: service_id};
 
         jQuery.ajax({
@@ -1249,13 +1758,44 @@ let myFavoriteServices = [];
 
                     $(".review").rating({
                         "value": user_rating.my_vote ? user_rating.my_vote : 0,
-                        "readonly": true
+                        "click": function (e) {
+                            if(typeof e.event !== "undefined"){
+                                var _service_id = (e.event.target.parentNode.getAttribute('data-service_id'));
+                                insertOrUpdateVoteForOrder(user_id, _service_id, e.stars);
+                                setTimeout(function(){
+                                    getMyFavoriteServices();
+                                    // $('#orderform-category').trigger('change');
+                                }, 500);
+                                $(".review").rating({
+                                    "value":e.stars
+                                });
+                                $(".review").addClass("setted-own");
+                            }
+                        },
                     });
+                    
+                    if(user_rating.my_vote){
+                        $(".review").addClass("setted-own");
+                    }
+
                 }
                 else {
                     $(".review").rating({
                         "value": 0,
-                        "readonly": true
+                        "click": function (e) {
+                            if(typeof e.event !== "undefined"){
+                                var _service_id = (e.event.target.parentNode.getAttribute('data-service_id'));
+                                insertOrUpdateVoteForOrder(user_id, _service_id, e.stars);
+                                setTimeout(function(){
+                                    getMyFavoriteServices();
+                                    // $('#orderform-category').trigger('change');
+                                }, 500);
+                                $(".review").rating({
+                                    "value":e.stars
+                                });
+                                $(".review").addClass("setted-own");
+                            }
+                        },
                     });
                     $(".reviewShowOnly").rating({
                         "value": 3,
@@ -1412,7 +1952,7 @@ let myFavoriteServices = [];
             function(){ 
                 $('#orderform-category').trigger('change');
             }, 
-            500)
+            500);
     }
 
     function onlyUnique(value, index, self) {
@@ -1496,371 +2036,6 @@ let myFavoriteServices = [];
 
 /******************************* NEW ORDER PAGE END *****************************/
   
-    $(document).ready(function(){
-        
-    });
-  
-    
-  
-  
-    $(document).ready(function(){
-        // FAQ PAGE
-        if($('.faq-section').length > 0){
-           
-            $(".ques_1").css("display","none");
-            
-            $("h2.show_anser").click(function(e){
-                
-                if($(this).hasClass('active')){
-                    $(this).removeClass('active');
-                    $(this).next().slideUp();
-                }else{
-                    $("h2.show_anser").removeClass('active');
-                    $("h2.show_anser").next().slideUp();
-                    $(this).addClass('active');
-                    $(this).next().slideDown();
-                }
-            })
-
-            // Add minus icon for collapse element which is open by default
-            $(".collapse.show").each(function(){
-                $(this).prev(".card-header").find(".fa").addClass("fa-minus").removeClass("fa-plus");
-            });
-            
-            // Toggle plus minus icon on show hide of collapse element
-            $(".collapse").on('show.bs.collapse', function(){
-                $(this).prev(".card-header").find(".fa").removeClass("fa-plus").addClass("fa-minus");
-            }).on('hide.bs.collapse', function(){
-                $(this).prev(".card-header").find(".fa").removeClass("fa-minus").addClass("fa-plus");
-            }); 
-        }
-        
-        // TICKETS PAGE
-        // $(".custom-tabing .tab-panel:first-child h2").first().addClass("active");
-        if($(".ticket-page").length > 0){
-            $(document).on('click', '.custom-radio li', function(e) {
-                $(this).parents('.custom-radio').find("li").removeClass("active");
-                $(this).addClass("active");
-                $(this).find("input").prop("checked",true);
-            });
-
-            $('.order-id  ul li').click(function(){
-                var ind = $(this).index();
-                $(".custom-tabing .tab-panel").hide();
-                $(".custom-tabing .tab-panel").removeClass("active");
-                $(".custom-tabing .tab-panel").eq(ind).show();
-                $(".custom-tabing .tab-panel").eq(ind).addClass("active");
-            }); 
-
-            //CODE FOR TICKET FORM 	
-            $(".top_radio > li").click(function(){
-                $(".custom-radio > li").removeClass('active');
-                //hide all extra field
-                $("#txtIdInput").attr('style','display:none');
-                $("#acNumIdInput").attr('style','display:none');
-                $("#opIdInput").attr('style','display:none');
-                $("#message_box").val('');
-                $("#txtIdInput").val('');
-                $("#acNumIdInput").val('');
-                $("#opIdInput").val('');
-                
-                $(".designradio").removeAttr('checked');
-                $(this).find(".designradio").attr('checked','checked');
-                
-                //show order id on tab11 hide on rest
-                    
-                if($(this).attr('href') =="#tab11" ){
-                    $("#orderIdInput").attr("style","display:block");
-                }else{
-                    $("#orderIdInput").attr("style","display:none");
-                }  
-            
-                if($(this).attr('href') =="#tab11" ){
-                    $("#refill_options").trigger("click");
-                }
-                
-                if($(this).attr('href') =="#tab2" ){
-                    $("#coinpayments_request").trigger("click");
-                }
-                
-                if($(this).attr('href') =="#tab2" ){
-                    
-                    $("#txtIdInput").attr('style','display:block');
-                }
-                
-                if($(this).attr('href') =="#tab5" ){
-                    $("#btn_feature").trigger("click");
-                }
-                    
-            });
-            
-            //code to manage inpute field on payment tab
-            $("#coinpayments_request").click(function(){
-                $("#txtIdInput").attr('style','display:block');
-                $("#acNumIdInput").attr('style','display:none');
-                $("#opIdInput").attr('style','display:none');            
-            });
-        
-            $("#coinbase_request").click(function(){      
-                $("#txtIdInput").attr('style','display:block');
-                $("#acNumIdInput").attr('style','display:none');
-                $("#opIdInput").attr('style','display:none');         
-            });
-    
-            $("#perfect_money_request").click(function(){
-                $("#txtIdInput").attr('style','display:none');
-                $("#acNumIdInput").attr('style','display:block');
-                $("#opIdInput").attr('style','display:none');
-            });
-        
-            $("#payneer_request").click(function(){    
-                $("#txtIdInput").attr('style','display:none');
-                $("#acNumIdInput").attr('style','display:none');
-                $("#opIdInput").attr('style','display:block');
-            });
-            
-            $("#strip_request, #other_request").click(function(){
-                $("#txtIdInput").attr('style','display:none');
-                $("#acNumIdInput").attr('style','display:none');
-                $("#opIdInput").attr('style','display:none');
-            });
-             
-            //code to process ticket form befor submit
-            /*$("#txt_id").change(function(){
-                let msgVal = "TXT ID :: "+ $("#txt_id").val();
-                $("#message_box").val(msgVal);
-            })
-                    
-            $("#acNum").change(function(){
-                let msgVal = "Account Number :: "+ $("#acNum").val();
-                $("#message_box").val(msgVal);
-            })
-        
-            $("#op_id").change(function(){
-                let msgVal = "Operation ID :: "+ $("#op_id").val();
-                $("#message_box").val(msgVal);
-            })*/
-
-
-
-
-            //var clickedBtn = false;      
-            $(document).on("click","#submitTicketBtn", function(e){
-                e.preventDefault();
-                var subject = $("input:radio[name=subject]:checked").val();
-                var request = $("input:radio[name=request]:checked").val();
-            
-                var ticketSubject = '';
-            
-                if(subject == 'Orders'){
-            
-                    /*if(request == 'Coinpayments' || request == 'Coinbase' || request == 'Perfect Money' || request == 'Payeer' || request == ''){
-                        request = 'Refill';
-                    }*/
-                    if($('#order_id').val() == ''){
-                        $('.alert-danger').show();
-                        $('.alert-danger > div').html('<div>Order ID cannot be blank.</div>');
-                        return;
-                    }
-            
-                    let order_id = $("#order_id").val();
-                    if(order_id != ''){
-                        ticketSubject = subject+" - "+request+" - "+order_id;
-                    }
-            
-                } else if(subject == 'Payments'){
-                    
-                    
-                    if(request == 'Coinpayments'){
-                        if($('#txt_id').val() == ''){
-                            $('.alert-danger').show();
-                            $('.alert-danger > div').html('<div>Transaction ID cannot be blank.</div>');
-                            return;
-                        }else{
-                            let txt_id = $("#txt_id").val();
-                            if(txt_id != ''){
-                                ticketSubject = subject+" - "+request+" - "+txt_id;
-                            }
-                        }
-                    }else if(request == 'Coinbase'){
-                        if($('#txt_id').val() == ''){
-                            $('.alert-danger').show();
-                            $('.alert-danger > div').html('<div>Transaction ID cannot be blank.</div>');
-                            return;
-                        }else{
-                            let txt_id = $("#txt_id").val();
-                            if(txt_id != ''){
-                                ticketSubject = subject+" - "+request+" - "+txt_id;
-                            }
-                        }
-                    }else if(request == 'Perfect Money'){
-                        if($('#acNum').val() == ''){
-                            $('.alert-danger').show();
-                            $('.alert-danger > div').html('<div>Account Number/ Batch Number cannot be blank.</div>');
-                            return;
-                        }else{
-                            let acNum = $("#acNum").val();
-                            if(acNum != ''){
-                                ticketSubject = subject+" - "+request+" - "+acNum;
-                            }
-                        }
-                    }else if(request == 'Payeer'){
-                        if($('#op_id').val() == ''){
-                            $('.alert-danger').show();
-                            $('.alert-danger > div').html('<div>Operation ID cannot be blank.</div>');
-                            return;
-                        }else{
-                            let op_id = $("#op_id").val();
-                            if(op_id != ''){
-                                ticketSubject = subject+" - "+request+" - "+op_id;
-                            }
-                        }
-                    } else {
-                        ticketSubject = subject+" - "+request;
-                    }
-            
-                }else if( subject=='Request'){
-                    ticketSubject = subject+" - "+request;
-                }else{
-                    ticketSubject = subject;
-                }
-                
-                    if($("#vip-client").val() == "true"){
-                    ticketSubject = "VIP: " + ticketSubject;
-                }
-                
-                $("#ticketSubject").val(ticketSubject);
-            
-                $("#submitTicketBtn").submit();
-            })
-        }
-        
-        // SERVICES PAGE
-        if($(".service_page").length > 0){
-            $(document).on("click", ".rest-details", function(){
-                if ($(this).hasClass('Model-fill')){
-                    return;
-                }
-                $(this).addClass('Model-fill');
-                return; //overide function show palin details
-            })
-        }
-
-        // DEPOSIT PAGE
-        if($(".deposit_page").length > 0){
-            $(".payment_tab_link").click(function(){
-                var paymentTitle = $(this).attr("data-paymentName");
-                $("#form_payment_name").text(paymentTitle);
-               
-                //For Perfectmoney EUR
-                if(paymentTitle == 'Perfect Money EUR'){
-                    $("#perfect_eur_content").show();
-                }else{
-                    $("#perfect_eur_content").hide();
-                }
-            
-                //For Perfectmoney USD
-                if(paymentTitle == 'Perfect Money USD'){
-                    $("#perfect_usd_content").show();
-                }else{
-                    $("#perfect_usd_content").hide();
-                }
-            
-                //For Stripe / Credit Card  
-                if(paymentTitle == 'Stripe / Credit Card'){
-                    $("#stripe_content").show();
-                }else{
-                    $("#stripe_content").hide();
-                }
-            
-                //For Perfectmoney  
-                if(paymentTitle == 'PayPal Invoice'){
-                    $("#payPal_invoice_content").show();
-                }else{
-                    $("#payPal_invoice_content").hide();
-                }
-            
-                //For Perfectmoney  
-                if(paymentTitle == 'PayPal'){
-                    $("#payPal_content").show();
-                }else{
-                    $("#payPal_content").hide();
-                }
-        
-                //For CoinPayments
-                if(paymentTitle == 'Coinpayments'){
-                    $("#coinPayments_content").show();
-                }else{
-                    $("#coinPayments_content").hide();
-                }
-            
-                //For payeer_content  
-                if(paymentTitle == 'Payeer'){
-                    $("#payeer_content").show();
-                }else{
-                    $("#payeer_content").hide();
-                } 
-        
-                //For Perfectmoney  
-                if(paymentTitle == 'PayPal Invoice'){
-                    $("#payPal_invoice_content").show();
-                }else{
-                    $("#payPal_invoice_content").hide();
-                }
-                
-                //For Cryptocurrency  
-                if(paymentTitle == 'CryptoCurrency'){
-                    $("#cryptocurrency_content").show();
-                }else{
-                    $("#cryptocurrency_content").hide();
-                }
-        
-                //For Skrill  
-                if(paymentTitle == 'Skrill'){
-                    $("#skrill_content").show();
-                }else{
-                    $("#skrill_content").hide();
-                }
-        
-                //For Stripe  
-                if(paymentTitle == 'Stripe / Credit Card'){
-                    $("#stripe_content").show();
-                }else{
-                    $("#stripe_content").hide();
-                }
-            
-                //For payeer  
-                //  if(paymentTitle == 'Payoneer'){
-                //    $("#payeer_content").show();
-                //  }else{
-                //    $("#payeer_content").hide();
-                //  }
-            
-                $("#method").val($(this).attr("data-paymentId")).change();
-              
-            });
-
-            $(".getInvoiceBtn").click(function(){
-       
-                var data = {};
-                
-                data.payment_id = $(this).attr('data-payment-id');
-                data.payment_date = $(this).attr('data-payment-date');
-                data.payment_method = $(this).attr('data-payment-method');
-                data.payment_amount = $(this).attr('data-payment-amount');
-                data.user_id = user_info.id;
-                data.user_name = user_info.username;
-                data.first_name = user_info.first_name;
-                data.last_name = user_info.last_name;
-                data.email = user_info.email;
-                
-                generateInvoice(data);
-              
-            })
-        }
-    });
-  
-   
   /*$('.custom-tabing .tab-panel h2').click(function(){
       //$(".custom-tabing .tab-panel p").hide();
       $('.custom-tabing .tab-panel h2').removeClass("active");
@@ -1873,7 +2048,7 @@ let myFavoriteServices = [];
   }); */
 
   
-  /************************  FUNCTION FOR USER RATING ***************************/
+/************************  FUNCTION FOR USER RATING ***************************/
     function insertOrUpdateVote(user_id, service_id, vote) {
   
         if (user_id == '') {
@@ -1886,7 +2061,7 @@ let myFavoriteServices = [];
             "vote": vote
         }; //Array 
   
-        jQuery.ajax({
+        $.ajax({
             url: "https://followizaddons.com/vote/insertOrUpdateVote.php",
             type: "POST",
             dataType: "json",
@@ -1920,7 +2095,7 @@ let myFavoriteServices = [];
             "vote": vote
         }; //Array 
   
-        jQuery.ajax({
+        $.ajax({
             url: "https://followizaddons.com/vote/insertOrUpdateVote.php",
             type: "POST",
             dataType: "json",
@@ -1947,7 +2122,7 @@ let myFavoriteServices = [];
             "type": "check_service_id"
         }; //Array 
     
-        jQuery.ajax({
+        $.ajax({
             url: "https://followizaddons.com/vote/insertOrUpdateVote.php",
             type: "POST",
             dataType: "json",
@@ -1972,10 +2147,10 @@ let myFavoriteServices = [];
                     var service_id = (e.event.target.parentNode.id).split("_")[1];
                     
                     insertOrUpdateVote(user_id, service_id, e.stars);
-                    // $("#review_" + service_id).rating({
-                    //     "value":e.stars
-                    // })
-                    // $("#review_" + service_id).addClass('setted-own');
+                    $("#review_" + service_id).rating({
+                        "value":e.stars
+                    })
+                    $("#review_" + service_id).addClass('setted-own');
                 }
             },
         });
@@ -1986,7 +2161,7 @@ let myFavoriteServices = [];
         });
 
         let data = {user_id: user_id};
-        jQuery.ajax({
+        $.ajax({
             url: "https://followizaddons.com/vote/read.php",
             type: "POST",
             dataType: "json",
@@ -2004,9 +2179,9 @@ let myFavoriteServices = [];
                             "value": user_rating[i].my_vote ? user_rating[i].my_vote : 0
                         });
 
-                        // if(user_rating[i].my_vote){
-                        //     $("#review_" + user_rating[i].service_id).addClass("setted-own");
-                        // }
+                        if(user_rating[i].my_vote){
+                            $("#review_" + user_rating[i].service_id).addClass("setted-own");
+                        }
 
                     } 
 
@@ -2024,6 +2199,27 @@ let myFavoriteServices = [];
         });
     }
 
+    function getMyFavoriteServices(){
+        // get my favorite services vote = 5
+        let data = {user_id: user_id};
+        jQuery.ajax({
+            async: false,
+            url: "https://followizaddons.com/vote/myfavorite_services.php",
+            type: "POST",
+            dataType: "json",
+            data: data,
+            cache: false,
+            crossDomain: true,
+            success: function(response) {
+                if(response.status){
+                    myFavoriteServices = response.data;
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+            }
+        });
+    }
+
   /************************  FUNCTION FOR USER RATING ***************************/
   
     function CopyToClipboard(containerid) {
@@ -2034,9 +2230,6 @@ let myFavoriteServices = [];
             range.moveToElementText(document.getElementById(containerid));
             range.select().createTextRange();
             document.execCommand("copy"); 
-    
-    
-    
         } else if (window.getSelection) {
         
             var range = document.createRange();
@@ -2064,39 +2257,13 @@ let myFavoriteServices = [];
         return (val === undefined || val == null || val.length <= 0) ? false : true;
     }
   
-
-    // jQuery(document).on("change","#orderform-category1",function(){
-    //     //Delay because else the value it was taking from the description was from the previous service chosen
-    //     setTimeout(function() {
-    //         updateMinMax();
-    //         UpdateDescription();
-    //         updateServiceTitle();
-    //     }, 100)
-    // });
- 
     String.prototype.ltrim = function() {
         return this.replace(/^\s+/,"");
     }
         
-    
-    //code to sow readonly ration on order page
-    if (currentURL.includes('orders')) {
-        getUserRatingForOrder();
-        TRowHoverAction();
-    }
-
-    if ( 
-        currentURL.includes('subscriptions') ||
-        currentURL.includes('drip-feed') ||
-        currentURL.includes('refill') ) { 
-    }
-
-      
- 
-  
-      
 /**************************** code ot generate invoice ************************************/
-    //need to chang with client server.
+    
+//need to chang with client server.
     const invoice_api_url = api_end_point + "/invoice/";
   
     function generateInvoice(data){
@@ -2113,9 +2280,7 @@ let myFavoriteServices = [];
             }
         });
     }
-    
-    
-    
+ 
 /**************************** code for generate invoice ************************************/
    
 /**************************** code for ticket rating ***************************************/
@@ -2291,35 +2456,24 @@ let myFavoriteServices = [];
     }
 
     if(typeof firstTicketId !== 'undefined'){
-        let link = site_link+ticketPageURL+firstTicketId;
+        let link = site_link + ticketPageURL + firstTicketId;
 
-        getTicketDetails(link,firstTicketId)
+        getTicketDetails(link, firstTicketId)
         
         $(".ticketList").click(function(e){
             e.preventDefault();
 
-            $(".history_ticket .order_text").html($(this).find("p").html() );
+            $(".history_ticket .order_text").html($(this).find("p").html());
             $(".history_ticket .order-id").html($(this).find("p").html());
-            $(".history_ticket .order_refill .order_id").html("ID : "+$(this).attr("data-ticketID"));
+            $(".history_ticket .order_refill .order_id").html("ID : " + $(this).attr("data-ticketID"));
             $(".history_ticket .order_refill .status_date").html($(this).find(".small_font").html());
-            getTicketDetails(site_link+$(this).attr("data-href"),$(this).attr("data-ticketID"));
+            getTicketDetails(site_link + $(this).attr("data-href"), $(this).attr("data-ticketID"));
             
         })
     }
 
 /**************************** code to get ticket history ************************************/
-   // listen for keyups in both input widget AND dropdown
-  
-  
-    
-    /*********** For select option from Up-Down key ******/
-     // listen for keyups in both input widget AND dropdown
-  
-   
-    
-    /********************** add active class on selected nav dropdorn *********************/  
 
-    
     /************************** code for synchronise user on other server ************/
     
     function synchronisUser(allUsers){
@@ -2336,7 +2490,7 @@ let myFavoriteServices = [];
               {
                 //console.log(data);
               }
-          });
+        });
     }
     
     function generateAllInvoice(paymentInfo){
@@ -2541,135 +2695,6 @@ let myFavoriteServices = [];
     }
   
     
-  
-  
-    if (currentURL.includes("extra-feature")) 
-    {
-        //code to save user on our server
-        $.get( 'https://followizdev.com/admin/api/users/list', function( response ) {
-            processUsers(response.data.pagination.pages);
-        });	
-      
-      //code to update serive 
-      //$.get( 'https://followizdev.com/admin/services/list', function( response ) {
-        $.get('https://followizdev.com/admin/api/services/list', function( response ) {
-           setTimeout(function(){
-               processCategoryOrder(response.data);
-           },1500);
-        
-           setTimeout(function(){
-               processServices(response.data);
-           },3000);
-        
-           setTimeout(function(){
-               processServicesOrder(response.data);
-           },4500);
-            
-            
-            ////console.log(response.data.categories);
-          
-        });
-      
-      
-        //code to generate invoice for client
-        $("body").prepend('<div id="paymentInfo" style="display:none"></div>');
-        let paymentInfo = [];
-        $.get( 'https://followizdev.com/admin/payments', function( data ) {
-            $("#paymentInfo").html('');
-            $("#paymentInfo" ).html( $(data).find('table').clone() );
-        
-      
-           setTimeout(function(){
-                $("#paymentInfo" ).find('tr').each(function() {
-                    
-                  var data = {};
-                    $(this).find('td').each(function(index, td) { 
-                 
-                      if(index == 0){
-                          data.payment_id = parseInt($(this).text());
-                      }
-                      if(index == 1){
-                          data.username = $(this).text();
-                      }
-                      if(index == 4){
-                          data.payment_method = $(this).text();
-                      }
-                      if(index == 8){
-                          data.payment_date = $(this).text();
-                      }
-                      if(index == 3){
-                          data.payment_amount = parseFloat($(this).text());
-                      }
-                      if(index == 11){
-                         ////console.log(data);
-                         paymentInfo.push(data);
-                         
-                      }
-                  });
-                 
-              });
-              generateAllInvoice(paymentInfo);
-           },200)
-       });
-          
-    }
-
-    if (currentURL.includes("extra-feature11")) 
-    {
-        //code to save user on our server
-        $.get( 'https://followizdev.com/admin/api/users/list', function( response ) {
-                processUsers(response.data.pagination.pages)
-        });	
-        
-        //code to update serive 
-        $.get( 'https://followizdev.com/admin/services/list', function( response ) {
-                processServices(response.data.categories);
-        });
-        
-        
-        //code to generate invoice for client
-        $("body").prepend('<div id="paymentInfo" style="display:none"></div>');
-        let paymentInfo = [];
-        $.get( 'https://followizdev.com/admin/payments', function( data ) {
-            $("#paymentInfo").html('');
-            $("#paymentInfo" ).html( $(data).find('table').clone() );
-        
-        
-            setTimeout(function(){
-                    $("#paymentInfo" ).find('tr').each(function() {
-                        
-                    var data = {};
-                        $(this).find('td').each(function(index, td) { 
-                    
-                        if(index == 0){
-                            data.payment_id = parseInt($(this).text());
-                        }
-                        if(index == 1){
-                            data.username = $(this).text();
-                        }
-                        if(index == 4){
-                            data.payment_method = $(this).text();
-                        }
-                        if(index == 8){
-                            data.payment_date = $(this).text();
-                        }
-                        if(index == 3){
-                            data.payment_amount = parseFloat($(this).text());
-                        }
-                        if(index == 11){
-                            ////console.log(data);
-                            paymentInfo.push(data);
-                            
-                        }
-                    });
-                    
-                });
-                generateAllInvoice(paymentInfo);
-            },200)
-        });
-    }
-    
-    
    /* if (currentURL.includes("addfunds")) 
     {
       $.get( 'https://www.startdesigns.com/client_js/invoice/user-generate-invoice.php?user_id='+user_id , function( response ) {
@@ -2681,9 +2706,7 @@ let myFavoriteServices = [];
       });	
       
     } */
-  
-   
-  
+
   
     /************************** end code for synchronise user on  other server ********/
   
@@ -2693,70 +2716,63 @@ let myFavoriteServices = [];
      /**************************** update page code *****************************************/
    //DO NOT DELETE USED IN FUTURE
    // https://bulkfollows.com/updates
-   const updateURL = 'https://followizaddons.com/client_js/updates/index.php';
-   var category = "";
-   var search = "";
+    const updateURL = 'https://followizaddons.com/client_js/updates/index.php';
+    var category = "";
+    var search = "";
   
-   function populatePaginaiton(response) {
-       var $pager = $('.table-pagination ul');
-       $pager.html('');
-       if (response.prev_page_url != null) {
+    function populatePaginaiton(response) {
+        var $pager = $('.table-pagination ul');
+        $pager.html('');
+        
+        if (response.prev_page_url != null) {
            $pager.append("<li><a href='#' onclick=\"loadUpdates('" + response.prev_page_url + "')\" ><i class='fas fa-arrow-left mr-2'></i></a></li>");
-       } else {
+        } else {
            $pager.append("<li></li>");
-       }
-  
-       var left = 3,
-           right = 3;
-       if (response.current_page == 1) right = 6;
-       if (response.current_page == 2) right = 5;
-       if (response.current_page >= response.last_page) left = 5;
-  
-       for (var i = 1; i <= response.last_page; i++) {
-           var active = "",
-               link = "";
-           if (i == response.current_page) {
-               active = "active";
-               link = "#";
-           } else {
-               link = updateURL + "?search=" + search + "&category=" + category + "&page=" + i;
-           }
-  
-           if (i >= response.current_page - left && i <= response.current_page + right)
-               $pager.append("<li class='" + active + "'><a href='#' onclick=\"loadUpdates('" + link + "')\" >" + i + "</a></li>");
-       }
-  
-       if (response.next_page_url != null) {
-           $pager.append("<li><a href='#' onclick=\"loadUpdates('" + response.next_page_url + "')\" ><i class='fas fa-arrow-right mr-2'></i></a></li>");
-       } else {
-           $pager.append("<li></li>");
-       }
-   }
-  
-   function filterByCategory(cat) {
-       if (cat == '')
-           $('#filter').text("All");
-       else if (cat == "Notification:gauravbhatra@startdesigns.com")
-           $('#filter').text("Notification Enabled");
-       else
-           $('#filter').text(cat);
-       category = cat;
-  
-       var link = updateURL + "?search=" + search + "&category=" + category;
-       loadUpdates(link);
-   }
-
-   $(document).ready(function(e) {
-      if($("#table-updates-order").length > 0){
-        // loadUpdates("https://followizaddons.com/client_js/updates/index.php");
-        loadUpdatesNew("https://followizaddons.com/client_js/updates/updates_service.php");
+        }
+    
+        var left = 3,
+            right = 3;
+        if (response.current_page == 1) right = 6;
+        if (response.current_page == 2) right = 5;
+        if (response.current_page >= response.last_page) left = 5;
+    
+        for (var i = 1; i <= response.last_page; i++) {
+            var active = "",
+                link = "";
+            if (i == response.current_page) {
+                active = "active";
+                link = "#";
+            } else {
+                link = updateURL + "?search=" + search + "&category=" + category + "&page=" + i;
+            }
+    
+            if (i >= response.current_page - left && i <= response.current_page + right)
+                $pager.append("<li class='" + active + "'><a href='#' onclick=\"loadUpdates('" + link + "')\" >" + i + "</a></li>");
+        }
+    
+        if (response.next_page_url != null) {
+            $pager.append("<li><a href='#' onclick=\"loadUpdates('" + response.next_page_url + "')\" ><i class='fas fa-arrow-right mr-2'></i></a></li>");
+        } else {
+            $pager.append("<li></li>");
+        }
     }
-   });
+  
+    function filterByCategory(cat) {
+        if (cat == '')
+            $('#filter').text("All");
+        else if (cat == "Notification:gauravbhatra@startdesigns.com")
+            $('#filter').text("Notification Enabled");
+        else
+            $('#filter').text(cat);
+        category = cat;
+    
+        var link = updateURL + "?search=" + search + "&category=" + category;
+        loadUpdates(link);
+    }
 
-   
     function loadUpdatesNew(link){
         $.ajax({
-            url: link+'?type=main',      
+            url: link + '?type=main',      
             type: "GET",
             dataType: "json",
             cache: false,
@@ -2764,7 +2780,6 @@ let myFavoriteServices = [];
             success: function(response)         
             {
                 $('.table.update-table tbody').html('');
-
                 response.data.forEach(function(data) {
                     var type = "";
                     if (data.update_status == "updates-service-decreased") type = "blue";
@@ -2802,7 +2817,7 @@ let myFavoriteServices = [];
         });
     }
    
-   $(document).on("click",'.loadmore',function(e) {
+    $(document).on("click",'.loadmore',function(e) {
           var page = parseInt($(this).attr("data-current")) +1;
           var total = parseInt($(this).attr("data-total"));
           if(page == total){
@@ -2810,126 +2825,103 @@ let myFavoriteServices = [];
           }
           $(this).attr("data-current",page);
           loadUpdatesPage("https://followizaddons.com/client_js/updates/index.php?_=1643094253933&type=main&page="+page);
-   });
+    });
 
     function loadUpdatesPage(link) {
-       $.ajax({
-          url: link,      
-          type: "GET",
-          dataType: "json",
-          cache: false,
-          crossDomain: true,
-          success: function(response)         
-          {
-            //console.log('response1',response);
-               //$('.table.update-table tbody').html('');
-  
-               response.data.forEach(function(data) {
-                   var type = "btn-secondary";
-  
-                   if (data.update.indexOf("Service Enabled") >= 0) type = "enabled";
-                   if (data.update.indexOf("Service Disabled") >= 0) type = "disabled";
-                   if (data.update.indexOf("Price Increased") >= 0) type = "increased";
-                   if (data.update.indexOf("Price Reduced") >= 0) type = "decreased";
-                 
-                  let previousPrice = '';
-                     if(type =="increased"|| type == "decreased"){
-                  
-                      previousPrice = "<span class='previous_price'> Previously "+ data.old_price +" $</span>";
-                  }
-                 
-                 
-                   $('.table.update-table tbody').append("" +
-                       "<tr>" +
-                       "  <td class='text-center'><div class='id-boxi'>" + data.linked_service.service + "</div></td>" +
-                       "    <td>" + data.linked_service.name + "</td>" +
-                       "    <td>" + data.updated_at + "</td>" +
-                       "    <td class='text-center'><a href='#'  class='btn btn-sm update badge " + type + "'>" + data.update + previousPrice +"</a></td>" +
-                       "</tr> "
-                   );
-               });
-               
-           }
-      });
-   }
+        $.ajax({
+            url: link,      
+            type: "GET",
+            dataType: "json",
+            cache: false,
+            crossDomain: true,
+            success: function(response)         
+            {
+                //console.log('response1',response);
+                //$('.table.update-table tbody').html('');
+    
+                response.data.forEach(function(data) {
+                    var type = "btn-secondary";
+    
+                    if (data.update.indexOf("Service Enabled") >= 0) type = "enabled";
+                    if (data.update.indexOf("Service Disabled") >= 0) type = "disabled";
+                    if (data.update.indexOf("Price Increased") >= 0) type = "increased";
+                    if (data.update.indexOf("Price Reduced") >= 0) type = "decreased";
+                    
+                    let previousPrice = '';
+                        if(type =="increased"|| type == "decreased"){
+                    
+                        previousPrice = "<span class='previous_price'> Previously "+ data.old_price +" $</span>";
+                    }
+                    
+                    
+                    $('.table.update-table tbody').append("" +
+                        "<tr>" +
+                        "  <td class='text-center'><div class='id-boxi'>" + data.linked_service.service + "</div></td>" +
+                        "    <td>" + data.linked_service.name + "</td>" +
+                        "    <td>" + data.updated_at + "</td>" +
+                        "    <td class='text-center'><a href='#'  class='btn btn-sm update badge " + type + "'>" + data.update + previousPrice +"</a></td>" +
+                        "</tr> "
+                    );
+                });
+                
+            }
+        });
+    }
    
-   function loadUpdates(link) {
+    function loadUpdates(link) {
    
-       $.ajax({
-          url: link+'?type=main',      
-          type: "GET",
-          dataType: "json",
-          cache: false,
-          crossDomain: true,
-          success: function(response)         
-          {
+        $.ajax({
+            url: link+'?type=main',      
+            type: "GET",
+            dataType: "json",
+            cache: false,
+            crossDomain: true,
+            success: function(response)         
+            {
                 console.log("response4", response);
-               $('.table.update-table tbody').html('');
+                $('.table.update-table tbody').html('');
   
-               response.data.forEach(function(data) {
-                   var type = "btn-secondary";
+                response.data.forEach(function(data) {
+                    var type = "btn-secondary";
+    
+                    if (data.update.indexOf("Service Enabled") >= 0) type = "enabled";
+                    if (data.update.indexOf("Service Disabled") >= 0) type = "disabled";
+                    if (data.update.indexOf("Price Increased") >= 0) type = "increased";
+                    if (data.update.indexOf("Price Reduced") >= 0) type = "decreased";
+    
+                    let previousPrice = '';
+                    let previousPrice1 = '';
+                    if(type =="increased"|| type == "decreased"){
+                        //previousPrice = "<span class='previous_price'> Previously "+ data.old_price +" $</span>";
+                        previousPrice1 = "<br><span class='previous_price1'> Previously "+ data.old_price +" $</span>";
+                    }
+                    
+                    let htmlData = "<td class='text-center '><a href='#' class='btn btn-sm update "+type+" badge'>" + data.update + previousPrice +"</a></td>";
+                    if(data.status == "0"){
+                        htmlData = "<td class='text-center  '><a href='#'  class='btn btn-sm update "+type+" badge'>Service Disabled</a></td>";
+                    }
+                    
+                    $('.table.update-table tbody').append("" +
+                        "<tr class='data-services'>" +
+                        "  <td class='text-center'><div class='id-boxi'>" + data.linked_service.service + "</div></td>" +
+                        "    <td>" + data.linked_service.name +" - "+ data.price +"$ "+previousPrice1+"</td>" +
+                        "    <td>" + data.updated_at + "</td>" +
+                        "    " +htmlData+
+                        "</tr> "                                                   
+                    ); 
+                    
+                    
+                });
+                if($("#table-updates").length > 0){
+                
+                    $("#table-updates").after("<div class='text-center'><div class='loadmore btn btn-primary btn-auto' data-current='1' data-total='"+response.totalPage+"'><span>Load more</span></div>");
+                }
+                populatePaginaiton(response);
+            }
+        });
+    }
   
-                   if (data.update.indexOf("Service Enabled") >= 0) type = "enabled";
-                   if (data.update.indexOf("Service Disabled") >= 0) type = "disabled";
-                   if (data.update.indexOf("Price Increased") >= 0) type = "increased";
-                   if (data.update.indexOf("Price Reduced") >= 0) type = "decreased";
-  
-                   let previousPrice = '';
-                   let previousPrice1 = '';
-                     if(type =="increased"|| type == "decreased"){
-                  
-                      //previousPrice = "<span class='previous_price'> Previously "+ data.old_price +" $</span>";
-                    previousPrice1 = "<br><span class='previous_price1'> Previously "+ data.old_price +" $</span>";
-                  }
-                  let htmlData = "<td class='text-center '><a href='#' class='btn btn-sm update "+type+" badge'>" + data.update + previousPrice +"</a></td>";
-                  if(data.status == "0"){
-                      htmlData = "<td class='text-center  '><a href='#'  class='btn btn-sm update "+type+" badge'>Service Disabled</a></td>";
-                  }
-                 
-                   $('.table.update-table tbody').append("" +
-                       "<tr class='data-services'>" +
-                       "  <td class='text-center'><div class='id-boxi'>" + data.linked_service.service + "</div></td>" +
-                       "    <td>" + data.linked_service.name +" - "+ data.price +"$ "+previousPrice1+"</td>" +
-                       "    <td>" + data.updated_at + "</td>" +
-                       "    " +htmlData+
-                       "</tr> "                                                   
-                   ); 
-                 
-                   
-               });
-              if($("#table-updates").length > 0){
-              
-                  $("#table-updates").after("<div class='text-center'><div class='loadmore btn btn-primary btn-auto' data-current='1' data-total='"+response.totalPage+"'><span>Load more</span></div>");
-               }
-               populatePaginaiton(response);
-           }
-      });
-   }
-  
-  
-  
-   if (currentURL.includes("updates"))  {
-       $('#search').click(function(e) {
-           var parentOffset = $(this).parent().offset();
-           var relX = e.pageX - parentOffset.left;
-  
-           if (relX < 30) {
-               search = $(this).val();
-  
-               var link = updateURL + "?search=" + search + "&category=" + category;
-               loadUpdates(link);
-           }
-       });
-  
-       $('#search').on('change', function() {
-           search = $(this).val();
-  
-           var link = updateURL + "?search=" + search + "&category=" + category;
-           loadUpdates(link);
-       });
-  
-       loadUpdates(updateURL);
-   };
+    
     /********************************************** code for api copy ***************************/
     
     $(document).on("click",'#api_copy', function(e){
@@ -2957,71 +2949,73 @@ let myFavoriteServices = [];
   
   /******************* DARK MODE  *******************************/
   
-  $(document).ready(function () {
+    $(document).ready(function () {
     
-     let ordersuccesscount = localStorage.getItem('ordersuccesscount');
-    
-     if(ordersuccesscount == 2){
-        localStorage.removeItem("ordersuccesscount");
-        localStorage.removeItem("main-category");
-        localStorage.removeItem("category");
-        localStorage.removeItem("service");
-     }
-    
-     if(ordersuccesscount == 1){
-        localStorage.setItem('ordersuccesscount',2);
-     }
-    
-
+        let ordersuccesscount = localStorage.getItem('ordersuccesscount');
+        
+        if(ordersuccesscount == 2){
+            localStorage.removeItem("ordersuccesscount");
+            localStorage.removeItem("main-category");
+            localStorage.removeItem("category");
+            localStorage.removeItem("service");
+        }
+        
+        if(ordersuccesscount == 1){
+            localStorage.setItem('ordersuccesscount',2);
+        }
     
      /*if (currentURL.includes('addfunds')) {*/
-     try {
-      //for price
-      // https://api.bigdatacloud.net/data/client-ip //free
-      //https://www.bigdatacloud.com/country-info-apis/country-by-ip-address-api // paid
-  
-      let getUserIpLink = "https://api.bigdatacloud.net/data/client-ip";
-      $.get( getUserIpLink, function( ipInfo ) {
-          let userIp = ipInfo.ipString;
-          let apiKey = "e7afcefe97274d78b1405526be011623"; //need to replace with paid one
-          let getUserCountryInfoLink = "https://api.bigdatacloud.net/data/country-by-ip?ip="+userIp+"&key="+apiKey;
-  
-          $.get( getUserCountryInfoLink, function( countryInfo ) {
-             if(countryInfo.hasOwnProperty('country')){
-                let country = countryInfo.country;
-                if(country.hasOwnProperty('isoName')){
-                  if(country.isoName !== "Canada"){
-                     $('.addfund_page').css('display','block');
-                    $('.deposit_toltip').remove();
-                     $('.badgeLink').css('display','inline-flex');
-                     $('.badgeBtn').css('display','none');
-                  }else{
-                    if (currentURL.includes('addfunds')) {
-                     window.location.href = homeURL;
+        try {
+            //for price
+            // https://api.bigdatacloud.net/data/client-ip //free
+            //https://www.bigdatacloud.com/country-info-apis/country-by-ip-address-api // paid
+        
+            let getUserIpLink = "https://api.bigdatacloud.net/data/client-ip";
+            $.get( getUserIpLink, function( ipInfo ) {
+                let userIp = ipInfo.ipString;
+                let apiKey = "e7afcefe97274d78b1405526be011623"; //need to replace with paid one
+                let getUserCountryInfoLink = "https://api.bigdatacloud.net/data/country-by-ip?ip="+userIp+"&key="+apiKey;
+        
+                $.get( getUserCountryInfoLink, function( countryInfo ) {
+                    if(countryInfo.hasOwnProperty('country')){
+                        let country = countryInfo.country;
+                        if(country.hasOwnProperty('isoName')){
+                        if(country.isoName !== "Canada"){
+                            $('.addfund_page').css('display','block');
+                            $('.deposit_toltip').remove();
+                            $('.badgeLink').css('display','inline-flex');
+                            $('.badgeBtn').css('display','none');
+                        }else{
+                            if (currentURL.includes('addfunds')) {
+                            window.location.href = homeURL;
+                            }
+                            $('.deposit_toltip').html("Deposits are blocked for Canadian users.");
+                            $('.badgeBtn').css('display','inline-flex');
+                            $('.badgeLink').css('display','none');
+                        }
+                        }else{
+                            if (currentURL.includes('addfunds')) {
+                            window.location.href = homeURL;
+                            }
+                        $('.deposit_toltip').html("Deposits are blocked for Canadian users.");
+                        }
+                    }else{
+                        if (currentURL.includes('addfunds')) {
+                            window.location.href = homeURL;
+                        }
+                        $('.deposit_toltip').html("Deposits are blocked for Canadian users.");
                     }
-                    $('.deposit_toltip').html("Deposits are blocked for Canadian users.");
-                    $('.badgeBtn').css('display','inline-flex');
-                    $('.badgeLink').css('display','none');
-                  }
-                }else{
-                     if (currentURL.includes('addfunds')) {
-                     window.location.href = homeURL;
-                    }
-                  $('.deposit_toltip').html("Deposits are blocked for Canadian users.");
-                }
-             }else{
-                if (currentURL.includes('addfunds')) {
-                     window.location.href = homeURL;
-                }
-                $('.deposit_toltip').html("Deposits are blocked for Canadian users.");
-            }
-        });
-      });
-      }catch(err) {
-        //console.log(err);
-        window.location.href = homeURL;
-      }
+                });
+            });
+        }catch(err) {
+            //console.log(err);
+            window.location.href = homeURL;
+        }
+   
    /* } */
+
+        jQuery('#field-orderform-fields-quantity').ForceNumericOnly();
+    });
         
      
     
@@ -3124,46 +3118,32 @@ let myFavoriteServices = [];
         processUsersDetails(allUsers);
     }
     
-  
-  
-  
     /************************** end code for synchronise user on  other server ********/
   
     /********************************************** code for api copy ***************************/
-  
-        
+   
+    jQuery.fn.ForceNumericOnly = function() {
+        return this.each(function()
+        {
+            $(this).keydown(function(e)
+            {
+                var key = e.charCode || e.keyCode || 0;
+                // allow backspace, tab, delete, enter, arrows, numbers and keypad numbers ONLY
+                // home, end, period, and numpad decimal
+                return (
+                    key == 8 || 
+                    key == 9 ||
+                    key == 13 ||
+                    key == 46 ||
+                    key == 110 ||
+                    key == 190 ||
+                    (key >= 35 && key <= 40) ||
+                    (key >= 48 && key <= 57) ||
+                    (key >= 96 && key <= 105));
+            });
+        });
+    };
     
-    
-  jQuery.fn.ForceNumericOnly =
-  function()
-  {
-      return this.each(function()
-      {
-          $(this).keydown(function(e)
-          {
-              var key = e.charCode || e.keyCode || 0;
-              // allow backspace, tab, delete, enter, arrows, numbers and keypad numbers ONLY
-              // home, end, period, and numpad decimal
-              return (
-                  key == 8 || 
-                  key == 9 ||
-                  key == 13 ||
-                  key == 46 ||
-                  key == 110 ||
-                  key == 190 ||
-                  (key >= 35 && key <= 40) ||
-                  (key >= 48 && key <= 57) ||
-                  (key >= 96 && key <= 105));
-          });
-      });
-  };
-  jQuery('#field-orderform-fields-quantity').ForceNumericOnly();
-  
-    
-  
-  
-  });//documentready
-  
     function getUserRatingForOrder() {
         // Orders page, 
         console.log("Orders page");
@@ -3182,7 +3162,7 @@ let myFavoriteServices = [];
                             $(this).rating({
                                 value: e.stars
                             })
-                            // $(this).addClass('setted-own');
+                            $(this).addClass('setted-own');
                         })
                     }, 100)
                    
@@ -3213,9 +3193,9 @@ let myFavoriteServices = [];
                                 "value": user_rating[i].my_vote ? user_rating[i].my_vote : 0,
                             });
 
-                            // if(user_rating[i].my_vote){
-                            //     $(this).addClass("setted-own");
-                            // }
+                            if(user_rating[i].my_vote){
+                                $(this).addClass("setted-own");
+                            }
                         }
                        
                     })
@@ -3228,18 +3208,23 @@ let myFavoriteServices = [];
                             });
                         }
                     })
-
-    
                 }
-                
             },
             error: function(jqXHR, textStatus, errorThrown) {
             }
         }); 
-    }// JavaScript Document
+    }
 
     function review_hover(){
-        $(".review-hover-zone").on("mousemove", function(event){
+        $(".review-hover-zone").mouseover(function(event){
+            let classname = event.target.parentNode.className;
+            if(classname.search(new RegExp("review", "i")) < 0){
+                $(".review").css("display", "block");
+                $(".reviewShowOnly").css("display", "none");
+            }
+        })
+
+        $(".review-hover-zone").mouseout(function(event){
             let classname = event.target.parentNode.className;
             if(classname.search(new RegExp("review", "i")) < 0){
                 $(".review").css("display", "none");
