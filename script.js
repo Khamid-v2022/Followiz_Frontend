@@ -5,10 +5,9 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
 /**************** Toggle Menu open menu after redirect page  *****************/
     $(document).ready(function(){  
-        $('.data-table').DataTable({
-            "bInfo": false,
-            // dom: '<"top"fl>t<"bottom"p><"clear">',
-            dom: '<"top"f>t<"bottom"p><"clear">',
+        $('.nav .ticketList').click(function(){
+            $('.ticketList').removeClass("active");
+            $(this).addClass("active");
         });
 
         $('.navbar-nav li').each(function(){
@@ -41,6 +40,77 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 $('body').removeClass().addClass('theme-default');
                 $(".label-success").html("Dark Mode");
             }
+        });
+
+        $('.dropdown-menu li.active').parents('li').addClass('active');
+        
+
+        var letCollapseWidth = false,
+        paddingValue = 30,
+        sumWidth = $('.navbar-right-block').width() + $('.navbar-left-block').width() + $('.navbar-brand').width() + paddingValue;
+
+        $(window).on('resize', function () {
+            navbarResizerFunc();
+        });
+
+        var navbarResizerFunc = function navbarResizerFunc() {
+            if (sumWidth <= $(window).width()) {
+                if (letCollapseWidth && letCollapseWidth <= $(window).width()) {
+                    $('#navbar').addClass('navbar-collapse');
+                    $('#navbar').removeClass('navbar-collapsed');
+                    $('nav').removeClass('navbar-collapsed-before');
+                    letCollapseWidth = false;
+                }
+            } else {
+                $('#navbar').removeClass('navbar-collapse');
+                $('#navbar').addClass('navbar-collapsed');
+                $('nav').addClass('navbar-collapsed-before');
+                letCollapseWidth = $(window).width();
+            }
+        };
+
+        if ($(window).width() >= 768) {
+            navbarResizerFunc();
+        }
+
+        // $('[data-toggle="tooltip"]').tooltip();
+
+        var trigger = $('.hamburger'),
+            overlay = $('.overlay'),
+            isClosed = false;
+    
+        trigger.click(function () {
+            hamburger_cross();      
+        });
+        
+        function hamburger_cross() {
+            if (isClosed == true) {          
+                overlay.hide();
+                trigger.removeClass('is-open');
+                trigger.addClass('is-closed');
+                isClosed = false;
+            } else {   
+                overlay.show();
+                trigger.removeClass('is-closed');
+                trigger.addClass('is-open');
+                isClosed = true;
+            }
+        }
+        
+        $('[data-toggle="offcanvas"]').click(function () {
+            $('#wrapper').toggleClass('toggled');
+        });  
+        
+        /********************* For Circle progess bar *********************/
+        $('.second.circle').circleProgress({
+            //value: 0.0658
+            startAngle: -Math.PI / 2,
+            emptyFill: "#7E8E8D"
+        });
+
+        $('.data-table').DataTable({
+            "bInfo": false,
+            dom: '<"top"f>t<"bottom"p><"clear">',
         });
     });
   
@@ -100,7 +170,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         data1.email = user_info.email;
         data1.invcoice_name = user_info.invcoice_name;
 
-        const invoice_api_url = api_end_point+"/invoice/";      
+        const invoice_api_url = api_end_point + "/invoice/";      
         $.ajax({
             url: invoice_api_url+"generateInvoice.php",       
             type: "POST",                  
@@ -112,9 +182,9 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             success: function(data2)         
             {
                 let tbody = '';
-                tbody += '<a href="https://followizaddons.com/client_js/invoice/'+data2.file_path+'" style="float:right;padding:10px;" target="_blank" class="download11" ><button type="button" class="btn btn-primary">Download</button></a>'; 
-                tbody+='<iframe src="https://followizaddons.com/client_js/invoice/'+data2.file_path+'" style="width: 100%;height: 80%;top: 5%;position: relative;" title="'+data2.payment_id+'"></iframe>';
-                $('#drm_nav'+data2.payment_id).append(tbody);
+                tbody += '<a href="https://followizaddons.com/client_js/invoice/' + data2.file_path + '" style="float:right;padding:10px;" target="_blank" class="download11" ><button type="button" class="btn btn-primary">Download</button></a>'; 
+                tbody += '<iframe src="https://followizaddons.com/client_js/invoice/' + data2.file_path + '" style="width: 100%;height: 80%;top: 5%;position: relative;" title="'+data2.payment_id+'"></iframe>';
+                $('#drm_nav' + data2.payment_id).append(tbody);
             }
         });
   
@@ -122,58 +192,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 /**************** Pdf Open Popup Code DRM *****************/
   
 
-  
-/**************** get category ordeing and save in local ******************/
-  
-    function loadCategoryOrderLocal(link) {
-        $.ajax({
-            async: false,
-            url: link,      
-            type: "GET",
-            dataType: "json",
-            cache: false,
-            crossDomain: true,
-            success: function(response)         
-            {
-                localStorage.setItem('categoryOrder', JSON.stringify(response.data));
-            }
-        });
-    }
-    const categoryOrderURLlocal = 'https://followizaddons.com/client_js/service_order/category.php';
-   
-    loadCategoryOrderLocal(categoryOrderURLlocal);
-  
-  
-/**************************************************************************/
-  
-    $(document).ready(function () {
-        var trigger = $('.hamburger'),
-            overlay = $('.overlay'),
-            isClosed = false;
-        
-        trigger.click(function () {
-            hamburger_cross();      
-        });
-        
-        function hamburger_cross() {
-        
-            if (isClosed == true) {          
-                overlay.hide();
-                trigger.removeClass('is-open');
-                trigger.addClass('is-closed');
-                isClosed = false;
-            } else {   
-                overlay.show();
-                trigger.removeClass('is-closed');
-                trigger.addClass('is-open');
-                isClosed = true;
-            }
-        }
-        
-        $('[data-toggle="offcanvas"]').click(function () {
-            $('#wrapper').toggleClass('toggled');
-        });  
-    });
        
   /**************** header *****************/
 /*************** FAQ PAGE SLIDE NEW CODE *****************/
@@ -182,7 +200,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 /******************************* SERVICES PAGE START *****************************/
       
     // search category
-    $(document).on("change",".selectpicker",function() {
+    $(document).on("change", ".selectpicker",function() {
   
         // Retrieve the input field text and reset the count to zero
         var filter = $(this).val(),
@@ -477,6 +495,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 let firstSocialPlateForm = '';
 let mainCategory = [];
 let subCategory = []; 
+let myFavoriteServices = [];
 
 
     $(document).on('submit','#order-form',function(){
@@ -488,266 +507,311 @@ let subCategory = [];
 
     $(document).ready(function(){
 
-        $('#orderform-main-category').on('keydown', function(e) {
-            if (e.originalEvent && e.which == 40) {
-                e.preventDefault();
-            }
-        });
-
-        $("#order_searchService").on('keyup', function(e){
-            if($(this).val().length > 0){
-                selectServiceByServiceIDManually($(this).val());
-            }
-        })
-
-        function selectServiceByServiceIDManually(service_id){
-            let selected_service = getServicesId(service_id);
-
-            let category_name = categories[selected_service.cid];
-            let ssArr = category_name.split("-");
-            let main_category = ssArr[0].trim();
-
-            $("#orderform-main-category").val(main_category).trigger('change');
-            setTimeout(function(){
-                $("#orderform-category").val(selected_service.cid).trigger('change');
-            }, 200);
-            setTimeout(function(){
-                $("#orderform-service").val(selected_service.id).trigger('change');
-            }, 800);
-        }
-    
-        //*************** populate new order form value ****************
-    
-        $("#orderform-service").on("change", function(){
-            let sel_service_id = $(this).val();
-            //Delay because else the value it was taking from the description was from the previous service chosen
-            setTimeout(function() {
-                updateMinMax();
-                UpdateDescription();
-                updateServiceTitle();
-                updateRating(sel_service_id);
-            }, 100)
-        });
-
-        
-        //CODE TO CHANGE LINK TO ACCOUNT LINK  ON NEW ORDER PAGE 
-        $('#field-orderform-fields-quantity').attr('placeholder',"Min: 5 - Max: 30000");
-        
-        setTimeout(function() {
-            //jQuery("#orderform-service").trigger( "change" );
-        }, 500)
-    
-        $('#dripfeed-options').append('<p style="color:red;font-weight:bold;">MINIMUM INTERVAL SHOULD BE AT LEAST 4 TIMES THE START TIME.<br>We will not refund any orders that does not follow this rule.</p>');
-    
-        var selected_val =  $("#orderform-service").val();
-        if(!selected_val){
-            selected_val = $("#orderform-service").prop("selectedIndex", 0).val();
-        }
-          
-        $('#field-orderform-fields-check').on('click', function(){
-            $('#dripfeed-options').find('p').remove();
-        })
-
-        $("#field-orderform-fields-check").on("change", function(){
-            //ADD POP IN DRIP-FEED INTERVEL INPUT FIELD
-            let templateData = '<div class="main_category bg_color" id="main_category_id"><div class="service_type "><p class="text_color">Interval should be at least 4 times the start time.(start time x 4=Interval) if this rule  is not followed , we will not refund any orders.</p></div></div>';
-            $("#dripfeed-options").find("#main_category_id").remove();
-            $("#dripfeed-options").find("div:nth-child(2)").find('.control-label').append(templateData);  
-          
-        });
-
-        $("#orderform-main-category, #orderform-category, #orderform-service").select2({
-            templateSelection: formatState,
-            templateResult: formatState,
-        });
-
-        $("#orderform-main-category, #orderform-category, #orderform-service").on("select2:open", hideSelect2Keyboard);
-
-        $("#orderform-main-category, #orderform-category, #orderform-service").on("select2:close",function(){
-            setTimeout(hideSelect2Keyboard, 50);
-        });
-
-        if($('#order-form').length > 0){
-
-            let serviceOrderNew = [];
+        /********************************************* NEW ORDER PAGE START ***************************************************/
+            if($('#order-form').length > 0){
+                
+                /***************** Initialize New Order Page Component START **********************/
+                    $('#orderform-main-category').on('keydown', function(e) {
+                        if (e.originalEvent && e.which == 40) {
+                            e.preventDefault();
+                        }
+                    });
             
-            function loadServiceOrderNew(link) {
-                $.ajax({
+                    $("#order_searchService").on('keyup', function(e){
+                        if($(this).val().length > 0){
+                            selectServiceByServiceIDManually($(this).val());
+                        }
+                    })
+            
+                    function selectServiceByServiceIDManually(service_id){
+                        let selected_service = getServicesId(service_id);
+            
+                        let category_name = categories[selected_service.cid];
+                        let ssArr = category_name.split("-");
+                        let main_category = ssArr[0].trim();
+            
+                        $("#orderform-main-category").val(main_category).trigger('change');
+                        setTimeout(function(){
+                            $("#orderform-category").val(selected_service.cid).trigger('change');
+                        }, 200);
+                        setTimeout(function(){
+                            $("#orderform-service").val(selected_service.id).trigger('change');
+                        }, 800);
+                    }
+                
+                    // populate new order form value    
+                    $("#orderform-service").on("change", function(){
+                        let sel_service_id = $(this).val();
+                        //Delay because else the value it was taking from the description was from the previous service chosen
+                        setTimeout(function() {
+                            updateMinMax();
+                            UpdateDescription();
+                            updateServiceTitle();
+                            updateRating(sel_service_id);
+                        }, 100)
+                    });
+            
+                    
+                    //CODE TO CHANGE LINK TO ACCOUNT LINK  ON NEW ORDER PAGE 
+                    $('#field-orderform-fields-quantity').attr('placeholder',"Min: 5 - Max: 30000");
+                    
+                    $('#dripfeed-options').append('<p style="color:red;font-weight:bold;">MINIMUM INTERVAL SHOULD BE AT LEAST 4 TIMES THE START TIME.<br>We will not refund any orders that does not follow this rule.</p>');
+                
+                    var selected_val =  $("#orderform-service").val();
+                    if(!selected_val){
+                        selected_val = $("#orderform-service").prop("selectedIndex", 0).val();
+                    }
+                    
+                    $('#field-orderform-fields-check').on('click', function(){
+                        $('#dripfeed-options').find('p').remove();
+                    })
+            
+                    $("#field-orderform-fields-check").on("change", function(){
+                        //ADD POP IN DRIP-FEED INTERVEL INPUT FIELD
+                        let templateData = '<div class="main_category bg_color" id="main_category_id"><div class="service_type "><p class="text_color">Interval should be at least 4 times the start time.(start time x 4=Interval) if this rule  is not followed , we will not refund any orders.</p></div></div>';
+                        $("#dripfeed-options").find("#main_category_id").remove();
+                        $("#dripfeed-options").find("div:nth-child(2)").find('.control-label').append(templateData);  
+                    
+                    });
+            
+                    $("#orderform-main-category, #orderform-category, #orderform-service").select2({
+                        templateSelection: formatState,
+                        templateResult: formatState,
+                    });
+            
+                    $("#orderform-main-category, #orderform-category, #orderform-service").on("select2:open", hideSelect2Keyboard);
+            
+                    $("#orderform-main-category, #orderform-category, #orderform-service").on("select2:close",function(){
+                        setTimeout(hideSelect2Keyboard, 50);
+                    });
+
+                /***************** Initialize New Order Page Component END **********************/
+
+
+    
+                /**************** get category ordeing and save in local ******************/
+                function loadCategoryOrderLocal(link) {
+                    $.ajax({
+                        async: false,
+                        url: link,      
+                        type: "GET",
+                        dataType: "json",
+                        cache: false,
+                        crossDomain: true,
+                        success: function(response)         
+                        {
+                            localStorage.setItem('categoryOrder', JSON.stringify(response.data));
+                        }
+                    });
+                }
+
+                if(!localStorage.getItem('categoryOrder')){
+                    const categoryOrderURLlocal = 'https://followizaddons.com/client_js/service_order/category.php'; 
+                    loadCategoryOrderLocal(categoryOrderURLlocal);
+                }
+
+
+                let serviceOrderNew = [];
+                function loadServiceOrderNew(link) {
+                    $.ajax({
+                        async: false,
+                        url: link,      
+                        type: "GET",
+                        dataType: "json",
+                        cache: false,
+                        crossDomain: true,
+                        success: function(response)         
+                        {
+                            serviceOrderNew = response.data;
+                        }
+                    });
+                } 
+            
+                const serviceOrderURL = 'https://followizaddons.com/client_js/service_order/index.php';
+                loadServiceOrderNew(serviceOrderURL);
+
+
+                // get my favorite services vote = 5
+                let data = {user_id: user_id};
+                jQuery.ajax({
                     async: false,
-                    url: link,      
-                    type: "GET",
+                    url: "https://followizaddons.com/vote/myfavorite_services.php",
+                    type: "POST",
                     dataType: "json",
+                    data: data,
                     cache: false,
                     crossDomain: true,
-                    success: function(response)         
-                    {
-                        serviceOrderNew = response.data;
+                    success: function(response) {
+                        if(response.status){
+                            myFavoriteServices = response.data;
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
                     }
                 });
-            } 
-        
-            const serviceOrderURL = 'https://followizaddons.com/client_js/service_order/index.php';
-            loadServiceOrderNew(serviceOrderURL);
-    
-            
-            const params = new URLSearchParams(window.location.search);
-            let selected_main_category = "";
-            
-            // if Order Again button clicked
-            if(params.has('service')){
-                let sel_service_id = params.get('service');
-               
-                let selected_category =  localStorage.getItem("selected_category");
-                let ssArr = selected_category.split("-");
-                selected_main_category = ssArr[0].trim();
-            } 
-            
-            for (const [key, value] of Object.entries(categories)) {
-                let ssArr = value.split("-");
-                let ssName = ssArr[0].trim();
                 
-                if(ssName !== firstSocialPlateForm){
-                    mainCategory[key] = ssName;
-                    firstSocialPlateForm = ssName; 
+                const params = new URLSearchParams(window.location.search);
+                let selected_main_category = "";
                 
-                    if(typeof subCategory[ssName] === 'undefined'){
-                        subCategory[ssName] = [];
-                    }
-                }
-                subCategory[ssName][key] = value; 
-                
-                // If Order Again button click mode
+
+                // if Order Again button clicked
                 if(params.has('service')){
+                    let sel_service_id = params.get('service');
+                
                     let selected_category =  localStorage.getItem("selected_category");
-                    if(selected_category == value){
-                        localStorage.setItem('category', key);
-                        console.log("Again Category: ", localStorage.getItem('category'));
-                    }
-                }
-            }
-    
-            //sort categories
-            let sortedMainCategory = [];
-            let sortedCategoryIds = JSON.parse(localStorage.getItem('categoryOrder'));
-            if(sortedCategoryIds){
-                sortedCategoryIds.forEach((cat)=>{
-                    let catId = parseInt(cat.category_id);
-                    
-                    if(typeof mainCategory[catId] != 'undefined'){
-                        sortedMainCategory[cat.sort_order] = mainCategory[catId];
-                    }
-                    
-                });
-            }else{
-                sortedMainCategory = mainCategory;
-            }      
-    
-            let oldMainCat = sortedMainCategory;
-            mainCategory = [];
-    
-            mainCategory = oldMainCat.filter(onlyUnique);
-        
-            let mainCategoryOption = '';
-            let firstOption = "";
-            
-            if(params.has('service')){
-                firstOption = selected_main_category;
-            }
-            else if (localStorage.getItem('main-category')) {
-                firstOption = localStorage.getItem('main-category');
-            }
-    
-    
-            mainCategory.forEach(element => {
-                if(firstOption === '' || firstOption == element){
-                    firstOption = element;
-                    mainCategoryOption += '<option value="'+element+'" selected="true">'+element+'</option> ';
-                } else {
-                    mainCategoryOption += '<option value="'+element+'" >'+element+'</option> ';
-                }
+                    let ssArr = selected_category.split("-");
+                    selected_main_category = ssArr[0].trim();
+                } 
                 
-            });
-    
-            $("#orderform-main-category").html('').html(mainCategoryOption);
-            createSubCategoryOption(firstOption, 1);
-        
-            $("#orderform-main-category").change(function(){
-                createSubCategoryOption($(this).val(), 2);
-            })
-        
-            $("#orderform-category").change(function(){
-    
-                var cat_id = $('option:selected', $(this)).val();
-    
-                let orderform_service = getServiceByCategoryId(cat_id);
-    
-                let lsubCategoryOption = '';
-                
-                let sortedService = [];
-                let newSortedService = [];
-
-
-                for (const [key, value] of Object.entries(orderform_service)) {			
-                    let sort_order_arr = serviceOrderNew.filter((order)=>{  return order.service_id == key; });		 
+                for (const [key, value] of Object.entries(categories)) {
+                    let ssArr = value.split("-");
+                    let ssName = ssArr[0].trim();
                     
-                    if(sort_order_arr[0] !== undefined){		
-                        let sort_val = sort_order_arr[0];           
-                        
-                        if(sort_val.length > 0){
-                            sortedService[sort_val.sort_order] = value;
-                            let temp = [];
-                            temp['key'] = key;
-                            temp['value'] = orderform_service[key]['name']; 
-                            temp['type'] = orderform_service[key]['type'];
-                            newSortedService[sort_val.sort_order] = temp;
+                    if(ssName !== firstSocialPlateForm){
+                        mainCategory[key] = ssName;
+                        firstSocialPlateForm = ssName; 
+                    
+                        if(typeof subCategory[ssName] === 'undefined'){
+                            subCategory[ssName] = [];
+                        }
+                    }
+                    subCategory[ssName][key] = value; 
+                    
+                    // If Order Again button click mode
+                    if(params.has('service')){
+                        let selected_category =  localStorage.getItem("selected_category");
+                        if(selected_category == value){
+                            localStorage.setItem('category', key);
                         }
                     }
                 }
         
-                let service = '';
-                
-                if(localStorage.getItem('service')){
-                    service = localStorage.getItem('service');
-                }
-
-                // newSortedService.forEach((element,key) => {	
-                    
-                //     let textVal = element['value'];
-                //     let pattern = / per \d*[0-9]/;
-                //     let result = pattern.test(textVal);
-                    
-                //     if(result == true){
-                //         let string = textVal.split("—");
-                //         textVal = "";
+                //sort categories
+                let sortedMainCategory = [];
+                let sortedCategoryIds = JSON.parse(localStorage.getItem('categoryOrder'));
+                if(sortedCategoryIds){
+                    sortedCategoryIds.forEach((cat)=>{
+                        let catId = parseInt(cat.category_id);
                         
-                //         for(let i =0; i < (string.length -1); i++){
-                //             textVal += string[i];
-                //         }
-                //     }
-                    
-                //     textVal = element['key']+" - " + textVal
-                //     if(element['key'] == service){
-                //         lsubCategoryOption += '<option selected="true" data-type="'+element['type']+'"  value="'+element['key']+'" >'+textVal+'</option> ';
-                //     }else{
-                //         lsubCategoryOption += '<option data-type="'+element['type']+'"  value="'+element['key']+'" >'+textVal+'</option> ';
-                //     }
-                // });
-            
-            
-                setTimeout(function(){
-                    service
-                },100)
-            })
-            
-            // order again button mode
-            if(params.has('service')){
-                setTimeout(function(){
-                    let sel_service_id = params.get('service');
-                    $("#orderform-service").val(sel_service_id).trigger('change');
-                }, 500);
-            }
-        }
+                        if(typeof mainCategory[catId] != 'undefined'){
+                            sortedMainCategory[cat.sort_order] = mainCategory[catId];
+                        }
+                        
+                    });
+                }else{
+                    sortedMainCategory = mainCategory;
+                }      
         
+                let oldMainCat = sortedMainCategory;
+                mainCategory = [];
+        
+                mainCategory = oldMainCat.filter(onlyUnique);
+            
+                let mainCategoryOption = '<option value="Your Favorite Services">Your Favorite Services</option>';
+                let firstOption = "";
+                
+                if(params.has('service')){
+                    // selected from services page
+                    firstOption = selected_main_category;
+                } else if (localStorage.getItem('main-category')) {
+                    // re-order
+                    firstOption = localStorage.getItem('main-category');
+                } else {
+                    firstOption = "Your Favorite Services";
+                    mainCategoryOption = '<option value="Your Favorite Services" selected="true">Your Favorite Services</option>';
+                }
+                
+                mainCategory.forEach(element => {
+                    if(firstOption === '' || firstOption == element){
+                        firstOption = element;
+                        mainCategoryOption += '<option value="'+element+'" selected="true">'+element+'</option> ';
+                    } else {
+                        mainCategoryOption += '<option value="'+element+'" >'+element+'</option> ';
+                    }
+                    
+                });
+        
+                $("#orderform-main-category").html('').html(mainCategoryOption);
+                createSubCategoryOption(firstOption, 1);
+            
+                $("#orderform-main-category").change(function(){
+                    createSubCategoryOption($(this).val(), 2);
+                })
+            
+                $("#orderform-category").change(function(){
+
+                    var cat_id = $('option:selected', $(this)).val();
+
+                    let orderform_service = getServiceByCategoryId(cat_id);
+
+                    let lsubCategoryOption = '';
+                    
+                    let sortedService = [];
+                    let newSortedService = [];
+
+                    for (const [key, value] of Object.entries(orderform_service)) {			
+                        let sort_order_arr = serviceOrderNew.filter((order)=>{  return order.service_id == key; });		 
+                        if(sort_order_arr[0] !== undefined){		
+                            let sort_val = sort_order_arr[0];           
+                            
+                            // if(sort_val.length > 0){
+                                sortedService[sort_val.sort_order] = value;
+                                let temp = [];
+                                temp['key'] = key;
+                                temp['value'] = orderform_service[key]['name']; 
+                                temp['type'] = orderform_service[key]['type'];
+
+                                newSortedService[sort_val.sort_order] = temp;
+                            // }
+                        }
+                    }
+
+                    let service = '';
+                    
+                    if(localStorage.getItem('service')){
+                        service = localStorage.getItem('service');
+                    }
+
+                    if(cat_id == "Your Favorite Services"){
+                        newSortedService.forEach((element,key) => {	
+                            
+                            let textVal = element['value'];
+                            let pattern = / per \d*[0-9]/;
+                            let result = pattern.test(textVal);
+                            
+                            if(result == true){
+                                let string = textVal.split("—");
+                                textVal = "";
+                                
+                                for(let i =0; i < (string.length -1); i++){
+                                    textVal += string[i];
+                                }
+                            }
+                            
+                            textVal = element['key']+" - " + textVal
+                            if(element['key'] == service){
+                                lsubCategoryOption += '<option selected="true" data-type="'+element['type']+'"  value="'+element['key']+'" >'+textVal+'</option> ';
+                            }else{
+                                lsubCategoryOption += '<option data-type="'+element['type']+'"  value="'+element['key']+'" >'+textVal+'</option> ';
+                            }
+                        });
+                    
+                        setTimeout(function(){
+                            // service
+                            $("#orderform-service").html(lsubCategoryOption).trigger('change');
+                        }, 100)
+                    }
+                })
+                
+                // order again button mode
+                if(params.has('service')){
+                    setTimeout(function(){
+                        let sel_service_id = params.get('service');
+                        $("#orderform-service").val(sel_service_id).trigger('change');
+                    }, 500);
+                }
+            }
+        /********************************************* NEW ORDER PAGE END ***************************************************/
     });
     
     function hideSelect2Keyboard(e){
@@ -1294,90 +1358,74 @@ let subCategory = [];
         return service_details;
     }; 
 
-    /**************************** code to for dropdown ************************************/
-
     function createSubCategoryOption(mainCatOption, onload){
         let subCategoryOption = '';
-        let fO = '';
+         
+        if(mainCatOption == "Your Favorite Services"){
+            subCategoryOption = '<option value="Your Favorite Services" selected="true">Your Favorite Services</option>';
+        } else {
+            let fO = ''; 
 
-        // Order Again Mode
-        if(localStorage.getItem('category')){
-            fO = localStorage.getItem('category');
-        }
-    
-        let categoryOrder = '';
-    
-        if(localStorage.getItem('categoryOrder')){
-            categoryOrder = localStorage.getItem('categoryOrder');
-            categoryOrder = JSON.parse(categoryOrder);
-        }
-        
-        
-        let rowSubcategory = subCategory[mainCatOption];
-        let sortedService = [];
-    
-        rowSubcategory.forEach((value, key)=>{
-            let sort_order_arr = categoryOrder.filter((order)=>{  return order.category_id == key; });        	
-        
-            if(sort_order_arr.length){
-            
-                let sort_val = sort_order_arr[0]
-                    
-                let sort_index = (sort_val.sort_order).toString();
-                let temp = {};
-            
-                temp.value = value;
-                temp.category_id = sort_order_arr[0].category_id;
-                sortedService[sort_index] = temp;
+            // Order Again Mode
+            if(localStorage.getItem('category')){
+                fO = localStorage.getItem('category');
             }
-        });
 
-        sortedService.forEach((element,key) => {	
-            if( fO == element["category_id"]){
-                subCategoryOption += '<option cat_id="'+key+'" value="'+element["category_id"]+'" selected="true">'+element['value']+'</option> ';
-            }else{
-                subCategoryOption += '<option cat_id="'+key+'" value="'+element["category_id"]+'" >'+element['value']+'</option> ';
+            let categoryOrder = '';
+        
+            if(localStorage.getItem('categoryOrder')){
+                categoryOrder = localStorage.getItem('categoryOrder');
+                categoryOrder = JSON.parse(categoryOrder);
             }
-        });
+            
+            let rowSubcategory = subCategory[mainCatOption];
+            let sortedService = [];
+        
+            rowSubcategory.forEach((value, key)=>{
+                let sort_order_arr = categoryOrder.filter((order)=>{  return order.category_id == key; });        	
+            
+                if(sort_order_arr.length){
+                
+                    let sort_val = sort_order_arr[0]
+                        
+                    let sort_index = (sort_val.sort_order).toString();
+                    let temp = {};
+                
+                    temp.value = value;
+                    temp.category_id = sort_order_arr[0].category_id;
+                    sortedService[sort_index] = temp;
+                }
+            });
+
+            sortedService.forEach((element,key) => {	
+                if( fO == element["category_id"]){
+                    subCategoryOption += '<option cat_id="'+key+'" value="'+element["category_id"]+'" selected="true">'+element['value']+'</option> ';
+                }else{
+                    subCategoryOption += '<option cat_id="'+key+'" value="'+element["category_id"]+'" >'+element['value']+'</option> ';
+                }
+            });
+        }
 
         $("#orderform-category").html('').html(subCategoryOption);
         
-        setTimeout(function(){ 
-            $('#orderform-category').trigger('change');
-                if(onload == 2){
-                    $('#orderform-category').trigger('change');
-                }
+        setTimeout(
+            function(){ 
+                $('#orderform-category').trigger('change');
             }, 
-        500)
+            500)
     }
-
 
     function onlyUnique(value, index, self) {
         return self.indexOf(value) === index;
     }
 
-  
     function getServicesId(service_id_key) {
-
-        // var service_details = [];
-        // var services = window.modules.siteOrder.services;
-
-        // for (let list_service_id of Object.keys(services)) {
-
-        //     if (services[list_service_id]['cid'] == catId) {
-        //         service_details[services[list_service_id]['id']] = services[list_service_id];
-        //     }
-        // }
-        // return service_details;
-
         var service_details = {};
         if(typeof window.modules.siteOrder !== 'undefined'){
             var services = window.modules.siteOrder.services;
             
             for (let list_service_id of Object.keys(services)) {
          
-                // if(list_service_id == service_id_key){
-
                 if(list_service_id.search(new RegExp(service_id_key, "i")) >= 0){
                     service_details = services[list_service_id];
                     break;
@@ -1393,12 +1441,23 @@ let subCategory = [];
         var service_details = [];
         var services = window.modules.siteOrder.services;
 
-        for (let list_service_id of Object.keys(services)) {
+        if(catId == "Your Favorite Services" && myFavoriteServices.length > 0){
+            for (let list_service_id of Object.keys(services)) {
+                for(let i = 0; i < myFavoriteServices.length; i++){
+                    if (services[list_service_id]['id'] == myFavoriteServices[i].service_id) {
+                        service_details[services[list_service_id]['id']] = services[list_service_id];
+                    }
+                }
+            }
+        } else {
+            for (let list_service_id of Object.keys(services)) {
 
-            if (services[list_service_id]['cid'] == catId) {
-                service_details[services[list_service_id]['id']] = services[list_service_id];
+                if (services[list_service_id]['cid'] == catId) {
+                    service_details[services[list_service_id]['id']] = services[list_service_id];
+                }
             }
         }
+        
         return service_details;
     };
 
@@ -1437,56 +1496,371 @@ let subCategory = [];
 
 /******************************* NEW ORDER PAGE END *****************************/
   
-
-
     $(document).ready(function(){
-        $(".ques_1").css("display","none");
-        $("h2.show_anser").click(function(e){
-            
-            if($(this).hasClass('active')){
-                $(this).removeClass('active');
-                $(this).next().slideUp();
-            }else{
-                $("h2.show_anser").removeClass('active');
-                $("h2.show_anser").next().slideUp();
-                $(this).addClass('active');
-                $(this).next().slideDown();
-            }
-        })
-    });
-  
-/************************************************************************/
-  
-  
-  
-/******************* DARK MODE  *******************************/
-  
-    $(document).ready(function(){
-        $('.nav .ticketList').click(function(){
-            $('.ticketList').removeClass("active");
-            $(this).addClass("active");
-        });
+        
     });
   
     
   
   
     $(document).ready(function(){
+        // FAQ PAGE
+        if($('.faq-section').length > 0){
+           
+            $(".ques_1").css("display","none");
+            
+            $("h2.show_anser").click(function(e){
+                
+                if($(this).hasClass('active')){
+                    $(this).removeClass('active');
+                    $(this).next().slideUp();
+                }else{
+                    $("h2.show_anser").removeClass('active');
+                    $("h2.show_anser").next().slideUp();
+                    $(this).addClass('active');
+                    $(this).next().slideDown();
+                }
+            })
+
+            // Add minus icon for collapse element which is open by default
+            $(".collapse.show").each(function(){
+                $(this).prev(".card-header").find(".fa").addClass("fa-minus").removeClass("fa-plus");
+            });
+            
+            // Toggle plus minus icon on show hide of collapse element
+            $(".collapse").on('show.bs.collapse', function(){
+                $(this).prev(".card-header").find(".fa").removeClass("fa-plus").addClass("fa-minus");
+            }).on('hide.bs.collapse', function(){
+                $(this).prev(".card-header").find(".fa").removeClass("fa-minus").addClass("fa-plus");
+            }); 
+        }
+        
+        // TICKETS PAGE
         // $(".custom-tabing .tab-panel:first-child h2").first().addClass("active");
-        $(document).on('click', '.custom-radio li', function(e) {
-            $(this).parents('.custom-radio').find("li").removeClass("active");
-            $(this).addClass("active");
-            $(this).find("input").prop("checked",true);
-        });
+        if($(".ticket-page").length > 0){
+            $(document).on('click', '.custom-radio li', function(e) {
+                $(this).parents('.custom-radio').find("li").removeClass("active");
+                $(this).addClass("active");
+                $(this).find("input").prop("checked",true);
+            });
+
+            $('.order-id  ul li').click(function(){
+                var ind = $(this).index();
+                $(".custom-tabing .tab-panel").hide();
+                $(".custom-tabing .tab-panel").removeClass("active");
+                $(".custom-tabing .tab-panel").eq(ind).show();
+                $(".custom-tabing .tab-panel").eq(ind).addClass("active");
+            }); 
+
+            //CODE FOR TICKET FORM 	
+            $(".top_radio > li").click(function(){
+                $(".custom-radio > li").removeClass('active');
+                //hide all extra field
+                $("#txtIdInput").attr('style','display:none');
+                $("#acNumIdInput").attr('style','display:none');
+                $("#opIdInput").attr('style','display:none');
+                $("#message_box").val('');
+                $("#txtIdInput").val('');
+                $("#acNumIdInput").val('');
+                $("#opIdInput").val('');
+                
+                $(".designradio").removeAttr('checked');
+                $(this).find(".designradio").attr('checked','checked');
+                
+                //show order id on tab11 hide on rest
+                    
+                if($(this).attr('href') =="#tab11" ){
+                    $("#orderIdInput").attr("style","display:block");
+                }else{
+                    $("#orderIdInput").attr("style","display:none");
+                }  
+            
+                if($(this).attr('href') =="#tab11" ){
+                    $("#refill_options").trigger("click");
+                }
+                
+                if($(this).attr('href') =="#tab2" ){
+                    $("#coinpayments_request").trigger("click");
+                }
+                
+                if($(this).attr('href') =="#tab2" ){
+                    
+                    $("#txtIdInput").attr('style','display:block');
+                }
+                
+                if($(this).attr('href') =="#tab5" ){
+                    $("#btn_feature").trigger("click");
+                }
+                    
+            });
+            
+            //code to manage inpute field on payment tab
+            $("#coinpayments_request").click(function(){
+                $("#txtIdInput").attr('style','display:block');
+                $("#acNumIdInput").attr('style','display:none');
+                $("#opIdInput").attr('style','display:none');            
+            });
+        
+            $("#coinbase_request").click(function(){      
+                $("#txtIdInput").attr('style','display:block');
+                $("#acNumIdInput").attr('style','display:none');
+                $("#opIdInput").attr('style','display:none');         
+            });
+    
+            $("#perfect_money_request").click(function(){
+                $("#txtIdInput").attr('style','display:none');
+                $("#acNumIdInput").attr('style','display:block');
+                $("#opIdInput").attr('style','display:none');
+            });
+        
+            $("#payneer_request").click(function(){    
+                $("#txtIdInput").attr('style','display:none');
+                $("#acNumIdInput").attr('style','display:none');
+                $("#opIdInput").attr('style','display:block');
+            });
+            
+            $("#strip_request, #other_request").click(function(){
+                $("#txtIdInput").attr('style','display:none');
+                $("#acNumIdInput").attr('style','display:none');
+                $("#opIdInput").attr('style','display:none');
+            });
+             
+            //code to process ticket form befor submit
+            /*$("#txt_id").change(function(){
+                let msgVal = "TXT ID :: "+ $("#txt_id").val();
+                $("#message_box").val(msgVal);
+            })
+                    
+            $("#acNum").change(function(){
+                let msgVal = "Account Number :: "+ $("#acNum").val();
+                $("#message_box").val(msgVal);
+            })
+        
+            $("#op_id").change(function(){
+                let msgVal = "Operation ID :: "+ $("#op_id").val();
+                $("#message_box").val(msgVal);
+            })*/
+
+
+
+
+            //var clickedBtn = false;      
+            $(document).on("click","#submitTicketBtn", function(e){
+                e.preventDefault();
+                var subject = $("input:radio[name=subject]:checked").val();
+                var request = $("input:radio[name=request]:checked").val();
+            
+                var ticketSubject = '';
+            
+                if(subject == 'Orders'){
+            
+                    /*if(request == 'Coinpayments' || request == 'Coinbase' || request == 'Perfect Money' || request == 'Payeer' || request == ''){
+                        request = 'Refill';
+                    }*/
+                    if($('#order_id').val() == ''){
+                        $('.alert-danger').show();
+                        $('.alert-danger > div').html('<div>Order ID cannot be blank.</div>');
+                        return;
+                    }
+            
+                    let order_id = $("#order_id").val();
+                    if(order_id != ''){
+                        ticketSubject = subject+" - "+request+" - "+order_id;
+                    }
+            
+                } else if(subject == 'Payments'){
+                    
+                    
+                    if(request == 'Coinpayments'){
+                        if($('#txt_id').val() == ''){
+                            $('.alert-danger').show();
+                            $('.alert-danger > div').html('<div>Transaction ID cannot be blank.</div>');
+                            return;
+                        }else{
+                            let txt_id = $("#txt_id").val();
+                            if(txt_id != ''){
+                                ticketSubject = subject+" - "+request+" - "+txt_id;
+                            }
+                        }
+                    }else if(request == 'Coinbase'){
+                        if($('#txt_id').val() == ''){
+                            $('.alert-danger').show();
+                            $('.alert-danger > div').html('<div>Transaction ID cannot be blank.</div>');
+                            return;
+                        }else{
+                            let txt_id = $("#txt_id").val();
+                            if(txt_id != ''){
+                                ticketSubject = subject+" - "+request+" - "+txt_id;
+                            }
+                        }
+                    }else if(request == 'Perfect Money'){
+                        if($('#acNum').val() == ''){
+                            $('.alert-danger').show();
+                            $('.alert-danger > div').html('<div>Account Number/ Batch Number cannot be blank.</div>');
+                            return;
+                        }else{
+                            let acNum = $("#acNum").val();
+                            if(acNum != ''){
+                                ticketSubject = subject+" - "+request+" - "+acNum;
+                            }
+                        }
+                    }else if(request == 'Payeer'){
+                        if($('#op_id').val() == ''){
+                            $('.alert-danger').show();
+                            $('.alert-danger > div').html('<div>Operation ID cannot be blank.</div>');
+                            return;
+                        }else{
+                            let op_id = $("#op_id").val();
+                            if(op_id != ''){
+                                ticketSubject = subject+" - "+request+" - "+op_id;
+                            }
+                        }
+                    } else {
+                        ticketSubject = subject+" - "+request;
+                    }
+            
+                }else if( subject=='Request'){
+                    ticketSubject = subject+" - "+request;
+                }else{
+                    ticketSubject = subject;
+                }
+                
+                    if($("#vip-client").val() == "true"){
+                    ticketSubject = "VIP: " + ticketSubject;
+                }
+                
+                $("#ticketSubject").val(ticketSubject);
+            
+                $("#submitTicketBtn").submit();
+            })
+        }
+        
+        // SERVICES PAGE
+        if($(".service_page").length > 0){
+            $(document).on("click", ".rest-details", function(){
+                if ($(this).hasClass('Model-fill')){
+                    return;
+                }
+                $(this).addClass('Model-fill');
+                return; //overide function show palin details
+            })
+        }
+
+        // DEPOSIT PAGE
+        if($(".deposit_page").length > 0){
+            $(".payment_tab_link").click(function(){
+                var paymentTitle = $(this).attr("data-paymentName");
+                $("#form_payment_name").text(paymentTitle);
+               
+                //For Perfectmoney EUR
+                if(paymentTitle == 'Perfect Money EUR'){
+                    $("#perfect_eur_content").show();
+                }else{
+                    $("#perfect_eur_content").hide();
+                }
+            
+                //For Perfectmoney USD
+                if(paymentTitle == 'Perfect Money USD'){
+                    $("#perfect_usd_content").show();
+                }else{
+                    $("#perfect_usd_content").hide();
+                }
+            
+                //For Stripe / Credit Card  
+                if(paymentTitle == 'Stripe / Credit Card'){
+                    $("#stripe_content").show();
+                }else{
+                    $("#stripe_content").hide();
+                }
+            
+                //For Perfectmoney  
+                if(paymentTitle == 'PayPal Invoice'){
+                    $("#payPal_invoice_content").show();
+                }else{
+                    $("#payPal_invoice_content").hide();
+                }
+            
+                //For Perfectmoney  
+                if(paymentTitle == 'PayPal'){
+                    $("#payPal_content").show();
+                }else{
+                    $("#payPal_content").hide();
+                }
+        
+                //For CoinPayments
+                if(paymentTitle == 'Coinpayments'){
+                    $("#coinPayments_content").show();
+                }else{
+                    $("#coinPayments_content").hide();
+                }
+            
+                //For payeer_content  
+                if(paymentTitle == 'Payeer'){
+                    $("#payeer_content").show();
+                }else{
+                    $("#payeer_content").hide();
+                } 
+        
+                //For Perfectmoney  
+                if(paymentTitle == 'PayPal Invoice'){
+                    $("#payPal_invoice_content").show();
+                }else{
+                    $("#payPal_invoice_content").hide();
+                }
+                
+                //For Cryptocurrency  
+                if(paymentTitle == 'CryptoCurrency'){
+                    $("#cryptocurrency_content").show();
+                }else{
+                    $("#cryptocurrency_content").hide();
+                }
+        
+                //For Skrill  
+                if(paymentTitle == 'Skrill'){
+                    $("#skrill_content").show();
+                }else{
+                    $("#skrill_content").hide();
+                }
+        
+                //For Stripe  
+                if(paymentTitle == 'Stripe / Credit Card'){
+                    $("#stripe_content").show();
+                }else{
+                    $("#stripe_content").hide();
+                }
+            
+                //For payeer  
+                //  if(paymentTitle == 'Payoneer'){
+                //    $("#payeer_content").show();
+                //  }else{
+                //    $("#payeer_content").hide();
+                //  }
+            
+                $("#method").val($(this).attr("data-paymentId")).change();
+              
+            });
+
+            $(".getInvoiceBtn").click(function(){
+       
+                var data = {};
+                
+                data.payment_id = $(this).attr('data-payment-id');
+                data.payment_date = $(this).attr('data-payment-date');
+                data.payment_method = $(this).attr('data-payment-method');
+                data.payment_amount = $(this).attr('data-payment-amount');
+                data.user_id = user_info.id;
+                data.user_name = user_info.username;
+                data.first_name = user_info.first_name;
+                data.last_name = user_info.last_name;
+                data.email = user_info.email;
+                
+                generateInvoice(data);
+              
+            })
+        }
     });
   
-    $('.order-id  ul li').click(function(){
-        var ind = $(this).index();
-        $(".custom-tabing .tab-panel").hide();
-        $(".custom-tabing .tab-panel").removeClass("active");
-        $(".custom-tabing .tab-panel").eq(ind).show();
-        $(".custom-tabing .tab-panel").eq(ind).addClass("active");
-    }); 
+   
   /*$('.custom-tabing .tab-panel h2').click(function(){
       //$(".custom-tabing .tab-panel p").hide();
       $('.custom-tabing .tab-panel h2').removeClass("active");
@@ -1691,218 +2065,20 @@ let subCategory = [];
     }
   
 
-    jQuery(document).on("change","#orderform-category1",function(){
-        
-        //Delay because else the value it was taking from the description was from the previous service chosen
-        setTimeout(function() {
-            updateMinMax();
-            UpdateDescription();
-            updateServiceTitle();
-        }, 100)
-    
-    });
+    // jQuery(document).on("change","#orderform-category1",function(){
+    //     //Delay because else the value it was taking from the description was from the previous service chosen
+    //     setTimeout(function() {
+    //         updateMinMax();
+    //         UpdateDescription();
+    //         updateServiceTitle();
+    //     }, 100)
+    // });
  
     String.prototype.ltrim = function() {
         return this.replace(/^\s+/,"");
     }
-    
-  
-    $(document).ready(function ($) {
-    
-        //CODE FOR TICKET FORM 	
-        $(".top_radio > li").click(function(){
-            $(".custom-radio > li").removeClass('active');
-            //hide all extra field
-            $("#txtIdInput").attr('style','display:none');
-            $("#acNumIdInput").attr('style','display:none');
-            $("#opIdInput").attr('style','display:none');
-            $("#message_box").val('');
-            $("#txtIdInput").val('');
-            $("#acNumIdInput").val('');
-            $("#opIdInput").val('');
-            
-            $(".designradio").removeAttr('checked');
-            $(this).find(".designradio").attr('checked','checked');
-            
-            //show order id on tab11 hide on rest
-                
-            if($(this).attr('href') =="#tab11" ){
-                $("#orderIdInput").attr("style","display:block");
-            }else{
-                $("#orderIdInput").attr("style","display:none");
-            }  
         
-            if($(this).attr('href') =="#tab11" ){
-                $("#refill_options").trigger("click");
-            }
-            
-            if($(this).attr('href') =="#tab2" ){
-                $("#coinpayments_request").trigger("click");
-            }
-            
-            if($(this).attr('href') =="#tab2" ){
-                
-                $("#txtIdInput").attr('style','display:block');
-            }
-            
-            if($(this).attr('href') =="#tab5" ){
-                $("#btn_feature").trigger("click");
-            }
-                
-            //code to manage inpute field on payment tab
-        
-            $("#coinpayments_request").click(function(){
     
-            $("#txtIdInput").attr('style','display:block');
-            $("#acNumIdInput").attr('style','display:none');
-            $("#opIdInput").attr('style','display:none');
-         
-         
-        });
-      
-        $("#coinbase_request").click(function(){
-    
-            $("#txtIdInput").attr('style','display:block');
-            $("#acNumIdInput").attr('style','display:none');
-            $("#opIdInput").attr('style','display:none');
-            
-            
-        });
-  
-        $("#perfect_money_request").click(function(){
-    
-            $("#txtIdInput").attr('style','display:none');
-            $("#acNumIdInput").attr('style','display:block');
-            $("#opIdInput").attr('style','display:none');
-        });
-      
-        $("#payneer_request").click(function(){
-    
-            $("#txtIdInput").attr('style','display:none');
-            $("#acNumIdInput").attr('style','display:none');
-            $("#opIdInput").attr('style','display:block');
-        });
-        
-        $("#strip_request, #other_request").click(function(){
-    
-            $("#txtIdInput").attr('style','display:none');
-            $("#acNumIdInput").attr('style','display:none');
-            $("#opIdInput").attr('style','display:none');
-        });
-        
-        
-        //code to process ticket form befor submit
-        /*$("#txt_id").change(function(){
-            let msgVal = "TXT ID :: "+ $("#txt_id").val();
-            $("#message_box").val(msgVal);
-        })
-                
-        $("#acNum").change(function(){
-            let msgVal = "Account Number :: "+ $("#acNum").val();
-            $("#message_box").val(msgVal);
-        })
-    
-        $("#op_id").change(function(){
-            let msgVal = "Operation ID :: "+ $("#op_id").val();
-            $("#message_box").val(msgVal);
-        })*/
-        
-    });
-  
-  
-  
-        
-    //var clickedBtn = false;      
-    $(document).on("click","#submitTicketBtn",function(e){
-        e.preventDefault();
-        var subject = $("input:radio[name=subject]:checked").val();
-        var request = $("input:radio[name=request]:checked").val();
-    
-        var ticketSubject = '';
-    
-        if(subject == 'Orders'){
-    
-            /*if(request == 'Coinpayments' || request == 'Coinbase' || request == 'Perfect Money' || request == 'Payeer' || request == ''){
-                request = 'Refill';
-            }*/
-            if($('#order_id').val() == ''){
-                $('.alert-danger').show();
-                $('.alert-danger > div').html('<div>Order ID cannot be blank.</div>');
-                return;
-            }
-    
-            let order_id = $("#order_id").val();
-            if(order_id != ''){
-                ticketSubject = subject+" - "+request+" - "+order_id;
-            }
-    
-        } else if(subject == 'Payments'){
-            
-            
-            if(request == 'Coinpayments'){
-                if($('#txt_id').val() == ''){
-                    $('.alert-danger').show();
-                    $('.alert-danger > div').html('<div>Transaction ID cannot be blank.</div>');
-                    return;
-                }else{
-                    let txt_id = $("#txt_id").val();
-                    if(txt_id != ''){
-                        ticketSubject = subject+" - "+request+" - "+txt_id;
-                    }
-                }
-            }else if(request == 'Coinbase'){
-                if($('#txt_id').val() == ''){
-                    $('.alert-danger').show();
-                    $('.alert-danger > div').html('<div>Transaction ID cannot be blank.</div>');
-                    return;
-                }else{
-                    let txt_id = $("#txt_id").val();
-                    if(txt_id != ''){
-                        ticketSubject = subject+" - "+request+" - "+txt_id;
-                    }
-                }
-            }else if(request == 'Perfect Money'){
-                if($('#acNum').val() == ''){
-                    $('.alert-danger').show();
-                    $('.alert-danger > div').html('<div>Account Number/ Batch Number cannot be blank.</div>');
-                    return;
-                }else{
-                    let acNum = $("#acNum").val();
-                    if(acNum != ''){
-                        ticketSubject = subject+" - "+request+" - "+acNum;
-                    }
-                }
-            }else if(request == 'Payeer'){
-                if($('#op_id').val() == ''){
-                    $('.alert-danger').show();
-                    $('.alert-danger > div').html('<div>Operation ID cannot be blank.</div>');
-                    return;
-                }else{
-                    let op_id = $("#op_id").val();
-                    if(op_id != ''){
-                        ticketSubject = subject+" - "+request+" - "+op_id;
-                    }
-                }
-            } else {
-                ticketSubject = subject+" - "+request;
-            }
-    
-        }else if( subject=='Request'){
-            ticketSubject = subject+" - "+request;
-        }else{
-            ticketSubject = subject;
-        }
-        
-            if($("#vip-client").val() == "true"){
-            ticketSubject = "VIP: " + ticketSubject;
-        }
-        
-        $("#ticketSubject").val(ticketSubject);
-    
-        $("#submitTicketBtn").submit();
-    })
-  
-
     //code to sow readonly ration on order page
     if (currentURL.includes('orders')) {
         getUserRatingForOrder();
@@ -1914,214 +2090,39 @@ let subCategory = [];
         currentURL.includes('drip-feed') ||
         currentURL.includes('refill') ) { 
     }
-  
-    
-       
-    $(document).on("click", ".rest-details", function(){
-        if ($(this).hasClass('Model-fill')){
-            return;
-        }
-  
-        $(this).addClass('Model-fill');
-  
-        return; //overide function show palin details
-    })
-    
-    
-    
-/******************** code for add deposit page *************************************/
-  
-    $(".payment_tab_link").click(function(){
-        var paymentTitle = $(this).attr("data-paymentName");
-        $("#form_payment_name").text(paymentTitle);
-       
-            //For Perfectmoney EUR
-            if(paymentTitle == 'Perfect Money EUR'){
-              $("#perfect_eur_content").show();
-            }else{
-              $("#perfect_eur_content").hide();
-            }
-       
-            //For Perfectmoney USD
-            if(paymentTitle == 'Perfect Money USD'){
-              $("#perfect_usd_content").show();
-            }else{
-              $("#perfect_usd_content").hide();
-            }
-       
-            //For Stripe / Credit Card  
-            if(paymentTitle == 'Stripe / Credit Card'){
-              $("#stripe_content").show();
-            }else{
-              $("#stripe_content").hide();
-            }
-       
-            //For Perfectmoney  
-            if(paymentTitle == 'PayPal Invoice'){
-              $("#payPal_invoice_content").show();
-            }else{
-              $("#payPal_invoice_content").hide();
-            }
-       
-            //For Perfectmoney  
-            if(paymentTitle == 'PayPal'){
-              $("#payPal_content").show();
-            }else{
-              $("#payPal_content").hide();
-            }
-    
-            //For CoinPayments
-            if(paymentTitle == 'Coinpayments'){
-                $("#coinPayments_content").show();
-            }else{
-              $("#coinPayments_content").hide();
-            }
-       
-          //For payeer_content  
-            if(paymentTitle == 'Payeer'){
-              $("#payeer_content").show();
-            }else{
-              $("#payeer_content").hide();
-            }
-  
-            
-    
-            //For Perfectmoney  
-            if(paymentTitle == 'PayPal Invoice'){
-              $("#payPal_invoice_content").show();
-            }else{
-              $("#payPal_invoice_content").hide();
-            }
-    
-  
-            //For Cryptocurrency  
-            if(paymentTitle == 'CryptoCurrency'){
-              $("#cryptocurrency_content").show();
-            }else{
-              $("#cryptocurrency_content").hide();
-            }
-    
-          //For Skrill  
-            if(paymentTitle == 'Skrill'){
-              $("#skrill_content").show();
-            }else{
-              $("#skrill_content").hide();
-            }
-    
-          //For Stripe  
-            if(paymentTitle == 'Stripe / Credit Card'){
-              $("#stripe_content").show();
-            }else{
-              $("#stripe_content").hide();
-            }
-    
-          //For payeer  
-          //  if(paymentTitle == 'Payoneer'){
-          //    $("#payeer_content").show();
-          //  }else{
-          //    $("#payeer_content").hide();
-          //  }
-    
-          $("#method").val($(this).attr("data-paymentId")).change();
-      
-    });
-   
-/******************** code for add deposit page *************************************/
 
-    
-//*********************** FAQ page code *****************************************//
-    
-    // Add minus icon for collapse element which is open by default
-    
-    $(".collapse.show").each(function(){
-        $(this).prev(".card-header").find(".fa").addClass("fa-minus").removeClass("fa-plus");
-    });
-    
-    // Toggle plus minus icon on show hide of collapse element
-    $(".collapse").on('show.bs.collapse', function(){
-        $(this).prev(".card-header").find(".fa").removeClass("fa-plus").addClass("fa-minus");
-    }).on('hide.bs.collapse', function(){
-        $(this).prev(".card-header").find(".fa").removeClass("fa-minus").addClass("fa-plus");
-    }); 
-    
-//*********************** FAQ page code *****************************************//
       
-    var letCollapseWidth = false,
-        paddingValue = 30,
-        sumWidth = $('.navbar-right-block').width() + $('.navbar-left-block').width() + $('.navbar-brand').width() + paddingValue;
-  
-    $(window).on('resize', function () {
-        navbarResizerFunc();
-    });
-  
-    var navbarResizerFunc = function navbarResizerFunc() {
-        if (sumWidth <= $(window).width()) {
-            if (letCollapseWidth && letCollapseWidth <= $(window).width()) {
-                $('#navbar').addClass('navbar-collapse');
-                $('#navbar').removeClass('navbar-collapsed');
-                $('nav').removeClass('navbar-collapsed-before');
-                letCollapseWidth = false;
-            }
-        } else {
-            $('#navbar').removeClass('navbar-collapse');
-            $('#navbar').addClass('navbar-collapsed');
-            $('nav').addClass('navbar-collapsed-before');
-            letCollapseWidth = $(window).width();
-        }
-    };
-  
-    if ($(window).width() >= 768) {
-        navbarResizerFunc();
-    }
-  
-    $('[data-toggle="tooltip"]').tooltip();
+ 
   
       
 /**************************** code ot generate invoice ************************************/
     //need to chang with client server.
-    const invoice_api_url = api_end_point+"/invoice/";
+    const invoice_api_url = api_end_point + "/invoice/";
   
     function generateInvoice(data){
         $.ajax({
-            url: invoice_api_url+"generateInvoice.php",      
+            url: invoice_api_url + "generateInvoice.php",      
             type: "POST",                  
             data:  data,
-            success: function(data)         
-            {
-            var link=document.createElement('a');
-            link.href=invoice_api_url+'get-invoice.php?file_path='+data.file_path;
-            link.download="invoice.pdf";
-            link.click();
-            link.remove();
+            success: function(data) {
+                var link = document.createElement('a');
+                link.href = invoice_api_url + 'get-invoice.php?file_path=' + data.file_path;
+                link.download = "invoice.pdf";
+                link.click();
+                link.remove();
             }
         });
     }
     
-    $(".getInvoiceBtn").click(function(){
-       
-        var data = {};
-        
-        data.payment_id = $(this).attr('data-payment-id');
-        data.payment_date = $(this).attr('data-payment-date');
-        data.payment_method = $(this).attr('data-payment-method');
-        data.payment_amount = $(this).attr('data-payment-amount');
-        data.user_id = user_info.id;
-        data.user_name = user_info.username;
-        data.first_name = user_info.first_name;
-        data.last_name = user_info.last_name;
-        data.email = user_info.email;
-        
-        generateInvoice(data);
-      
-    })
+    
     
 /**************************** code for generate invoice ************************************/
    
 /**************************** code for ticket rating ***************************************/
     
-    const get_agent_url = api_end_point+"/agent/getAgents.php";
-    const agent_url = api_end_point+"/agent/";
-    const get_agent_ratings_url = api_end_point+"/agent/read.php";
+    const get_agent_url = api_end_point + "/agent/getAgents.php";
+    const agent_url = api_end_point + "/agent/";
+    const get_agent_ratings_url = api_end_point + "/agent/read.php";
 
     function getAgents(){
         jQuery.ajax({
@@ -2136,18 +2137,16 @@ let subCategory = [];
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
-            
-                //console.log(jqXHR);
             }
         });
     }
-    
   
     function getAgentRatings(ticket_id){
       
         if (user_id == '') {
             user_id = 0; 
         }
+
         var formData = {"user_id":user_id,"ticket_id":ticket_id}; 
         
         jQuery.ajax({
@@ -2170,14 +2169,10 @@ let subCategory = [];
             }
         });
     }
-    
-    
   
     function getKeyByValue(object, value) {
         return Object.keys(object).find(key => object[key] === value);
     }
-  
-    
     
     function getAgentId(agents,msg_txt){
         var agent_key = '';
@@ -2194,25 +2189,26 @@ let subCategory = [];
     }
     
     
-    function insertOrUpdateTicketRating(user_id,ticket_id,msg_id,agent_id,rating,response_time){
+    function insertOrUpdateTicketRating(user_id, ticket_id, msg_id, agent_id, rating, response_time){
         if (user_id == '') {
             user_id = 0; 
         }
+
         var formData = { 
-                "user_id":user_id, 
-                "msg_id":msg_id,
-                "agent_id":agent_id,
-                "ticket_id":ticket_id,
-                "rating" : rating,
-                "response_time":response_time 
-            }; 
+            "user_id": user_id, 
+            "msg_id": msg_id,
+            "agent_id": agent_id,
+            "ticket_id": ticket_id,
+            "rating": rating,
+            "response_time": response_time 
+        }; 
     
         jQuery.ajax({
-            url : agent_url+"insertOrUpdateAgentRating.php",
+            url : agent_url + "insertOrUpdateAgentRating.php",
             type: "POST",
             dataType: "json",
             cache: false,
-            data :formData,
+            data: formData,
             crossDomain: true,
             success: function(data, textStatus, jqXHR)
             {
@@ -2248,48 +2244,46 @@ let subCategory = [];
         
             setTimeout(function(){
                 getAgentRatings(ticket_id);
+                
                 //init blank rating
                 if($(".ticketReview").length > 0){
                 
-                jQuery(".ticketReview").rating({
-                    "value": 0,
-                    "click": function (e) {
-                        if(typeof e.event !== "undefined"){
-                        
-                            let askTime =  $(e.event.target).parent().parent().parent().find('.text-muted').html();
+                    jQuery(".ticketReview").rating({
+                        "value": 0,
+                        "click": function (e) {
+                            if(typeof e.event !== "undefined"){
                             
-                            // let replyTime =  $(e.event.target).find('.text-muted').html();
-                            let replyTime =  $(e.event.target).parent().parent().parent().parent().prev().find('.text-muted').html();
-                            if(typeof replyTime === 'undefined'){
-                                replyTime = askTime;
-                            }
+                                let askTime =  $(e.event.target).parent().parent().parent().find('.text-muted').html();
+                                
+                                // let replyTime =  $(e.event.target).find('.text-muted').html();
+                                let replyTime =  $(e.event.target).parent().parent().parent().parent().prev().find('.text-muted').html();
+                                if(typeof replyTime === 'undefined'){
+                                    replyTime = askTime;
+                                }
+                                
+                                var msg_id = (e.event.target.parentNode.id).split("_")[1];
+                                var source_id = e.event.target.parentNode.id;
+                                var msg_txt = $("#msg_container_"+msg_id).text();
+                                let isAgentExit = JSON.parse(localStorage.getItem('agents'));
+
+                                if(isAgentExit == null || isAgentExit == 'undefined'){
+                                    getAgents();
+                                }
+
+                                let agents = JSON.parse(localStorage.getItem('agents'));
+                                
+                                var agent_id = getAgentId(agents,msg_txt);
+                                if(agent_id == "") { agent_id = 1; }
+                                var response_time = responsetime(askTime, replyTime);// seconds
                             
-                            var msg_id = (e.event.target.parentNode.id).split("_")[1];
-                            var source_id = e.event.target.parentNode.id;
-                            var msg_txt = $("#msg_container_"+msg_id).text();
-                            let isAgentExit = JSON.parse(localStorage.getItem('agents'));
-
-                            if(isAgentExit == null || isAgentExit == 'undefined'){
-                                getAgents();
+                                if(agent_id != ''){
+                                    insertOrUpdateTicketRating(user_id,ticket_id,msg_id,agent_id,e.stars,response_time)
+                                }
                             }
-
-                            let agents = JSON.parse(localStorage.getItem('agents'));
-                            
-                            var agent_id = getAgentId(agents,msg_txt);
-                            if(agent_id == "") { agent_id = 1; }
-                            var response_time = responsetime(askTime,replyTime);// seconds
-                        
-                            if(agent_id != ''){
-                                insertOrUpdateTicketRating(user_id,ticket_id,msg_id,agent_id,e.stars,response_time)
-                            }
-                        }
-                    },
-
-                });
-            }
-            
-                
-            },200)
+                        },
+                    });
+                }
+            }, 200);
             
         });
       
@@ -2324,17 +2318,7 @@ let subCategory = [];
    
     
     /********************** add active class on selected nav dropdorn *********************/  
-    
-    $('.dropdown-menu li.active').parents('li').addClass('active');
-    
-    
-    /********************* For Circle progess bar *********************/
-    $('.second.circle').circleProgress({
-      //value: 0.0658
-      startAngle: -Math.PI / 2,
-      emptyFill: "#7E8E8D"
-    });
-  
+
     
     /************************** code for synchronise user on other server ************/
     
@@ -2347,7 +2331,7 @@ let subCategory = [];
               cache: false,
               data:  { 'users' :  users },
               crossDomain: true,
-              url: api_end_point+"/user/insertOrUpdateUser.php",      
+              url: api_end_point + "/user/insertOrUpdateUser.php",      
               success: function(data)         
               {
                 //console.log(data);
@@ -2355,8 +2339,7 @@ let subCategory = [];
           });
     }
     
-  function generateAllInvoice(paymentInfo){
-        ////console.log(paymentInfo);
+    function generateAllInvoice(paymentInfo){
         var paymentInfo = { ...paymentInfo }; 
         
         $.ajax({
@@ -2365,7 +2348,7 @@ let subCategory = [];
               cache: false,
               data:  { 'payment_info' :  paymentInfo },
               crossDomain: true,
-              url: api_end_point+"/invoice/generate-all-invoice.php",      
+              url: api_end_point + "/invoice/generate-all-invoice.php",      
               success: function(data)         
               {
                 //console.log(data);
@@ -2374,17 +2357,16 @@ let subCategory = [];
     }
     
   
-  function synchronizeService(allServices){
+    function synchronizeService(allServices){
        
-        var updates = { ...allServices }; 
-        ////console.log(updates);
+        var updates = { ...allServices };
         return $.ajax({
               type: "POST",
               dataType: "json",
               cache: false,
               data:  { 'updates' :  updates },
               crossDomain: true,
-              url: api_end_point+"/api/update/insertOrUpdateServices.php",
+              url: api_end_point + "/api/update/insertOrUpdateServices.php",
               success: function(data)         
               {
                 //console.log(data);
@@ -2393,40 +2375,39 @@ let subCategory = [];
     }
     
   
-  async function processServicesOld(categories){
-    let totalCategory = categories.length;;
-   
-  
-      for(let i = 0; i < totalCategory; i++){
-          let category = categories[i];
-          let service = category.services;
-          let allServices = [];
-          service.forEach(function (s) {
-              let temArr = [];
-              temArr['service_id'] = s.id;
-              temArr['service_details'] = s.name;
-              temArr['price'] = parseFloat(s.rate.custom);
-              temArr['status'] = parseInt(s.status);
-              //allServices.push(temArr);
-              allServices.push({ ...temArr });
-          });
-          await synchronizeService(allServices);
-  
-          if(i == 2) break;
-      }
-  }
+    async function processServicesOld(categories){
+        let totalCategory = categories.length;;
     
-  function synchronizeServiceOrder(allServicesOrder){
+    
+        for(let i = 0; i < totalCategory; i++){
+            let category = categories[i];
+            let service = category.services;
+            let allServices = [];
+            service.forEach(function (s) {
+                let temArr = [];
+                temArr['service_id'] = s.id;
+                temArr['service_details'] = s.name;
+                temArr['price'] = parseFloat(s.rate.custom);
+                temArr['status'] = parseInt(s.status);
+                //allServices.push(temArr);
+                allServices.push({ ...temArr });
+            });
+            await synchronizeService(allServices);
+    
+            if(i == 2) break;
+        }
+    }
+    
+    function synchronizeServiceOrder(allServicesOrder){
        
         var serviceOrder = { ...allServicesOrder }; 
-        ////console.log(serviceOrder);
         return $.ajax({
               type: "POST",
               dataType: "json",
               cache: false,
               data:  { 'serviceOrder' :  serviceOrder },
               crossDomain: true,
-              url: api_end_point+"/api/order/insertOrUpdateServiceSorting.php",
+              url: api_end_point + "/api/order/insertOrUpdateServiceSorting.php",
               success: function(data)         
               {
                 //console.log(data);
@@ -2434,75 +2415,72 @@ let subCategory = [];
           });
     }
     
-  async function processServices(categories){
-    let totalCategory = categories.length;;
-   
-     // let counter = 1;
-      for(let i = 0; i < totalCategory; i++){
-          let category = categories[i];
-          let service = category.services;
-          let allServices = [];
-        //let allServicesOrder = [];
-          service.forEach(function (s) {
-              let temArr = [];
-            //let temArr2 = [];
-              temArr['service_id'] = s.id;
-              temArr['service_details'] = s.name;
-              temArr['price'] = parseFloat(s.rate.custom);
-              temArr['status'] = parseInt(s.status);
-              //allServices.push(temArr);
-           // temArr2['service_id'] = s.id;
-           // temArr2['sort_order'] = counter;
-            allServices.push({ ...temArr });
-           // counter++;
-              //allServicesOrder.push({ ...temArr2 });
-          });
-          if(allServices.length){
-              await synchronizeService(allServices);
-          }
-          ////console.log(allServicesOrder);
-          //await synchronizeServiceOrder(allServicesOrder)
-          // if(i == 1) break;
-      }
-  }
+    async function processServices(categories){
+        let totalCategory = categories.length;;
     
-  async function processServicesOrderOld(categories){
-    let totalCategory = categories.length;;
-   
-      let counter = 1;
-      for(let i = 0; i < totalCategory; i++){
-          let category = categories[i];
-          let service = category.services;
-        
-        let allServicesOrder = [];
-          service.forEach(function (s) {
-              
-            let temArr2 = [];
-              
-            temArr2['service_id'] = s.id;
-            temArr2['sort_order'] = counter;
+        // let counter = 1;
+        for(let i = 0; i < totalCategory; i++){
+            let category = categories[i];
+            let service = category.services;
+            let allServices = [];
+            //let allServicesOrder = [];
+            service.forEach(function (s) {
+                let temArr = [];
+                //let temArr2 = [];
+                temArr['service_id'] = s.id;
+                temArr['service_details'] = s.name;
+                temArr['price'] = parseFloat(s.rate.custom);
+                temArr['status'] = parseInt(s.status);
+                //allServices.push(temArr);
+            // temArr2['service_id'] = s.id;
+            // temArr2['sort_order'] = counter;
+                allServices.push({ ...temArr });
+            // counter++;
+                //allServicesOrder.push({ ...temArr2 });
+            });
+            if(allServices.length){
+                await synchronizeService(allServices);
+            }
+            //await synchronizeServiceOrder(allServicesOrder)
+            // if(i == 1) break;
+        }
+    }
+    
+    async function processServicesOrderOld(categories){
+        let totalCategory = categories.length;;
+    
+        let counter = 1;
+        for(let i = 0; i < totalCategory; i++){
+            let category = categories[i];
+            let service = category.services;
             
-            counter++;
-              allServicesOrder.push({ ...temArr2 });
-          });
-         
-          ////console.log(allServicesOrder);
-          await synchronizeServiceOrder(allServicesOrder)
-          // if(i == 1) break;
-      }
-  }
+            let allServicesOrder = [];
+            service.forEach(function (s) {
+                
+                let temArr2 = [];
+                
+                temArr2['service_id'] = s.id;
+                temArr2['sort_order'] = counter;
+                
+                counter++;
+                allServicesOrder.push({ ...temArr2 });
+            });
+            
+            await synchronizeServiceOrder(allServicesOrder)
+            // if(i == 1) break;
+        }
+    }
     
-  function synchronizeCategoryOrder(allCategoriesOrder){
+    function synchronizeCategoryOrder(allCategoriesOrder){
        
         var categoryOrder = { ...allCategoriesOrder }; 
-        ////console.log(serviceOrder);
         return $.ajax({
               type: "POST",
               dataType: "json",
               cache: false,
               data:  { 'categoryOrder' :  categoryOrder },
               crossDomain: true,
-              url: api_end_point+"/api/order/insertOrUpdateCategorySorting.php",
+              url: api_end_point + "/api/order/insertOrUpdateCategorySorting.php",
               success: function(data)         
               {
                 console.log("category="+data);
@@ -2510,57 +2488,57 @@ let subCategory = [];
           });
     }
     
-  async function processCategoryOrder(categories){
-    let totalCategory = categories.length;;
-   
-      
-      let cat_counter = 1;
-      let allCategoriesOrder = [];
-      for(let i = 0; i < totalCategory; i++){
-        let category = categories[i];
-  
-        //code for service order
-        let temArr3 = [];
-            
-        temArr3['category_id'] = category.id;
-        temArr3['sort_order'] = cat_counter;
+    async function processCategoryOrder(categories){
+        let totalCategory = categories.length;;
+    
         
-        cat_counter++;
-        allCategoriesOrder.push({ ...temArr3 });
-  
-      }
-      await synchronizeCategoryOrder(allCategoriesOrder)
-  }  
+        let cat_counter = 1;
+        let allCategoriesOrder = [];
+        for(let i = 0; i < totalCategory; i++){
+            let category = categories[i];
     
-  async function processServicesOrder(categories){
-    let totalCategory = categories.length;;
-   
-      let counter = 1;
+            //code for service order
+            let temArr3 = [];
+                
+            temArr3['category_id'] = category.id;
+            temArr3['sort_order'] = cat_counter;
+            
+            cat_counter++;
+            allCategoriesOrder.push({ ...temArr3 });
     
+        }
+        await synchronizeCategoryOrder(allCategoriesOrder)
+    }  
     
-      for(let i = 0; i < totalCategory; i++){
-        let category = categories[i];
-        let service = category.services;
-  
-        let allServicesOrder = [];
-        service.forEach(function (s) {
+    async function processServicesOrder(categories){
+        let totalCategory = categories.length;;
+    
+        let counter = 1;
+        
+        
+        for(let i = 0; i < totalCategory; i++){
+            let category = categories[i];
+            let service = category.services;
+    
+            let allServicesOrder = [];
+            service.forEach(function (s) {
+                
+                let temArr2 = [];
+                
+                temArr2['service_id'] = s.id;
+                temArr2['sort_order'] = counter;
+                
+                counter++;
+                allServicesOrder.push({ ...temArr2 });
+            });
             
-            let temArr2 = [];
+            if(service.length){
+                await synchronizeServiceOrder(allServicesOrder)
+            }
             
-            temArr2['service_id'] = s.id;
-            temArr2['sort_order'] = counter;
-            
-            counter++;
-            allServicesOrder.push({ ...temArr2 });
-        });
-         
-          if(service.length){
-              await synchronizeServiceOrder(allServicesOrder)
-          }
-          
-          // if(i == 1) break;
-      }
-  }
+            // if(i == 1) break;
+        }
+    }
   
     
   
@@ -2785,7 +2763,6 @@ let subCategory = [];
             crossDomain: true,
             success: function(response)         
             {
-                console.log("Updates Services: ", response.data);
                 $('.table.update-table tbody').html('');
 
                 response.data.forEach(function(data) {
@@ -2955,7 +2932,7 @@ let subCategory = [];
    };
     /********************************************** code for api copy ***************************/
     
-   $(document).on("click",'#api_copy', function(e){
+    $(document).on("click",'#api_copy', function(e){
         e.preventDefault();
         document.getElementById('api_key').select();
     
@@ -2974,7 +2951,7 @@ let subCategory = [];
         
     });
   
-  });//documentready
+//   });//documentready
   
   
   

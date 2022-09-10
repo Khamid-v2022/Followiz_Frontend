@@ -318,34 +318,13 @@
         </div>
         
         {{ site['custom_footer'] }}
-        
-        {% for script in site['scripts'] %}
-            <script type="text/javascript" {% if script['src'] %}src="{{ script['src'] }}"{% endif %}>
-                {% if script['code'] %} {{ script['code'] }} {% endif %}
-            </script>
-        {% endfor %}
-        
-        <script src="https://followizaddons.com/client_js/rating.js"></script><!--need to change-->
-        
-        <script>
+        <script type="text/javascript">
             //PLEASE DO NOT REMOVE FOLLOWING CODE IT IS USED IN OTHER SCRIPT
             const api_end_point = "https://followizaddons.com/client_js";
             const site_link = location.protocol+'//'+location.hostname; //https://followiz.com/
             const user_info =  {{ user | json_encode }}; 
             const user_id = "{{ user['id'] }}";
-        </script>
-        
-        <!-- select2 js -->
-        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous"></script> -->
-        <script src="https://followizaddons.com/client_js/customeSelect.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-        <!-- Circle progress bar -->
-        <script src="https://rawgit.com/kottenator/jquery-circle-progress/1.2.2/dist/circle-progress.js"></script>
-        <script src="https://followizaddons.com/client_js/rating.js"></script>
-        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap.min.js"></script>
-        
-        <script type="text/javascript">
+
             window.onscroll = function() {myFunction()};
             
             var header = document.getElementById("myHeader");
@@ -359,6 +338,24 @@
                 }
             }
             const serverURL = "https://followizaddons.com/";
+
         </script>
+      
+        {% for script in site['scripts'] %}
+            <script type="text/javascript" {% if script['src'] %}src="{{ script['src'] }}"{% endif %}>
+                {% if script['code'] %} {{ script['code'] }} {% endif %}
+            </script>
+        {% endfor %}
+        
+        <script src="https://followizaddons.com/client_js/rating.js"></script><!--need to change-->
+        <!-- select2 js -->
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous"></script> -->
+        <script src="https://followizaddons.com/client_js/customeSelect.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+        <!-- Circle progress bar -->
+        <script src="https://rawgit.com/kottenator/jquery-circle-progress/1.2.2/dist/circle-progress.js"></script>
+        <script src="https://followizaddons.com/client_js/rating.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap.min.js"></script>
     </body>
 </html>
