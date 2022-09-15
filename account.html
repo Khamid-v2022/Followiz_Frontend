@@ -1,107 +1,154 @@
 <div class="container">
     <div class="panel account account_detail">
-       <div class="panel-body">
-          <div class="row">
-             <div class="col-md-6">
-                <div class=" account_page bg_color">
-                   {% if success %}
-                   <div class="alert alert-dismissible alert-success {% if site['rtl'] %} rtl-alert {% endif %}">
-                      <button type="button" class="close" data-dismiss="alert">&times;</button>
-                      {{ successText }}
-                   </div>
-                   {% endif %}
-                   
-                   <h2 class="text_color">Account Details</h2>
-                   <div class="well">
-                      <div class="form-group username_first">
-                         <label for="username" class="control-label text_color1">{{ lang('account.username') }}</label>
-                         <input type="text" class="form-control bg_color" id="username" value="{{ user['username'] }}" readonly>
-                      </div>
-                      <div class="form-group username_first">
-                        <label for="email" class="control-label text_color1">Email</label>
-                        <input type="text" class="form-control bg_color" id="email" value="{{ user['email'] }}" readonly>
-                     </div>
-                      <form {% if site['rtl'] %}class="rtl-form"{% endif %} method="post" action="">
-                      {% if error %}
-                      <div class="alert alert-dismissible alert-danger {% if site['rtl'] %} rtl-alert {% endif %}">
-                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                         {{ errorText }}
-                      </div>
-                      {% endif %}
-                      <div class="form-group password_bottom">
-                         <label for="current" class="control-label text_color">{{ lang('account.password.current') }}</label>
-                         <input type="password" class="form-control bg_color" id="current" name="SettingsFrom[current_password]">
-                      </div>
-                      <div class="form-group password_bottom">
-                         <label for="new" class="control-label text_color">{{ lang('account.password.new') }}</label>
-                         <input type="password" class="form-control bg_color" id="new" name="SettingsFrom[password]">
-                      </div>
-                      <div class="form-group password_bottom">
-                         <label for="confirm" class="control-label text_color">{{ lang('account.password.confirm') }}</label>
-                         <input type="password" class="form-control bg_color" id="confirm" name="SettingsFrom[confirm_password]">
-                      </div>
-                      <input type="hidden" name="_csrf" value="{{csrftoken}}">
-                      <button type="submit" class="btn btn-primary btn-block">{{ lang('account.password.button') }}</button>
-                      </form>
-                   </div>
-                </div>
-             </div>
-             <div class="col-md-6">
-                <div class=" account_page bg_color">
-                   <h2 class="text_color">Timezone Settings</h2>
-                   {% if site['languages']|length > 1 %}
-                   <div class="well">
-                      <form {% if site['rtl'] %}class="rtl-form"{% endif %} method="post" action="">
-                      <div class="form-group">
-                         <label for="language" class="control-label  text_color">{{ lang('account.language') }}</label>
-                         <select class="form-control" id="language" name="SettingsFrom[lang]">
-                         {% for language in site['languages'] %}
-                         <option value="{{ language['code'] }}" {% if language['code'] == user['lang'] %}selected{% endif %}>{{ language['name'] }}</option>
-                         {% endfor %}
-                         </select>
-                      </div>
-                      <input type="hidden" name="_csrf" value="{{csrftoken}}">
-                      <button type="submit" class="btn btn-primary btn-block">{{ lang('account.save') }}</button>
-                      </form>
-                   </div>
-                   {% endif %}
-                   <div class="well">
-                      <form {% if site['rtl'] %}class="rtl-form"{% endif %} action="" method="post">
-                      <div class="form-group">
-                         <label for="timezone" class="control-label text_color">{{ lang('account.timezone') }}</label>
-                         <select name="SettingsFrom[timezone]" id="timezone" class="form-control bg_color">
-                         {% for timezone,label in timezones %}
-                         <option value="{{timezone}}" {% if timezone == user['timezone'] %}selected{% endif %}>{{label}}</option>
-                         {% endfor %}
-                         </select>
-                      </div>
-                      <input type="hidden" name="_csrf" value="{{csrftoken}}">
-                      <button type="submit" class="btn btn-primary btn-block">{{ lang('account.save') }}</button>
-                      </form>
-                   </div>
-                </div>
-                <div class=" account_page mt-5 bg_color">
-                   <h2 class="text_color">API Key Settings</h2>
-                   <div class="well">
-                      <form {% if site['rtl'] %}class="rtl-form"{% endif %} action="{{ page['url'] }}/newkey" method="post">
-                      <div class="form-group">
-                         <p>Never share your API Key. We will never ask for it.</p>
-                         <label for="key" class="control-label text_color">{{ lang('account.api_key') }}</label>
-                         {% if user['is_generated_apikey'] %}
-                         <input type="text" class="form-control bg_color" id="api_key" value="{{ user['apikey'] }}" readonly>
-                         <span class="api_copy" id="api_copy"><i class="fa fa-clone" aria-hidden="true"></i></span>
-                        
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class=" account_page bg_color">
+                        {% if success %}
+                        <div class="alert alert-dismissible alert-success {% if site['rtl'] %} rtl-alert {% endif %}">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            {{ successText }}
+                        </div>
                         {% endif %}
-                      </div>
-                      
-                      <input type="hidden" name="_csrf" value="{{csrftoken}}">
-                      <button type="submit" class="btn btn-primary btn-block key_setting">{{ lang('account.generate_key') }}</button>
-                      </form>
-                   </div>
+                        {% if successChangeEmail %}
+                        <div class="alert alert-dismissible alert-success {% if site['rtl'] %} rtl-alert {% endif %}">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            {{ successChangeEmailMessage }}
+                        </div>
+                        {% endif %}
+                        {% if errorChangeEmail %}
+                        <div class="alert alert-dismissible alert-danger {% if site['rtl'] %} rtl-alert {% endif %}">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            {{ errorChangeEmailMessage }}
+                        </div>
+                        {% endif %}
+                    
+                        <h2 class="text_color">Account Details</h2>
+                        
+                        <div class="well">
+                            <div class="form-group username_first">
+                                <label for="username" class="control-label text_color1">{{ lang('account.username') }}</label>
+                                <input type="text" class="form-control bg_color" id="username" value="{{ user['username'] }}" readonly>
+                            </div>
+                            <div class="form-group username_first">
+                                <label for="email" class="control-label text_color1">Email</label>
+                                <input type="text" class="form-control bg_color" id="email" value="{{ user['email'] }}" readonly>
+                            </div>
+                            
+                            <button class="btn btn-primary btn-block mb-5" id="changeEmailLink">{{ lang('confirmemail.button.change') }}</button>
+                            
+                            <form {% if site['rtl'] %}class="rtl-form"{% endif %} method="post" action="">
+                                {% if error %}
+                                <div class="alert alert-dismissible alert-danger {% if site['rtl'] %} rtl-alert {% endif %}">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    {{ errorText }}
+                                </div>
+                                {% endif %}
+                                <div class="form-group password_bottom">
+                                    <label for="current" class="control-label text_color">{{ lang('account.password.current') }}</label>
+                                    <input type="password" class="form-control bg_color" id="current" name="SettingsFrom[current_password]">
+                                </div>
+                                <div class="form-group password_bottom">
+                                    <label for="new" class="control-label text_color">{{ lang('account.password.new') }}</label>
+                                    <input type="password" class="form-control bg_color" id="new" name="SettingsFrom[password]">
+                                </div>
+                                <div class="form-group password_bottom">
+                                    <label for="confirm" class="control-label text_color">{{ lang('account.password.confirm') }}</label>
+                                    <input type="password" class="form-control bg_color" id="confirm" name="SettingsFrom[confirm_password]">
+                                </div>
+                                <input type="hidden" name="_csrf" value="{{csrftoken}}">
+                                <button type="submit" class="btn btn-primary btn-block">{{ lang('account.password.button') }}</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-             </div>
-          </div>
-       </div>
+                <div class="col-md-6">
+                    <div class=" account_page bg_color">
+                        <h2 class="text_color">Timezone Settings</h2>
+                        {% if site['languages']|length > 1 %}
+                        <div class="well">
+                            <form {% if site['rtl'] %}class="rtl-form"{% endif %} method="post" action="">
+                            <div class="form-group">
+                                <label for="language" class="control-label  text_color">{{ lang('account.language') }}</label>
+                                <select class="form-control" id="language" name="SettingsFrom[lang]">
+                                {% for language in site['languages'] %}
+                                <option value="{{ language['code'] }}" {% if language['code'] == user['lang'] %}selected{% endif %}>{{ language['name'] }}</option>
+                                {% endfor %}
+                                </select>
+                            </div>
+                            <input type="hidden" name="_csrf" value="{{csrftoken}}">
+                            <button type="submit" class="btn btn-primary btn-block">{{ lang('account.save') }}</button>
+                            </form>
+                        </div>
+                        {% endif %}
+                        <div class="well">
+                            <form {% if site['rtl'] %}class="rtl-form"{% endif %} action="" method="post">
+                                <div class="form-group">
+                                    <label for="timezone" class="control-label text_color">{{ lang('account.timezone') }}</label>
+                                    <select name="SettingsFrom[timezone]" id="timezone" class="form-control bg_color">
+                                    {% for timezone,label in timezones %}
+                                    <option value="{{timezone}}" {% if timezone == user['timezone'] %}selected{% endif %}>{{label}}</option>
+                                    {% endfor %}
+                                    </select>
+                                </div>
+                                <input type="hidden" name="_csrf" value="{{csrftoken}}">
+                                <button type="submit" class="btn btn-primary btn-block">{{ lang('account.save') }}</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class=" account_page mt-5 bg_color">
+                        <h2 class="text_color">API Key Settings</h2>
+                        <div class="well">
+                            <form {% if site['rtl'] %}class="rtl-form"{% endif %} action="{{ page['url'] }}/newkey" method="post">
+                                <div class="form-group">
+                                    <p>Never share your API Key. We will never ask for it.</p>
+                                    <label for="key" class="control-label text_color">{{ lang('account.api_key') }}</label>
+                                    {% if user['is_generated_apikey'] %}
+                                    <input type="text" class="form-control bg_color" id="api_key" value="{{ user['apikey'] }}" readonly>
+                                    <span class="api_copy" id="api_copy"><i class="fa fa-clone" aria-hidden="true"></i></span>
+                                    
+                                    {% endif %}
+                                </div>
+                                
+                                <input type="hidden" name="_csrf" value="{{csrftoken}}">
+                                <button type="submit" class="btn btn-primary btn-block key_setting">{{ lang('account.generate_key') }}</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
  </div>
  
+<!-- Change email -->
+<div class="modal fade" tabindex="-1" role="dialog" id="changeEmailModal" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <form id="changeEmailForm" class="modal-content{% if site['rtl'] %} rtl-form{% endif %}" method="post" action="">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{ lang('confirmemail.change_email.title') }}</h4>
+            </div>
+            <div class="modal-body">
+                <div id="changeEmailError" class="error-summary alert alert-dismissible alert-danger hidden{% if site['rtl'] %} rtl-alert {% endif %}"></div>
+                <div class="form-group">
+                    <label for="current-email">{{ lang('confirmemail.change_email.current_email') }}</label>
+                    <span class="form-control" id="current-email" disabled>{{ user['email'] }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="new-email">{{ lang('confirmemail.change_email.new_email') }}</label>
+                    <input type="email" class="form-control" id="new-email" name="ChangeEmailForm[email]">
+                </div>
+                <div class="form-group">
+                    <label for="current-password">{{ lang('confirmemail.change_email.current_password') }}</label>
+                    <input type="password" class="form-control" id="current-password" name="ChangeEmailForm[password]">
+                </div>
+                <input type="hidden" name="_csrf" value="{{ csrftoken }}">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ lang('confirmemail.change_email.close') }}</button>
+                <button type="submit" class="btn btn-primary" id="changeEmailSubmitBtn">{{ lang('confirmemail.change_email.submit') }}</button>
+            </div>
+        </form>
+    </div>
+</div>
