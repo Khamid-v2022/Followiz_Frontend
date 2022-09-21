@@ -26,7 +26,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             if(checkThemeMode == "theme-dark"){
                 $("#themeMode").prop("checked",true); 
                 $(".label-success").html("Light Mode");
-            } 	
+            }   
         } 
 
         $("#themeMode").on('change',function(){
@@ -111,6 +111,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         $('.data-table').DataTable({
             "bInfo": false,
             dom: '<"top"f>t<"bottom"p><"clear">',
+            "ordering": false
         });
     });
   
@@ -352,13 +353,11 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     }
 /******************************* ORDER PAGE END *****************************/
 
-
-
-
     let firstSocialPlateForm = '';
     let mainCategory = [];
     let subCategory = []; 
     let myFavoriteServices = [];
+    let newServices = [];
 
     $(document).ready(function(){
     
@@ -443,9 +442,9 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             
                     $("#orderform-main-category, #orderform-category, #orderform-service").on("select2:open", hideSelect2Keyboard);
             
-                    $("#orderform-main-category, #orderform-category, #orderform-service").on("select2:close",function(){
-                        setTimeout(hideSelect2Keyboard, 50);
-                    });
+                    // $("#orderform-main-category, #orderform-category, #orderform-service").on("select2:close",function(){
+                    //     setTimeout(hideSelect2Keyboard, 50);
+                    // });
 
                 /***************** Initialize New Order Page Component END **********************/
 
@@ -494,10 +493,10 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
 
                 getMyFavoriteServices();
+                getNewServices();
                 
                 // Services Update panel
                 if($("#table-updates-order").length > 0){
-                    // loadUpdates("https://followizaddons.com/client_js/updates/index.php");
                     loadUpdatesNew("https://followizaddons.com/client_js/updates/updates_service.php");
                 }
 
@@ -559,6 +558,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 mainCategory = oldMainCat.filter(onlyUnique);
             
                 let mainCategoryOption = '<option value="Your Favorite Services">Your Favorite Services</option>';
+                
                 let firstOption = "";
                 
                 if(params.has('service')){
@@ -571,6 +571,8 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     firstOption = "Your Favorite Services";
                     mainCategoryOption = '<option value="Your Favorite Services" selected="true">Your Favorite Services</option>';
                 }
+
+                mainCategoryOption += '<option value="New Services">New Services</option>';
                 
                 mainCategory.forEach(element => {
                     if(firstOption === '' || firstOption == element){
@@ -597,16 +599,16 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
                     let lsubCategoryOption = '';
                     
-                    let sortedService = [];
+                    // let sortedService = [];
                     let newSortedService = [];
 
-                    for (const [key, value] of Object.entries(orderform_service)) {			
-                        let sort_order_arr = serviceOrderNew.filter((order)=>{  return order.service_id == key; });		 
-                        if(sort_order_arr[0] !== undefined){		
+                    for (const [key, value] of Object.entries(orderform_service)) {         
+                        let sort_order_arr = serviceOrderNew.filter((order)=>{  return order.service_id == key; });      
+                        if(sort_order_arr[0] !== undefined){        
                             let sort_val = sort_order_arr[0];           
                             
                             // if(sort_val.length > 0){
-                                sortedService[sort_val.sort_order] = value;
+                                // sortedService[sort_val.sort_order] = value;
                                 let temp = [];
                                 temp['key'] = key;
                                 temp['value'] = orderform_service[key]['name']; 
@@ -623,8 +625,8 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         service = localStorage.getItem('service');
                     }
 
-                    if(cat_id == "Your Favorite Services"){
-                        newSortedService.forEach((element,key) => {	
+                    if(cat_id == "Your Favorite Services" || cat_id == "New Services"){
+                        newSortedService.forEach((element, key) => {    
                             
                             let textVal = element['value'];
                             let pattern = / per \d*[0-9]/;
@@ -764,14 +766,29 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         let sortedService = {};
                         let service_of_cat = serviceByCate[service_cat_id];
                         
+                        let last_order_num = 1;
+                        let temp = [];
                         for (const [key, value] of Object.entries(service_of_cat)) {
                             if(value['id'].search(new RegExp(inputed_val, "i")) >= 0 || value['name'].search(new RegExp(inputed_val, "i")) >= 0 ){
-                                let sort_order_arr = serviceOrder.filter((order)=>{  return order.service_id == key; });				
-                                let sort_val = sort_order_arr[0]
-                                sortedService[sort_val.sort_order] = value;
+                                let sort_order_arr = serviceOrder.filter((order)=>{  return order.service_id == key; });                
+                                let sort_val = sort_order_arr[0];
+                                
+                                if(sort_val){
+                                    sortedService[sort_val.sort_order] = value;
+                                    last_order_num = sort_val.sort_order;
+                                }
+                                else
+                                    temp.push(value);
                             }                
                         }
-                        
+
+                        if(temp.length > 0){
+                            temp.forEach(function(element){
+                                last_order_num++;
+                                sortedService[last_order_num] = element;
+                            })
+                        }
+
                         let category_name = $(this).parents('.servie-data-panel').attr("data-category");
                         let tbody = getTbodyForService(sortedService, category_name);
                         $("#service_container_" + service_cat_id).html(tbody);
@@ -864,7 +881,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     $(".custom-tabing .tab-panel").eq(ind).addClass("active");
                 }); 
 
-                //CODE FOR TICKET FORM 	
+                //CODE FOR TICKET FORM  
                 $(".top_radio > li").click(function(){
                     $(".custom-radio > li").removeClass('active');
                     //hide all extra field
@@ -1075,14 +1092,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     }else{
                         $("#stripe_content").hide();
                     }
-                
-                    //For Perfectmoney  
-                    if(paymentTitle == 'PayPal Invoice'){
-                        $("#payPal_invoice_content").show();
-                    }else{
-                        $("#payPal_invoice_content").hide();
-                    }
-                
+
                     //For Perfectmoney  
                     if(paymentTitle == 'PayPal'){
                         $("#payPal_content").show();
@@ -1110,7 +1120,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     }else{
                         $("#payPal_invoice_content").hide();
                     }
-                    
+
                     //For Cryptocurrency  
                     if(paymentTitle == 'CryptoCurrency'){
                         $("#cryptocurrency_content").show();
@@ -1124,21 +1134,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     }else{
                         $("#skrill_content").hide();
                     }
-            
-                    //For Stripe  
-                    if(paymentTitle == 'Stripe / Credit Card'){
-                        $("#stripe_content").show();
-                    }else{
-                        $("#stripe_content").hide();
-                    }
-                
-                    //For payeer  
-                    //  if(paymentTitle == 'Payoneer'){
-                    //    $("#payeer_content").show();
-                    //  }else{
-                    //    $("#payeer_content").hide();
-                    //  }
-                
+                       
                     $("#method").val($(this).attr("data-paymentId")).change();
                 
                 });
@@ -1196,12 +1192,11 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         if (currentURL.includes("extra-feature")) 
         {
             //code to save user on our server
-            $.get( 'https://followizdev.com/admin/api/users/list', function( response ) {
+            $.get('https://followizdev.com/admin/api/users/list', function( response ) {
                 processUsers(response.data.pagination.pages);
-            });	
+            }); 
           
             //code to update serive 
-            //$.get( 'https://followizdev.com/admin/services/list', function( response ) {
             $.get('https://followizdev.com/admin/api/services/list', function( response ) {
                 setTimeout(function(){
                     processCategoryOrder(response.data);
@@ -1258,66 +1253,12 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             });
               
         }
-    
-        if (currentURL.includes("extra-feature11")) 
-        {
-            //code to save user on our server
-            $.get( 'https://followizdev.com/admin/api/users/list', function( response ) {
-                processUsers(response.data.pagination.pages)
-            });	
-            
-            //code to update serive 
-            $.get( 'https://followizdev.com/admin/services/list', function( response ) {
-                    processServices(response.data.categories);
-            });
-            
-            
-            //code to generate invoice for client
-            $("body").prepend('<div id="paymentInfo" style="display:none"></div>');
-            
-            let paymentInfo = [];  
-            $.get( 'https://followizdev.com/admin/payments', function( data ) {
-                $("#paymentInfo").html('');
-                $("#paymentInfo" ).html( $(data).find('table').clone() );
-               
-                setTimeout(function(){
-                    $("#paymentInfo" ).find('tr').each(function() {
-                        
-                        var data = {};
-                        $(this).find('td').each(function(index, td) { 
-                    
-                            if(index == 0){
-                                data.payment_id = parseInt($(this).text());
-                            }
-                            if(index == 1){
-                                data.username = $(this).text();
-                            }
-                            if(index == 4){
-                                data.payment_method = $(this).text();
-                            }
-                            if(index == 8){
-                                data.payment_date = $(this).text();
-                            }
-                            if(index == 3){
-                                data.payment_amount = parseFloat($(this).text());
-                            }
-                            if(index == 11){
-                                ////console.log(data);
-                                paymentInfo.push(data);
-                                
-                            }
-                        });
-                        
-                    });
-                    generateAllInvoice(paymentInfo);
-                }, 200)
-            });
-        }
     });
 
 /******************************* NEW ORDER PAGE START *****************************/
     function hideSelect2Keyboard(e){
-        $('.select2-search input, :focus,input').prop('focus',false).blur();
+        // $('.select2-search input, :focus,input').prop('focus',false).blur();
+        $('.select2-search input').prop('focus',false).blur();
     }
     
     function getImageName(serviceName){
@@ -1551,6 +1492,10 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
         if(serviceName.includes("your favorite")){
             return "favorite.svg";
+        }
+
+        if(serviceName.includes("new services")){
+            return "marketing.svg";
         }
     
         return "marketing.svg";
@@ -1903,6 +1848,8 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
          
         if(mainCatOption == "Your Favorite Services"){
             subCategoryOption = '<option value="Your Favorite Services" selected="true">Your Favorite Services</option>';
+        }else if(mainCatOption == "New Services"){
+            subCategoryOption = '<option value="New Services" selected="true">New Services</option>';
         } else {
             let fO = ''; 
 
@@ -1922,11 +1869,11 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             let sortedService = [];
         
             rowSubcategory.forEach((value, key)=>{
-                let sort_order_arr = categoryOrder.filter((order)=>{  return order.category_id == key; });        	
+                let sort_order_arr = categoryOrder.filter((order)=>{  return order.category_id == key; });          
             
                 if(sort_order_arr.length){
                 
-                    let sort_val = sort_order_arr[0]
+                    let sort_val = sort_order_arr[0];
                         
                     let sort_index = (sort_val.sort_order).toString();
                     let temp = {};
@@ -1937,11 +1884,11 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 }
             });
 
-            sortedService.forEach((element,key) => {	
-                if( fO == element["category_id"]){
-                    subCategoryOption += '<option cat_id="'+key+'" value="'+element["category_id"]+'" selected="true">'+element['value']+'</option> ';
-                }else{
-                    subCategoryOption += '<option cat_id="'+key+'" value="'+element["category_id"]+'" >'+element['value']+'</option> ';
+            sortedService.forEach((element,key) => {    
+                if ( fO == element["category_id"]){
+                    subCategoryOption += '<option cat_id="' + key + '" value="' + element["category_id"] + '" selected="true">' + element['value'] + '</option> ';
+                } else {
+                    subCategoryOption += '<option cat_id="' + key + '" value="' + element["category_id"] + '" >' + element['value'] + '</option> ';
                 }
             });
         }
@@ -1989,6 +1936,17 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     }
                 }
             }
+        } else if(catId == "New Services" && newServices.length > 0){
+            for (let list_service_id of Object.keys(services)) {
+                for(let i = 0; i < newServices.length; i++){
+                    let service = newServices[i].service.split("-");
+                    var id = service[0].trim();
+
+                    if (services[list_service_id]['id'] == id) {
+                        service_details[services[list_service_id]['id']] = services[list_service_id];
+                    }
+                }
+            }
         } else {
             for (let list_service_id of Object.keys(services)) {
 
@@ -2000,39 +1958,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         
         return service_details;
     };
-
-    function getServiceByCategoryIdOld(catId, categoryOrder) {
-
-        var service_details = [];
-        var services = window.modules.siteOrder.services;
-        
-        for (let list_service_id of Object.keys(services)) {
-
-            if (services[list_service_id]['cid'] == catId) {
-                service_details[services[list_service_id]['id']] = services[list_service_id]['name'];
-            }
-        }
-
-        let rowSubcategory = service_details;
-        let sortedService = [];
-        
-        rowSubcategory.forEach((value,key)=>{    
-            let sort_order_arr = categoryOrder.filter((order)=>{  return order.category_id == key; });
-
-            if(sort_order_arr.length){
-                let sort_val = sort_order_arr[0];
-                let sort_index = (sort_val.sort_order).toString();
-                let temp = {};
-            
-                temp.value = value;
-                temp.category_id = sort_order_arr[0].category_id;
-                sortedService[sort_index] = temp;
-            }
-        });
-        
-        return sortedService;  
-    };
-    
 
 /******************************* NEW ORDER PAGE END *****************************/
   
@@ -2216,6 +2141,23 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {
+            }
+        });
+    }
+
+    function getNewServices(){
+        
+        $.ajax({
+            async: false,
+            url: "https://followizaddons.com/client_js/updates/new_services.php",      
+            type: "GET",
+            dataType: "json",
+            cache: false,
+            crossDomain: true,
+            success: function(response)         
+            {
+                console.log(response);
+                newServices = response.data;
             }
         });
     }
@@ -2480,16 +2422,16 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         var users = { ...allUsers }; 
         
         $.ajax({
-              type: "POST",
-              dataType: "json",
-              cache: false,
-              data:  { 'users' :  users },
-              crossDomain: true,
-              url: api_end_point + "/user/insertOrUpdateUser.php",      
-              success: function(data)         
-              {
-                //console.log(data);
-              }
+            type: "POST",
+            dataType: "json",
+            cache: false,
+            data:  { 'users' :  users },
+            crossDomain: true,
+            url: api_end_point + "/user/insertOrUpdateUser.php",      
+            success: function(data)         
+            {
+            //console.log(data);
+            }
         });
     }
     
@@ -2497,17 +2439,17 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         var paymentInfo = { ...paymentInfo }; 
         
         $.ajax({
-              type: "POST",
-              dataType: "json",
-              cache: false,
-              data:  { 'payment_info' :  paymentInfo },
-              crossDomain: true,
-              url: api_end_point + "/invoice/generate-all-invoice.php",      
-              success: function(data)         
-              {
-                //console.log(data);
-              }
-          });
+            type: "POST",
+            dataType: "json",
+            cache: false,
+            data:  { 'payment_info' :  paymentInfo },
+            crossDomain: true,
+            url: api_end_point + "/invoice/generate-all-invoice.php",      
+            success: function(data)         
+            {
+            //console.log(data);
+            }
+        });
     }
     
   
@@ -2515,58 +2457,34 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
        
         var updates = { ...allServices };
         return $.ajax({
-              type: "POST",
-              dataType: "json",
-              cache: false,
-              data:  { 'updates' :  updates },
-              crossDomain: true,
-              url: api_end_point + "/api/update/insertOrUpdateServices.php",
-              success: function(data)         
-              {
-                //console.log(data);
-              }
-          });
-    }
-    
-  
-    async function processServicesOld(categories){
-        let totalCategory = categories.length;;
-    
-    
-        for(let i = 0; i < totalCategory; i++){
-            let category = categories[i];
-            let service = category.services;
-            let allServices = [];
-            service.forEach(function (s) {
-                let temArr = [];
-                temArr['service_id'] = s.id;
-                temArr['service_details'] = s.name;
-                temArr['price'] = parseFloat(s.rate.custom);
-                temArr['status'] = parseInt(s.status);
-                //allServices.push(temArr);
-                allServices.push({ ...temArr });
-            });
-            await synchronizeService(allServices);
-    
-            if(i == 2) break;
-        }
+            type: "POST",
+            dataType: "json",
+            cache: false,
+            data:  { 'updates' :  updates },
+            crossDomain: true,
+            url: api_end_point + "/api/update/insertOrUpdateServices.php",
+            success: function(data)         
+            {
+            //console.log(data);
+            }
+        });
     }
     
     function synchronizeServiceOrder(allServicesOrder){
        
         var serviceOrder = { ...allServicesOrder }; 
         return $.ajax({
-              type: "POST",
-              dataType: "json",
-              cache: false,
-              data:  { 'serviceOrder' :  serviceOrder },
-              crossDomain: true,
-              url: api_end_point + "/api/order/insertOrUpdateServiceSorting.php",
-              success: function(data)         
-              {
-                //console.log(data);
-              }
-          });
+            type: "POST",
+            dataType: "json",
+            cache: false,
+            data:  { 'serviceOrder' :  serviceOrder },
+            crossDomain: true,
+            url: api_end_point + "/api/order/insertOrUpdateServiceSorting.php",
+            success: function(data)         
+            {
+            //console.log(data);
+            }
+        });
     }
     
     async function processServices(categories){
@@ -2596,31 +2514,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 await synchronizeService(allServices);
             }
             //await synchronizeServiceOrder(allServicesOrder)
-            // if(i == 1) break;
-        }
-    }
-    
-    async function processServicesOrderOld(categories){
-        let totalCategory = categories.length;;
-    
-        let counter = 1;
-        for(let i = 0; i < totalCategory; i++){
-            let category = categories[i];
-            let service = category.services;
-            
-            let allServicesOrder = [];
-            service.forEach(function (s) {
-                
-                let temArr2 = [];
-                
-                temArr2['service_id'] = s.id;
-                temArr2['sort_order'] = counter;
-                
-                counter++;
-                allServicesOrder.push({ ...temArr2 });
-            });
-            
-            await synchronizeServiceOrder(allServicesOrder)
             // if(i == 1) break;
         }
     }
@@ -2703,7 +2596,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
           }else{
             $(".download_icon").css('display','block');
           }
-      });	
+      });   
       
     } */
 
@@ -3047,7 +2940,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
   
     function getAllUsers(pageNumber){
         pageNumber = pageNumber+1;
-        let url = 'https://followizdev.com/admin/api/users/list?page='+pageNumber;
+        let url = 'https://followizdev.com/admin/api/users/list?page=' + pageNumber;
         return $.ajax({
             url : url,
             method : 'GET',
