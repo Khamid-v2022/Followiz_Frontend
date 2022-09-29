@@ -1,0 +1,118 @@
+<div class="container affiliate-page">
+    <div class="panel">
+        <div class="">
+            <h2 class="afp-title">Welcome to Affiliates</h2>
+            <ul class="afp-list">
+                <li><span>Our system works 24/7 and it will show your earnings in real-time.</span></li>
+                <li><span>If you have any questions regarding Affiliate program, open up a ticket.</span></li>
+            </ul>
+        </div>
+
+        <div class="site-divider mt-4 mb-5"></div>
+
+        <div class="row">
+            <div class="col-lg-6 col-md-12">
+                <div class="afip-box">
+                    <div class="afip-left">
+                        <div class="afip-title">{{ lang('affiliates.referral_link') }}</div>
+                        <div class="afip-text" id="referral_link">{{ referral_link ? referral_link : "" }}</div>
+                    </div>
+                    <button class="btn btn-primary afip-btn" onclick="copyToClipboard()">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="afip-box">
+                    <div class="afip-left">
+                        <div class="afip-title">{{ lang('affiliates.commission_rate') }}</div>
+                        <div class="afip-text">{{ commission_rate ? commission_rate : 0.00 }}%</div>
+                    </div>
+                    <button class="btn btn-primary afip-btn">
+                        <i class="far fa-badge-percent"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="afip-box">
+                    <div class="afip-left">
+                        <div class="afip-title">{{ lang('affiliates.minimum_payout') }}</div>
+                        <div class="afip-text">${{ minimum_payout ? minimum_payout : 0.00 }}</div>
+                    </div>
+                    <button class="btn btn-primary afip-btn">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-sm-2">
+                <div class="card afip-card">
+                    <div class="card-body">
+                        <div class="card-icon">
+                            <i class="far fa-eye"></i>
+                        </div>
+                        <div class="c-title">{{ lang('affiliates.visits') }}</div>
+                        <div class="c-num">{{ statistics['total_visits'] ? statistics['total_visits']:0 }}</div>
+                    </div>
+                </div>
+            </div><!-- col -->
+            <div class="col-sm-2">
+                <div class="card afip-card">
+                    <div class="card-body">
+                        <div class="card-icon">
+                            <i class="far fa-hand-holding-usd"></i>
+                        </div>
+                        <div class="c-title">{{ lang('affiliates.registrations') }}</div>
+                        <div class="c-num">{{ statistics['referral_registrations'] ? statistics['referral_registrations'] : 0 }}</div>
+                    </div>
+                </div>
+            </div><!-- col -->
+            <div class="col-sm-2">
+                <div class="card afip-card">
+                    <div class="card-body">
+                        <div class="card-icon">
+                            <i class="far fa-money-check-edit-alt"></i>
+                        </div>
+                        <div class="c-title">{{ lang('affiliates.referrals') }}</div>
+                        <div class="c-num">{{ statistics['paid_referrals'] ? statistics['paid_referrals'] : 0 }}</div>
+                    </div>
+                </div>
+            </div><!-- col -->
+            <div class="col-sm-2">
+                <div class="card afip-card">
+                    <div class="card-body">
+                        <div class="card-icon">
+                            <i class="fas fa-percent"></i>
+                        </div>
+                        <div class="c-title">{{ lang('affiliates.conversion_rate') }}</div>
+                        <div class="c-num">{{ statistics['conversion_rate'] ? statistics['conversion_rate'] : 0.00 }}%</div>
+                    </div>
+                </div>
+            </div><!-- col -->
+            <div class="col-sm-2">
+                <div class="card afip-card">
+                    <div class="card-body">
+                        <div class="card-icon">
+                            <i class="far fa-funnel-dollar"></i>
+                        </div>
+                        <div class="c-title">{{ lang('affiliates.total_earnings') }}</div>
+                        <div class="c-num">${{ statistics['total_earnings'] ? statistics['total_earnings'] : 0.00 }}</div>
+                    </div>
+                </div>
+            </div><!-- col -->
+            <div class="col-sm-2">
+                <div class="card afip-card">
+                    <div class="card-body">
+                        <div class="card-icon">
+                            <i class="far fa-receipt"></i>
+                        </div>
+                        <div class="c-title">{{ lang('affiliates.available_earnings') }}</div>
+                        <div class="c-num">${{ statistics['unpaid_earnings'] ? statistics['unpaid_earnings'] : 0.00 }}</div>
+                    </div>
+                </div>
+            </div><!-- col -->
+        </div>
+    </div>
+</div>

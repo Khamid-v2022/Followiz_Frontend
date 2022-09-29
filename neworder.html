@@ -63,7 +63,6 @@
             
                         <div class="category_name">
                             {% if categories %}
-                               
                                 <div class="form-group">
                                     <label for="orderform-main-category" class="control-label text_color">Social Media Platform / Category / Service</label>
                                     <span class="category_info">
@@ -233,24 +232,115 @@
     <div class="panel services_news">
         <div class="row">
         <div class="col-md-6">
-        <div class="services_updates bg_color">
-            <a href="/updates" class="theme-a-title"><h1>Services Updates</h1></a>
-            <div class="table-responsive">
-            <table id="table-updates-order" class="table update-table service-tablwa service-well custom-table ">
-            <thead>
-                <tr>
-                <th>Id</th>
-                <th class="width-service-name">Service</th>
-                <th class="nowrap">Date</th>
-                <th class="nowrap">Update</th>
-                </tr>
-            </thead>
-            <tbody> 
-
-            </tbody>
-            </table>
+            <div class="services_updates bg_color">
+                
+                <a href="/updates" class="theme-a-title"><h1>Services Updates</h1></a>
+                <!-- Nav tabs -->
+                <div class="service-update-header">
+                    <div class="tabs-header">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#update_all" aria-controls="update_all" role="tab" data-toggle="tab">All</a></li>
+                            <li role="presentation"><a href="#update_new" aria-controls="update_new" role="tab" data-toggle="tab">New service</a></li>
+                            <li role="presentation"><a href="#update_decrease" aria-controls="update_decrease" role="tab" data-toggle="tab">Rate decreased</a></li>
+                            <li role="presentation"><a href="#update_increase" aria-controls="update_increase" role="tab" data-toggle="tab">Rate increased</a></li>
+                            <li role="presentation"><a href="#update_disable" aria-controls="update_disable" role="tab" data-toggle="tab">Service disabled</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="update_all">
+                        <div class="table-responsive" id="">
+                            <table id="table-updates-order" class="table update-table service-tablwa service-well custom-table ">
+                                <thead>
+                                    <tr>
+                                    <th>Id</th>
+                                    <th class="width-service-name">Service</th>
+                                    <th class="nowrap">Date</th>
+                                    <th class="nowrap">Update</th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+            
+                                </tbody>
+                            </table>
+                            <a class="btn" href="/updates">View More</a>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="update_new">
+                        <div class="table-responsive" id="">
+                            <table id="table-updates-order" class="table update-table service-tablwa service-well custom-table ">
+                                <thead>
+                                    <tr>
+                                    <th>Id</th>
+                                    <th class="width-service-name">Service</th>
+                                    <th class="nowrap">Date</th>
+                                    <th class="nowrap">Update</th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+            
+                                </tbody>
+                            </table>
+                            <a class="btn" href="/updates">View More</a>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="update_decrease">
+                        <div class="table-responsive" id="">
+                            <table id="table-updates-order" class="table update-table service-tablwa service-well custom-table ">
+                                <thead>
+                                    <tr>
+                                    <th>Id</th>
+                                    <th class="width-service-name">Service</th>
+                                    <th class="nowrap">Date</th>
+                                    <th class="nowrap">Update</th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+            
+                                </tbody>
+                            </table>
+                            <a class="btn" href="/updates">View More</a>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="update_increase">
+                        <div class="table-responsive" id="">
+                            <table id="table-updates-order" class="table update-table service-tablwa service-well custom-table ">
+                                <thead>
+                                    <tr>
+                                    <th>Id</th>
+                                    <th class="width-service-name">Service</th>
+                                    <th class="nowrap">Date</th>
+                                    <th class="nowrap">Update</th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+            
+                                </tbody>
+                            </table>
+                            <a class="btn" href="/updates">View More</a>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="update_disable">
+                        <div class="table-responsive" id="">
+                            <table id="table-updates-order" class="table update-table service-tablwa service-well custom-table ">
+                                <thead>
+                                    <tr>
+                                    <th>Id</th>
+                                    <th class="width-service-name">Service</th>
+                                    <th class="nowrap">Date</th>
+                                    <th class="nowrap">Update</th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+            
+                                </tbody>
+                            </table>
+                            <a class="btn" href="/updates">View More</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
         </div>
         
         <div class="col-md-6">
@@ -261,6 +351,7 @@
             {{ newOrderText }}
             {% endif %}
             </div>
+			
         </div>
         </div>
         
