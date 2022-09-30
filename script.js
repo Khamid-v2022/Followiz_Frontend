@@ -3137,3 +3137,12 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         var link = $("#referral_link").html();
         navigator.clipboard.writeText(link);
     }
+    // child page
+    function copyToClipboard1(param){
+        var link = "";
+        if(param == 1)
+            link = $("#referral_link1").html();
+        else
+            link = $("#referral_link2").html();
+        navigator.clipboard.writeText(link);
+    }

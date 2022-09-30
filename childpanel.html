@@ -1,0 +1,210 @@
+<div class="container child-page">
+    <div class="panel">
+        <div class="panel-body">
+            <h2 class="page-header page-title text_color new_heading">Please read before buying Child Panel</h2>
+            <ul class="afp-list">
+                <li><span>If you got any questions how Child Panel works, open up a <a href="/tickets">ticket</a>.</span></li>
+                <li>
+                    <span>Want to see what a child panel looks like from the admin side?</span>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <a href="https://followizchild.com/admin">https://followizchild.com/admin</a>
+                        </div>
+                        <div class="col-sm-4">
+                            <span>Username: Followiz</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <span>Password: 12345678</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        
+            <div class="site-divider mt-4 mb-5"></div>
+            <div class="row" style="margin-top: 25px">
+                <div class="col-lg-5 col-md-6">
+                    <div class="">
+                        <div class="card-body">
+                            <div class="cpap-card">
+                                <div class="cpap-body">
+                                    <!-- <div class="alert alert-info">
+                                        {{ lang('child_panel.form.ns.info') }}
+                                    </div> -->
+                                    <div class="cpap-title">Please update your Domain Nameservers</div>
+                                    <div class="cpap-box mb-3" onclick="copyToClipboard1(1)" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to copy">
+                                        <span id="referral_link1">ns1.perfectdns.com</span>
+                                        <button class="btn"><i class="far fa-copy"></i></button>
+                                    </div>
+                                    <div class="cpap-box mb-3" onclick="copyToClipboard1(2)" data-bs-toggle="tooltip" data-bs-placement="top" title="Click to copy">
+                                        <span id="referral_link2">ns2.perfectdns.com</span>
+                                        <button class="btn"><i class="far fa-copy"></i></button>
+                                    </div>
+
+                                    <ul class="cpap-list">
+                                    <li>Resell Followiz Services using your own Automated Panel.</li>
+                                        <li>Build your business using our drag and drop editor.</li>
+                                        <li>Set your own service prices and decide of your own profit.</li>
+                                        <li>You can start selling today by integrating multiple payment methods into your panel.</li>
+                                    <li>Import all of our services to your new panel with 1-click only.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- card -->
+                </div>
+                <div class="col-lg-7 col-md-6 mt-4 mt-md-0">
+                    <div class="">
+                        <div class="card-body">
+                            <form action="/childpanelnew" method="post">
+                                {% if errorForm %}
+                                <div class="alert alert-dismissible alert-danger {% if site['rtl'] %} rtl-alert {% endif %}">
+                                    <button type="button" class="close" data-dismiss="alert">×</button>
+                                    {{ errorFormMessage }}
+                                </div>
+                                {% endif %}
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label text_color" for="domain">{{ lang('child_panel.form.domain') }}</label>
+                                            <div class="fg">
+                                                <input type="text" class="form-control" id="domain" name="CreateOrderForm[domain]" value="{{ form['domain'] }}">
+                                            </div>
+                                        </div>
+                                    </div><!-- col -->
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label text_color" for="createorderform-currency">{{ lang('child_panel.form.currency') }}</label>
+                                            <div class="fg">
+                                                <select class="form-control" id="createorderform-currency" name="CreateOrderForm[currency]" aria-required="true">
+                                                    {% for currency in currenciesList %}
+                                                    <option value="{{ currency['code'] }}" {% if form['currency'] == currency['code'] %} selected{% endif %}>
+                                                        {{ currency['name'] }}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div><!-- col -->
+                                </div><!-- row -->
+                                <div class="form-group">
+                                    <label class="control-label text_color" for="childAdmin">{{ lang('child_panel.form.username') }}</label>
+                                    <div class="fg">
+                                        <input type="text" class="form-control" id="createorderform-username" name="CreateOrderForm[username]" aria-required="true" value="{{ form['username'] }}">
+                                        <!-- <div data-lastpass-icon-root="true" style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;"></div> -->
+                                    </div>
+                                    </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label text_color" for="childPassword">{{ lang('child_panel.form.password') }}</label>
+                                            <div class="fg">
+                                                <input type="password" class="form-control" id="createorderform-password" name="CreateOrderForm[password]" aria-required="true">
+                                                <!-- <div data-lastpass-icon-root="true" style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;"></div> -->
+                                            </div>
+                                        </div>
+                                    </div><!-- col -->
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="control-label text_color" for="childConfirmPassword">{{ lang('child_panel.form.confirm') }}</label>
+                                            <div class="fg">
+                                                <input type="password" class="form-control" id="createorderform-password_confirm" name="CreateOrderForm[password_confirm]" aria-required="true">
+                                            
+                                                <!-- <div data-lastpass-icon-root="true" style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;"></div></div> -->
+                                            </div>
+                                        </div>
+                                    </div><!-- col -->
+                                </div><!-- row -->
+                                <div class="mb-4 fg">
+                                    <div class="fg-icon fg-icon-text">
+                                        <div id="price" style="width: 120px;">{{ price }} Monthly</div>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <input type="hidden" name="_csrf" value="{{ csrftoken }}">
+                                    <button type="submit" class="btn btn-primary btn-block">{{ lang('child_panel.form.submit') }}</button>
+                                </div>
+                                <div class="op-info">
+                                    You can order your Child Panel monthly from here.<br>Child Panel are non refundable once purchased.
+                                </div>
+                            </form>
+
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if panelsList %}
+            <div class="row" style="margin-top: 15px">
+                <div class="col-lg-12">          
+                    <div class="row justify-content-center child_form">
+                        <div class="card col-md-8 col-md-offset-2" style="padding:15px;">
+                            <div class="bg_color well-float">
+                                {% if error %}
+                                <div class="alert alert-dismissible alert-danger {% if site['rtl'] %} rtl-alert {% endif %}">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    {{ errorMessage }}
+                                </div>
+                                {% endif %}
+                                {% if success %}
+                                <div class="alert alert-dismissible alert-success {% if site['rtl'] %} rtl-alert {% endif %}">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                {{ successMessage }}
+                                </div>
+                                {% endif %}
+                                {% if renew %}
+                                <div class="alert alert-danger" role="alert">
+                                <!--<div class="pull-right">-->
+                                    <a href="{{ renewUrl }}" class="btn btn-blue">{{ lang('child_panel.button.renew') }}</a>
+                                <!--</div>-->
+                                {{ renewMessage }}
+                                </div>
+                                {% endif %}
+                                <table class="table">
+                                <thead>
+                                    <tr>
+                                    <th>{{ lang('child_panel.domain') }}</th>
+                                    <th>{{ lang('child_panel.status') }}</th>
+                                    <th>{{ lang('child_panel.created') }}</th>
+                                    <th>{{ lang('child_panel.expiry') }}</th>
+                                    <th class="col-md-1"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for panel in panelsList %}
+                                    <tr>
+                                    <td>{{ panel['domain'] }}</td>
+                                    <td>{{ panel['status'] }}</td>
+                                    <td nowrap>{{ panel['created'] }}</td>
+                                    <td nowrap>{{ panel['expiry'] }}</td>
+                                    <td nowrap>
+                                        {% if panel['admin'] %}
+                                        <a href="{{ panel['admin_url'] }}" class="btn btn-xs btn-default"
+                                            target="_blank">{{ lang('child_panel.button.admin') }}</a>
+                                        {% endif %}
+                                    </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <!-- {% if childpanel %}
+        <div class="row justify-content-center api-panel">
+            <div class="card col-md-8 col-md-offset-2">
+                <div class="well {% if site['rtl'] %} rtl-content {% endif %}">
+                    {{ childpanel }}
+                </div>
+            </div>
+        </div>
+        {% endif %} -->
+    </div>
+   
+</div>

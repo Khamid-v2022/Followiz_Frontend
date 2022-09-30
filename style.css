@@ -7376,7 +7376,7 @@ html {
 		background-color:#fff;
 		color:#1C2323;
 		border:1px solid #ccc;
-		height:45px;
+		height:50px!important;
 		box-shadow:none;
 	}
 	
@@ -7476,28 +7476,34 @@ html {
 
 
     /* affiliate page */
-    .affiliate-page .panel {
+    /* .affiliate-page .panel,  .child-page .panel {
         padding: 45px;
     }
 
-    .affiliate-page .afp-title {
+    @media screen and (max-width: 767px) {
+        .affiliate-page .panel,  .child-page .panel {
+            padding: 10px;
+        }
+    } */
+
+    .afp-title {
         font-weight: bold;
         /* font-size: 35px; */
         line-height: 43px;
     }
     
-    .affiliate-page .afp-list li {
+    .afp-list li {
         padding: 5px 0;
         font-weight: normal;
-        font-size: 18px;
-        line-height: 22px;
+        /* font-size: 18px;
+        line-height: 22px; */
     }
     
-    .affiliate-page .afp-list li::marker {
+    .afp-list li::marker {
         color: #626D77;
     }
     
-    .affiliate-page .site-divider {
+    .affiliate-page .site-divider, .child-page .site-divider {
         width: 100%;
         position: relative;
         height: 2px;
@@ -7505,11 +7511,11 @@ html {
         clear: both;
     }
 
-    .theme-dark .affiliate-page  .site-divider {
+    .theme-dark .affiliate-page .site-divider, .theme-dark .child-page .site-divider {
         background: #323A3A;
     }
 
-    .affiliate-page .site-divider::after {
+    .affiliate-page .site-divider::after, .child-page .site-divider::after {
         content: '';
         position: absolute;
         left: 0px;
@@ -7520,7 +7526,7 @@ html {
     }
 
 
-    .affiliate-page .afip-box {
+    .afip-box {
         border-radius: 8px;
         border: 1px solid #DEE4E4;
         min-height: 86px;
@@ -7534,11 +7540,11 @@ html {
         margin: 10px 0;
     }
 
-    .theme-dark .affiliate-page .afip-box {
+    .theme-dark .afip-box {
         border: 1px solid #323A3A;
     }
 
-    .affiliate-page .afip-box .afip-title {
+    .afip-box .afip-title {
         font-weight: 600;
         font-size: 14px;
         line-height: 190%;
@@ -7546,20 +7552,20 @@ html {
     }
 
     
-    .affiliate-page .afip-box .afip-text {
+    .afip-box .afip-text {
         font-weight: 600;
         font-size: 19.2867px;
         line-height: 135%;
     }
 
-    .affiliate-page .afip-box .afip-btn {
+    .afip-box .afip-btn {
         margin-left: auto;
         justify-self: flex-end;
         padding: 19.5px 20px;
         font-size: 24px;
     }
 
-    .affiliate-page .card {
+    .affiliate-page .card, .child-page .card {
         border: none;
         border-radius: 17px;
         border: 1px solid #DEE4E4;
@@ -7569,17 +7575,17 @@ html {
         min-width: 0;
         word-wrap: break-word;
     }
-    .theme-dark .affiliate-page .card {
+    .theme-dark .affiliate-page .card, .theme-dark .child-page .card{
         border: 1px solid #323A3A;
     }
 
-    .affiliate-page .card.afip-card {
+    .card.afip-card {
         -webkit-transition: .14s ease;
         transition: .14s ease;
         margin: 10px 0;
     }
 
-    .affiliate-page .card.afip-card .card-body {
+    .card.afip-card .card-body {
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -7594,7 +7600,7 @@ html {
         flex: 1 1 auto;
     }
 
-    .affiliate-page .card.afip-card .card-body .card-icon {
+    .card.afip-card .card-body .card-icon {
         border: 5px solid #2FCD94;
         display: -webkit-box;
         display: -ms-flexbox;
@@ -7645,4 +7651,158 @@ html {
 
     .theme-dark .card.afip-card .card-body .c-title {
         color: #FFFFFF;
+    }
+
+    .cpap-card {
+        background: url(https://cdn.smmspot.net/nlo/assets/images/cpap.svg) no-repeat #2FCD94;
+        background-size: cover;
+        background-position: center;
+        border-radius: 10px;
+    }
+
+    .cpap-card .cpap-body {
+        padding: 34px 20px;
+    }
+    .cpap-card .cpap-title {
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 19px;
+        letter-spacing: 0.02em;
+        color: #FFFFFF;
+        margin-bottom: 8px;
+    }
+    .cpap-card .cpap-box {
+        background: #0D1321;
+        border-radius: 5px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        padding: 10px 20px;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 23px;
+        text-align: center;
+        letter-spacing: 0.02em;
+        color: #FFFFFF;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+    .cpap-card .cpap-box .btn {
+        padding: 4px 10px;
+        color: #fff;
+        margin-left: auto;
+        justify-self: flex-end;
+    }
+    .cpap-list {
+        list-style: none;
+        margin: 0px;
+        padding: 10px 0 0 0;
+        color: white;
+    }
+    
+    .cpap-list li {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 19px;
+        padding: 8px 0;
+    }
+    .cpap-list li::before {
+        content: '';
+        font-family: "Font Awesome 5 Pro";
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 19px;
+        color: #FFFFFF;
+        padding-right: 7px;
+    }
+
+    .fg .fg-icon {
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        color: #555;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        height: 50px;
+        width: 80px;
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 50px;
+        flex: 0 0 50px;
+        font-size: 18px;
+    }
+
+    .theme-dark .fg .fg-icon {
+        border-color:#323A3A;
+        color: #fff;
+    }
+
+    .fg .fg-icon.fg-icon-text {
+        width: auto;
+        -webkit-box-flex: 1;
+        -ms-flex: auto;
+        flex: auto;
+        font-size: 14px;
+        font-weight: 600;
+        text-align: center;
+    }
+    
+    .fg {
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        width: 100%;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        border-radius: 10px;
+    }
+    .op-info {
+        border-radius: 7px;
+        padding: 11px 15px 11px 11px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 18px;
+    }
+    .theme-dark .op-info {
+        color: white;
+    }
+    .op-info::before {
+        content: '';
+        font-family: "Font Awesome 5 Pro";
+        font-weight: 900;
+        font-size: 22.0701px;
+        line-height: 26px;
+        color: #FFFFFF;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        border-radius: 5px;
+        background: #2FCD94;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        width: 36px;
+        height: 36px;
+        margin-right: 10px;
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 36px;
+        flex: 0 0 36px;
     }
