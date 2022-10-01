@@ -6,15 +6,23 @@
                 <li><span>If you got any questions how Child Panel works, open up a <a href="/tickets">ticket</a>.</span></li>
                 <li>
                     <span>Want to see what a child panel looks like from the admin side?</span>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <a href="https://followizchild.com/admin">https://followizchild.com/admin</a>
-                        </div>
-                        <div class="col-sm-4">
-                            <span>Username: Followiz</span>
-                        </div>
-                        <div class="col-sm-4">
-                            <span>Password: 12345678</span>
+                    <div class="cpap-card mt-5">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="cpap-box mb-3">
+                                    <a href="https://followizchild.com/admin"><span id="referral_link1">https://followizchild.com/admin</span></a>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="cpap-box mb-3" >
+                                    <span id="referral_link1">Username: Followiz</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="cpap-box mb-3">
+                                    <span id="referral_link1">Password: 12345678</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </li>
@@ -62,13 +70,20 @@
                                     {{ errorFormMessage }}
                                 </div>
                                 {% endif %}
-
+                                <div class="form-group">
+                                    <label class="control-label text_color" for="domain">{{ lang('child_panel.form.domain') }}</label>
+                                    <div class="fg">
+                                        <input type="text" class="form-control" id="domain" name="CreateOrderForm[domain]" value="{{ form['domain'] }}">
+                                    </div>
+                                    
+                                </div>
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label class="control-label text_color" for="domain">{{ lang('child_panel.form.domain') }}</label>
+                                            <label class="control-label text_color" for="childAdmin">{{ lang('child_panel.form.username') }}</label>
                                             <div class="fg">
-                                                <input type="text" class="form-control" id="domain" name="CreateOrderForm[domain]" value="{{ form['domain'] }}">
+                                                <input type="text" class="form-control" id="createorderform-username" name="CreateOrderForm[username]" aria-required="true" value="{{ form['username'] }}">
+                                                <!-- <div data-lastpass-icon-root="true" style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;"></div> -->
                                             </div>
                                         </div>
                                     </div><!-- col -->
@@ -87,13 +102,7 @@
                                         </div>
                                     </div><!-- col -->
                                 </div><!-- row -->
-                                <div class="form-group">
-                                    <label class="control-label text_color" for="childAdmin">{{ lang('child_panel.form.username') }}</label>
-                                    <div class="fg">
-                                        <input type="text" class="form-control" id="createorderform-username" name="CreateOrderForm[username]" aria-required="true" value="{{ form['username'] }}">
-                                        <!-- <div data-lastpass-icon-root="true" style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;"></div> -->
-                                    </div>
-                                    </div>
+                               
 
                                 <div class="row">
                                     <div class="col-lg-6">

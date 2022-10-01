@@ -7687,6 +7687,7 @@ html {
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
+        height: 60px;
     }
     .cpap-card .cpap-box .btn {
         padding: 4px 10px;
@@ -7806,3 +7807,31 @@ html {
         -ms-flex: 0 0 36px;
         flex: 0 0 36px;
     }
+
+    ul.afp-list {
+        list-style: none;
+        padding-left: 15px;
+    }
+    ul.afp-list .cpap-card { 
+        padding: 12px 24px 5px;
+    }
+    ul.afp-list .cpap-box span {
+        font-size: 16px;
+    }
+    
+    @media screen and (max-width: 767px) {
+        ul.afp-list {
+            padding-left: 0;
+        }
+
+        ul.afp-list .cpap-card {
+            padding: 9px 14px 2px;
+        }
+        .cpap-card .cpap-box {
+            padding: 10px 7px;
+        }
+        ul.afp-list .cpap-box span {
+            font-size: 14px;
+        }
+    }
+    
