@@ -358,6 +358,9 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     let subCategory = []; 
     let myFavoriteServices = [];
     let newServices = [];
+    let mainBestSeller = [];
+    let subBestSeller =[];
+    let serviceOrderNew = [];
 
     $(document).ready(function(){
     
@@ -441,10 +444,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     });
             
                     $("#orderform-main-category, #orderform-category, #orderform-service").on("select2:open", hideSelect2Keyboard);
-            
-                    // $("#orderform-main-category, #orderform-category, #orderform-service").on("select2:close",function(){
-                    //     setTimeout(hideSelect2Keyboard, 50);
-                    // });
 
                 /***************** Initialize New Order Page Component END **********************/
 
@@ -461,6 +460,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         crossDomain: true,
                         success: function(response)         
                         {
+                            console.log(response.data);
                             localStorage.setItem('categoryOrder', JSON.stringify(response.data));
                         }
                     });
@@ -471,7 +471,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     loadCategoryOrderLocal(categoryOrderURLlocal);
                 // }
 
-                let serviceOrderNew = [];
+               
                 function loadServiceOrderNew(link) {
                     $.ajax({
                         async: false,
@@ -493,6 +493,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
                 getMyFavoriteServices();
                 getNewServices();
+                getBestSellers();
                 
                 // Services Update panel
                 if($("#table-updates-order").length > 0){
@@ -555,7 +556,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         
                 mainCategory = oldMainCat.filter(onlyUnique);
             
-                let mainCategoryOption = '<option value="Your Favorite Services">Your Favorite Services</option>';
+                let mainCategoryOption = '<option value="New Services">New Services</option>';
                 
                 let firstOption = "";
                 
@@ -566,56 +567,64 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     // re-order
                     firstOption = localStorage.getItem('main-category');
                 } else {
-                    firstOption = "Your Favorite Services";
-                    mainCategoryOption = '<option value="Your Favorite Services" selected="true">Your Favorite Services</option>';
+                    firstOption = "New Services";
+                    mainCategoryOption = '<option value="New Services" selected="true">New Services</option>';
                 }
 
-                mainCategoryOption += '<option value="New Services">New Services</option>';
+                mainCategoryOption += '<option value="Your Favorite Services">Your Favorite Services</option>';
                 
                 mainCategory.forEach(element => {
                     if(firstOption === '' || firstOption == element){
                         firstOption = element;
-                        mainCategoryOption += '<option value="'+element+'" selected="true">'+element+'</option> ';
+                        mainCategoryOption += '<option value="' + element + '" selected="true">' + element + '</option> ';
                     } else {
-                        mainCategoryOption += '<option value="'+element+'" >'+element+'</option> ';
+                        mainCategoryOption += '<option value="' + element + '" >' + element + '</option> ';
                     }
                     
-                });
-        
-                $("#orderform-main-category").html('').html(mainCategoryOption);
-                createSubCategoryOption(firstOption, 1);
-            
-                $("#orderform-main-category").change(function(){
-                    createSubCategoryOption($(this).val(), 2);
-                })
+                }); 
             
                 $("#orderform-category").change(function(){
 
                     var cat_id = $('option:selected', $(this)).val();
 
+                    // get services by selected category
                     let orderform_service = getServiceByCategoryId(cat_id);
 
                     let lsubCategoryOption = '';
                     
-                    // let sortedService = [];
                     let newSortedService = [];
 
-                    for (const [key, value] of Object.entries(orderform_service)) {			
-                        let sort_order_arr = serviceOrderNew.filter((order)=>{  return order.service_id == key; });		 
-                        if(sort_order_arr[0] !== undefined){		
-                            let sort_val = sort_order_arr[0];           
-                            
-                            // if(sort_val.length > 0){
-                                // sortedService[sort_val.sort_order] = value;
-                                let temp = [];
-                                temp['key'] = key;
-                                temp['value'] = orderform_service[key]['name']; 
-                                temp['type'] = orderform_service[key]['type'];
+                    // if best seller should to order by excel docu.. so let it
+                    if(cat_id == "Best sellers"){
+                        let index = 0;
+                        for (const [key, value] of Object.entries(orderform_service)) {			
+                            let temp = [];
+                            temp['key'] = orderform_service[key]['id'];
+                            temp['value'] = orderform_service[key]['name']; 
+                            temp['type'] = orderform_service[key]['type'];
 
-                                newSortedService[sort_val.sort_order] = temp;
-                            // }
+                            newSortedService[index] = temp;
+                            index++;
+                        }
+                    }else{
+                        for (const [key, value] of Object.entries(orderform_service)) {			
+                            let sort_order_arr = serviceOrderNew.filter((order)=>{  return order.service_id == key; });		 
+                            if(sort_order_arr[0] !== undefined){		
+                                let sort_val = sort_order_arr[0];           
+                                
+                                // if(sort_val.length > 0){
+                                    // sortedService[sort_val.sort_order] = value;
+                                    let temp = [];
+                                    temp['key'] = key;
+                                    temp['value'] = orderform_service[key]['name']; 
+                                    temp['type'] = orderform_service[key]['type'];
+    
+                                    newSortedService[sort_val.sort_order] = temp;
+                                // }
+                            }
                         }
                     }
+                   
 
                     let service = '';
                     
@@ -623,7 +632,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         service = localStorage.getItem('service');
                     }
 
-                    if(cat_id == "Your Favorite Services" || cat_id == "New Services"){
+                    if(cat_id == "Your Favorite Services" || cat_id == "New Services" || cat_id == "Best sellers"){
                         newSortedService.forEach((element, key) => {	
                             
                             let textVal = element['value'];
@@ -639,7 +648,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                                 }
                             }
                             
-                            // textVal = element['key']+" - " + textVal;
                             if(element['key'] == service){
                                 lsubCategoryOption += '<option selected="true" data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
                             }else{
@@ -651,7 +659,15 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                             // service
                             $("#orderform-service").html(lsubCategoryOption).trigger('change');
                         }, 100)
+                        $("#orderform-category").select2("close");
                     }
+                })
+
+                $("#orderform-main-category").html('').html(mainCategoryOption);
+                createSubCategoryOption(firstOption, 1);
+            
+                $("#orderform-main-category").change(function(){
+                    createSubCategoryOption($(this).val(), 2);
                 })
                 
                 // order again button mode
@@ -668,7 +684,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
         /********************************************* SERVICE PAGE START ***************************************************/
             if($('.service_page').length > 0){
-                console.log('service page');
                 // search category
                 $(document).on("change", ".selectpicker",function() {
             
@@ -1238,9 +1253,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                                 data.payment_amount = parseFloat($(this).text());
                             }
                             if(index == 11){
-                                ////console.log(data);
                                 paymentInfo.push(data);
-                                
                             }
                         });
                      
@@ -1254,10 +1267,9 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
 /******************************* NEW ORDER PAGE START *****************************/
     function hideSelect2Keyboard(e){
-        // $('.select2-search input, :focus,input').prop('focus',false).blur();
         $('.select2-search input').prop('focus',false).blur();
     }
-    
+
     function getImageName(serviceName){
         let type = "";
         if($("#orderform-main-category").length > 0){
@@ -1273,23 +1285,23 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             return "website.svg"
         }
         if(serviceName.includes("instagram")){
-            return "instagram.svg"
+            return "instagram-color.svg"
         }
     
         if(serviceName.includes("youtube")){
-            return "youtube.svg"
+            return "youtube-color.svg"
         }
         
         if(serviceName.includes("facebook")){
-            return "facebook.svg"
+            return "facebook-color.svg"
         }
     
         if(serviceName.includes("twitter")){
-            return "twitter.svg"
+            return "twitter-color.svg"
         }
     
         if(serviceName.includes("coub")){
-            return "coub.svg"
+            return "coub-color.svg"
         }
     
         if(serviceName.includes("datpiff")){
@@ -1297,158 +1309,157 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         }
     
         if(serviceName.includes("imdb")){
-            return "imdb.svg"
+            return "imdb-color.svg"
         }
     
         if(serviceName.includes("likee")){
-            return "likee.svg"
+            return "likee-color.svg"
         }
     
         if(serviceName.includes("linkedin")){
-            return "linkedin.svg"
+            return "linkedin-color.svg"
         }
     
         if(serviceName.includes("mixcloud")){
-            return "mixcloud.svg"
+            return "mixcloud-color.svg"
         }
     
         if(serviceName.includes("ok.ru")){
-            return "ok.ru.svg"
+            return "ok.ru-color.svg"
         }
     
         if(serviceName.includes("periscope")){
-            return "periscope.svg"
+            return "periscope-color.svg"
         }
     
         if(serviceName.includes("pinterest")){
-            return "pinterest.svg"
+            return "pinterest-color.svg"
         }
     
         if(serviceName.includes("quora")){
-            return "quora.svg"
+            return "quora-color.svg"
         }
     
         if(serviceName.includes("reddit")){
-            return "reddit.svg"
+            return "reddit-color.svg"
         }
     
         if(serviceName.includes("shazam")){
-            return "shazam.svg"
+            return "shazam-color.svg"
         }
     
         if(serviceName.includes("snapchat")){
-            return "snapchat.svg"
+            return "snapchat-color.svg"
         }
     
         if(serviceName.includes("soundcloud")){
-            return "soundcloud.svg"
+            return "soundcloud-color.svg"
         }
     
         if(serviceName.includes("spotify")){
-            return "spotify.svg"
+            return "spotify-color.svg"
         }
     
         if(serviceName.includes("telegram")){
-            return "telegram.svg"
+            return "telegram-color.svg"
         }
     
         if(serviceName.includes("tiktok")){
-            return "tiktok.svg"
+            return "tiktok-color.svg"
         }
     
         if(serviceName.includes("tumblr")){
-            return "tumblr.svg"
+            return "tumblr-color.svg"
         }
     
         if(serviceName.includes("twitch")){
-            return "twitch.svg"
+            return "twitch-color.svg"
         }
     
         if(serviceName.includes("reverbnation")){
-            return "reverbnation.svg"
+            return "reverbnation-color.svg"
         }
     
         if(serviceName.includes("vimeo")){
-            return "vimeo.svg"
+            return "vimeo-color.svg"
         }
     
         if(serviceName.includes("vk.com")){
-            return "vk.com.svg"
+            return "vk.com-color.svg"
         }
     
         if(serviceName.includes("yandex")){
-            return "yandex.svg"
+            return "yandex-color.svg"
         }
     
         if(serviceName.includes("seo")){
-            return "seo.svg"
+            return "seo-color.svg"
         }
     
         if(serviceName.includes("guest")){
-            return "guest.svg"
+            return "guest-color.svg"
         }
     
         if(serviceName.includes("press")){
-            return "press.svg"
+            return "press-color.svg"
         }
     
         if(serviceName.includes("android")){
-            return "android.svg"
+            return "android-color.svg"
         }
     
         if(serviceName.includes("ios")){
-            return "ios.svg"
+            return "ios-color.svg"
         }
         if(serviceName.includes("audiomack")){
-            return "audiomack.svg"
+            return "audiomack-color.svg"
         }
         if(serviceName.includes("clubhouse")){
-            return "clubhouse.svg"
+            return "clubhouse-color.svg"
         }
         if(serviceName.includes("discord")){
-            return "discord.svg"
+            return "discord-color.svg"
         }
     
         if(serviceName.includes("marketing")){
-            return "marketing.svg"
+            return "marketing-color.svg"
         }
     
         if(serviceName.includes("new")){
-            return "new.svg"
+            return "new-color.svg"
         }
     
         if(serviceName.includes("apple")){
-            return "apple.svg"
+            return "apple-color.svg"
         }
     
         if(serviceName.includes("behance")){
-            return "behance.svg"
+            return "behance-color.svg"
         }
     
-    
         if(serviceName.includes("dailymotion")){
-            return "dailymotion.svg"
+            return "dailymotion-color.svg"
         }
     
         if(serviceName.includes("deezer")){
-            return "deezer.svg"
+            return "deezer-color.svg"
         }
     
         if(serviceName.includes("dribble")){
-            return "dribble.svg";
+            return "dribble-color.svg";
         }
     
         if(serviceName.includes("fansly")){
-            return "fansly.svg";
+            return "fansly-color.svg";
         }
 
     
         if(serviceName.includes("google")){
-            return "google.svg";
+            return "google-color.svg";
         }
     
         if(serviceName.includes("kwai")){
-            return "kwai.svg";
+            return "kwai-color.svg";
         }
     
         if(serviceName.includes("nft")){
@@ -1456,11 +1467,11 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         }
     
         if(serviceName.includes("onlyfans")){
-            return "onlyfans.svg";
+            return "onlyfans-color.svg";
         }
     
         if(serviceName.includes("podcast")){
-            return "podcast.svg";
+            return "podcast-color.svg";
         }
     
         if(serviceName.includes("sitejabber")){
@@ -1468,7 +1479,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         }
     
         if(serviceName.includes("tidal")){
-            return "tidal.svg";
+            return "tidal-color.svg";
         }
     
         if(serviceName.includes("trust")){
@@ -1476,15 +1487,15 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         }
     
         if(serviceName.includes("steam")){
-            return "steam.svg";
+            return "steam-color.svg";
         }
     
         if(serviceName.includes("yellow")){
-            return "yellow.svg";
+            return "yellow-color.svg";
         }
     
         if(serviceName.includes("random")){
-            return "random.svg";
+            return "random-color.svg";
         }
 
         if(serviceName.includes("your favorite")){
@@ -1492,9 +1503,12 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         }
 
         if(serviceName.includes("new services")){
-            return "marketing.svg";
+            return "marketing-color.svg";
         }
     
+        if(serviceName.includes('best sellers')){
+            return "bestseller.svg";
+        }
         return "marketing.svg";
     }
 
@@ -1623,17 +1637,20 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         }
         
         var str1 = splt1.split(":");
-        str1[1] = str1[1].replace("Start Time", "");
+        if(str1[1])
+            str1[1] = str1[1].replace("Start Time", "");
         jQuery(".quality-split").html(str1[1]);
     
         var splt2 = jQuery( ".split-class2" ).text();
         var str2 = splt2.split(":");
-        str2[1] = str2[1].replace("Start Time", "");
+        if(str2[1])
+            str2[1] = str2[1].replace("Start Time", "");
         jQuery( ".time-split" ).html(str2[1]);
     
         var splt3 = jQuery( ".split-class3" ).text();
         var str3 = splt3.split(":");
-        str3[1] = str3[1].replace("Speed per Day", "");
+        if(str3[1])
+            str3[1] = str3[1].replace("Speed per Day", "");
         jQuery( ".speed-split" ).html(str3[1]);
         
     
@@ -1680,6 +1697,8 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         $(".reviewShowOnly").attr("data-service_id", service_id);
         $(".review").attr("data-service_id", service_id);
 
+        if(!service_id)
+            return;
         let data = {user_id: user_id, service_id: service_id};
 
         jQuery.ajax({
@@ -1848,20 +1867,27 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         }else if(mainCatOption == "New Services"){
             subCategoryOption = '<option value="New Services" selected="true">New Services</option>';
         } else {
+            
             let fO = ''; 
 
             // Order Again Mode
             if(localStorage.getItem('category')){
                 fO = localStorage.getItem('category');
             }
-
+            
+            if(fO == "Best sellers" || fO == '')
+                subCategoryOption = '<option value="Best sellers" selected="true">Best sellers</option>';
+            else
+                subCategoryOption = '<option value="Best sellers" >Best sellers</option>';
+            
             let categoryOrder = '';
         
             if(localStorage.getItem('categoryOrder')){
                 categoryOrder = localStorage.getItem('categoryOrder');
                 categoryOrder = JSON.parse(categoryOrder);
             }
-            
+            console.log(categoryOrder);
+            console.log(subCategory[mainCatOption])
             let rowSubcategory = subCategory[mainCatOption];
             let sortedService = [];
         
@@ -1890,13 +1916,13 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             });
         }
 
-        $("#orderform-category").html('').html(subCategoryOption);
+        $("#orderform-category").html(subCategoryOption);
         
         setTimeout(
             function(){ 
                 $('#orderform-category').trigger('change');
             }, 
-            500);
+        500);
     }
 
     function onlyUnique(value, index, self) {
@@ -1942,6 +1968,29 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     if (services[list_service_id]['id'] == id) {
                         service_details[services[list_service_id]['id']] = services[list_service_id];
                     }
+                }
+            }
+        } else if(catId == "Best sellers" && mainBestSeller.length > 0){
+            let main_category = $("#orderform-main-category").val();
+            for(let i = 0; i < mainBestSeller.length; i++){
+                if(mainBestSeller[i].category_name == main_category){
+                    let best_ids = mainBestSeller[i].best_ids.split(" ");
+                    let ii = 0;
+                    for(index = 0; index < best_ids.length; index++){
+                        
+                        for (let list_service_id of Object.keys(services)) {
+                            if(best_ids[index] == services[list_service_id]['id']){
+                                service_details[ii] = services[list_service_id];
+                                ii++;
+                            }
+                        }
+                    }
+
+                    // for (let list_service_id of Object.keys(services)) {
+                    //     if (best_ids.includes(services[list_service_id]['id'])) {
+                    //         service_details[services[list_service_id]['id']] = services[list_service_id];
+                    //     }
+                    // }
                 }
             }
         } else {
@@ -1999,8 +2048,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                ////console.log(jqXHR);
-    
             }
         });
     }
@@ -2158,6 +2205,23 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         });
     }
 
+    function getBestSellers(){
+        $.ajax({
+            async: false,
+            url: "https://followizaddons.com/bestseller/read_bestseller.php",      
+            type: "GET",
+            dataType: "json",
+            cache: false,
+            crossDomain: true,
+            success: function(response)         
+            {
+                mainBestSeller = response.data.main;
+                subBestSeller = response.data.sub;
+                // newServices = response.data;
+            }
+        });
+    }
+
   /************************  FUNCTION FOR USER RATING ***************************/
   
     function CopyToClipboard(containerid) {
@@ -2268,7 +2332,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
-                //console.log(jqXHR);
             }
         });
     }
@@ -2315,11 +2378,9 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             crossDomain: true,
             success: function(data, textStatus, jqXHR)
             {
-                //console.log(data);
             },
             error: function (jqXHR, textStatus, errorThrown)
             {
-                //console.log(jqXHR);
             }
         });
     }
@@ -2426,7 +2487,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             url: api_end_point + "/user/insertOrUpdateUser.php",      
             success: function(data)         
             {
-            //console.log(data);
             }
         });
     }
@@ -2443,7 +2503,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             url: api_end_point + "/invoice/generate-all-invoice.php",      
             success: function(data)         
             {
-            //console.log(data);
             }
         });
     }
@@ -2451,7 +2510,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     let count_index = 0;
     function synchronizeService(allServices){
         count_index ++;
-        console.log(count_index, allServices);
         var updates = { ...allServices };
         $.ajax({
             type: "POST",
@@ -2462,7 +2520,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             url: api_end_point + "/api/update/insertOrUpdateServices.php",
             success: function(data)         
             {
-            //console.log(data);
             }
         });
     }
@@ -2479,7 +2536,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             url: api_end_point + "/api/order/insertOrUpdateServiceSorting.php",
             success: function(data)         
             {
-            //console.log(data);
             }
         });
     }
@@ -2517,7 +2573,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
               url: api_end_point + "/api/order/insertOrUpdateCategorySorting.php",
               success: function(data)         
               {
-                console.log("category=", data);
               }
           });
     }
@@ -2734,7 +2789,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             crossDomain: true,
             success: function(response)         
             {
-                //console.log('response1',response);
                 //$('.table.update-table tbody').html('');
     
                 response.data.forEach(function(data) {
@@ -2776,7 +2830,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             crossDomain: true,
             success: function(response)         
             {
-                console.log("response4", response);
                 $('.table.update-table tbody').html('');
   
                 response.data.forEach(function(data) {
@@ -2906,7 +2959,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 });
             });
         }catch(err) {
-            //console.log(err);
             window.location.href = homeURL;
         }
    

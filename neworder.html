@@ -1,380 +1,392 @@
+
+          <!-- BANNER -->
+          <div class="container top-banner">
+            <div class="panel new_order">
+                  <div class="panel-body">
+              There is an industry-wide issue with Instagram updating Followers on the public side of a profile. Orders placed over the past 48 hours might appear to have a missing count, when in fact they were fully delivered but the Followers have not been added to the public side.<br>You should be able to verify the count by looking at your analytics. We will be monitoring all orders over the next 2 days to ensure that everything you paid for is fully delivered, however, we have to wait for this counter issue to be resolved before we can verify the Follower count. We appreciate your patience as we wait for Instagram to correct this problem.
+                  </div>
+              </div>
+        </div>
+
+
+
 <div class="container">
-    <div class="panel new_order">
-        <div class="panel-body">
-            <h2 class="page-header page-title text_color new_heading">Place a New Order</h2>
-            <div class="row order1">
-                <div class="col-md-6 form_design">
-                    {% if error %}
-                        <div class="alert alert-dismissible alert-danger {% if site['rtl'] %} rtl-alert {% endif %}">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            {{ errorMessage }}
+<div class="panel new_order">
+<div class="panel-body">
+    <h2 class="page-header page-title text_color new_heading">Place a New Order</h2>
+    <div class="row order1">
+        <div class="col-md-6 form_design">
+            {% if error %}
+                <div class="alert alert-dismissible alert-danger {% if site['rtl'] %} rtl-alert {% endif %}">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ errorMessage }}
+                </div>
+            {% endif %}
+            {% if 1 == success %}
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4>{{lang('neworder.message.success')}}</h4>
+                    {{lang('neworder.id')}}: {{order['id']}}<br>
+                    {{lang('neworder.service')}}: {{order['service']}}
+                    <br>
+                    {{lang('neworder.link')}}: {{order['link']}}<br>
+                    {{lang('neworder.quantity')}}: {{order['quantity']}}<br>
+                    {{lang('neworder.charge')}}: {{order['charge']}}<br>
+                    {{lang('neworder.balance')}}: {{order['balance']}}<br>
+                </div>
+            {%endif%}
+            {% if 2 == success %}
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4>{{lang('neworder.message.success')}}</h4>
+                    {{lang('neworder.subscription_id')}}: {{order['id']}}<br>
+                    {{lang('neworder.service')}}: {{order['service']}}
+                    <br>
+                    {{lang('neworder.username')}}: {{order['link']}}<br>
+                    {{lang('neworder.quantity')}}:
+                    {% if order['quantity_min'] == order['quantity_max'] %}
+                        {{order['quantity_max']}}
+                    {% else %}
+                        {{order['quantity_min']}}-{{order['quantity_max']}}
+                    {%endif%}
+                    <br>
+                    {{lang('neworder.new_posts')}}:
+                    {% if 0 == order['posts'] %}
+                        &#8734;
+                    {% else %}
+                        {{order['posts']}}
+                    {%endif%}
+                    <br>
+                    {{lang('neworder.delay')}}:
+                    {{order['delay']}}
+                    <br>
+                </div>
+            {%endif%}
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" name="search" id="order_searchService" class="form-control bg_color" value="{{ search }}"
+                    placeholder="Search Service ID">
+                    <span class="input-group-btn">
+                    <button type="button" class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    </span>
+                </div>
+            </div>
+            <form {% if site['rtl'] %} class="rtl-form"{% endif %} action="{{ page['url'] }}" method="post" id="order-form">
+    
+                <div class="category_name">
+                    {% if categories %}
+                        <div class="form-group">
+                            <label for="orderform-main-category" class="control-label text_color">Social Media Platform / Category / Service</label>
+                            <span class="category_info">
+                                <img src="https://followizaddons.com/followiz-icons/tooltip_icon.svg">
+                                <div class="main_category bg_color">
+                                    <div class="service_type text_color">
+                                        <h5 class="text_color" style="margin-bottom:40px;">Service Type [Start Time - Speed/Day - Maximum] [Refill Period]</h5>
+                                        <p><span>⛔</span>Cancel Button Available</p>
+                                        <p class="rba_btn"><span>♻</span>Refill Button Available</p>
+                                        <p><span>AR</span>Auto Refill</p>
+                                        <p><span>R30/R60/R∞</span>Refill 30 Days/60 Days/Lifetime</p>
+                                    </div>
+                                </div>
+                            </span>
+                            <select class="form-control bg_color" id="orderform-main-category" name="main-category">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <!-- <label for="orderform-category" class="control-label"> 
+                                {{ lang('neworder.category') }} 
+                                </label> -->
+                            
+                            <select class="form-control" id="orderform-category" name="OrderForm[category]">
+                            {% for categoryId,categoryName in categories %}
+                                <option value="{{ categoryId }}" {% if categoryId == data['category'] %} selected {%endif%}> 
+                                    {{ categoryName }} 
+                                </option>
+                            {%endfor%}
+                            </select>
                         </div>
                     {% endif %}
-                    {% if 1 == success %}
-                        <div class="alert alert-success alert-dismissible" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4>{{lang('neworder.message.success')}}</h4>
-                            {{lang('neworder.id')}}: {{order['id']}}<br>
-                            {{lang('neworder.service')}}: {{order['service']}}
-                            <br>
-                            {{lang('neworder.link')}}: {{order['link']}}<br>
-                            {{lang('neworder.quantity')}}: {{order['quantity']}}<br>
-                            {{lang('neworder.charge')}}: {{order['charge']}}<br>
-                            {{lang('neworder.balance')}}: {{order['balance']}}<br>
-                        </div>
-                    {%endif%}
-                    {% if 2 == success %}
-                        <div class="alert alert-success alert-dismissible" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4>{{lang('neworder.message.success')}}</h4>
-                            {{lang('neworder.subscription_id')}}: {{order['id']}}<br>
-                            {{lang('neworder.service')}}: {{order['service']}}
-                            <br>
-                            {{lang('neworder.username')}}: {{order['link']}}<br>
-                            {{lang('neworder.quantity')}}:
-                            {% if order['quantity_min'] == order['quantity_max'] %}
-                                {{order['quantity_max']}}
-                            {% else %}
-                                {{order['quantity_min']}}-{{order['quantity_max']}}
-                            {%endif%}
-                            <br>
-                            {{lang('neworder.new_posts')}}:
-                            {% if 0 == order['posts'] %}
-                                &#8734;
-                            {% else %}
-                                {{order['posts']}}
-                            {%endif%}
-                            <br>
-                            {{lang('neworder.delay')}}:
-                            {{order['delay']}}
-                            <br>
-                        </div>
-                    {%endif%}
                     <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" name="search" id="order_searchService" class="form-control bg_color" value="{{ search }}"
-                            placeholder="Search Service ID">
-                            <span class="input-group-btn">
-                            <button type="button" class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        <!--  <label for="orderform-service" class="control-label">
+                            {{ lang('neworder.service') }}
+                            </label> -->
+                        <select class="form-control" id="orderform-service" name="OrderForm[service]">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="description fields hidden" id="service_description" style="display:none">
+                    <div class="service-description-split">{{service['description']}}</div>
+                </div>
+                <div id="fields" class="text_color"> 
+                </div>
+                {% if check_agreement %}
+                    <div class="form-group">
+                        <label class="control-label terms">
+                            <input type="checkbox"  name="OrderForm[termsofservice]" class="terms-accept-checkbox" value="1" id="terms" {{data['termsofservice'] ? 'checked' : ''}}> {{lang('signup.accept_terms_text')}}
+                            <a  href="{{ page_url('terms') }}" target="_blank">
+                            {{ lang('terms.signup_checkbox') }}
+                            </a>
+                            <div class="main_category bg_color">
+                                <div class="service_type text_color">
+                                    <h5 class="text_color">Service Type [Start Time - Speed/Day - Maximum] [Refill Period] [Other Details]</h5>
+                                    <p><span>⛔</span>Cancel Button Avaliable</p>
+                                    <p class="rba_btn"><span>♻</span>Refill Button Avaliable</p>
+                                    <p><span>⭐</span>Most Popular Services</p>
+                                    <p><span>⚡️</span>Fast Start</p>
+                                    <p><span>AR</span>Auto Refill</p>
+                                    <p><span>R30/R60/R∞</span>Refill 30 Days / 60 Days / Lifetime</p>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                {%endif%}
+                <div class="form-group total_charge">
+                    <label for="charge" class="control-label text_color">{{ lang('neworder.charge') }}</label>
+                    <input type="text" class="form-control" id="charge" value="{{order['charge']}}" readonly >
+                </div>
+                <input type="hidden" name="_csrf" value="{{ csrftoken }}">
+                <button type="submit" class="btn btn-primary btn-block">{#{ lang('neworder.button') }#}SUBMIT ORDER</button>
+            </form>
+        </div>
+        <div class="col-md-6 selection">
+            <div class="row selection_right review-hover-zone">
+                <div class="mb-3 ">
+                    <span class="heading text_color">Details</span>
+                    <!-- <span class="reviewShowOnly me-5" style="float:right;color: rgb(252, 215, 3);"></span> -->
+                    <div class="review-wrapper">
+                        <div class="reviewShowOnly me-5"></div>
+                        <div class="review me-5"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="selection_deaitls quality ">
+                        <p class="star_icon bg_green"><img src="https://followizaddons.com/followiz-icons/quality_icon.svg"></p>
+                        <p class="real quality-split"> </p>
+                        <p class="quality_content text-color2 ">Quality</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="selection_deaitls min_max ">
+                        <p class="minmax_icon bg_green"><img src="https://followizaddons.com/followiz-icons/minmax_icon.svg">                                       </p>
+                        <p class="max minMax-split"></p>
+                        <p class="minmax_txt text-color2 ">Min/Max</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="selection_deaitls start_time ">
+                        <p class="time_icon bg_green"><img src="https://followizaddons.com/followiz-icons/starttime_icon.svg"></p>
+                        <p class="hour time-split"></p>
+                        <p class="start_content text-color2 ">Start Time</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="selection_deaitls  speed ">
+                        <p class="speed_icon bg_green"><img src="https://followizaddons.com/followiz-icons/speedperday_icon.svg"></p>
+                        <p class="hour speed-split"></p>
+                        <p class="start_content text-color2 ">Speed per Day</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="selection_deaitls refill_avilabel ">
+                        <p class="bg_red" id="refill_avilable_id"><img src="https://followizaddons.com/followiz-icons/refill-available_icon.svg"></p>
+                        <p class="mt_txt refill-split " id="Refill-Available-txt" > None</p>
+                        <p class="ra-txt text-color2 ">Refill</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="selection_deaitls avg_time ">
+                        <p class="avg_icon bg_green"><img src="https://followizaddons.com/followiz-icons/average-time_icon.svg"></p>
+                        <p class="avg_txt">  {{ service['average_time'] }}
+                        </p>
+                        <div class="minute text-color2">
+                            Average Time {{ service['average_time'] }}
+                            <span class="info">
+                            <img src="https://followizaddons.com/followiz-icons/average-time_backicon.svg"> 
+                            <div class="average_toltip text_color ">
+                                <p class="text-color2">The Average Time is a result of how much time it took for recent 1,000 quantity orders to be completed.</p>
+                                <p class="text-color2">Not all services have an Average Time Monitored, if you see “Not enough data”, it means that the service doesn't have it on.</p>
+                                <p class="text-color2">Switching services may cause a delay when updating the Average Time, please be patient. </p>
+                            </div>
                             </span>
                         </div>
                     </div>
-                    <form {% if site['rtl'] %} class="rtl-form"{% endif %} action="{{ page['url'] }}" method="post" id="order-form">
-            
-                        <div class="category_name">
-                            {% if categories %}
-                                <div class="form-group">
-                                    <label for="orderform-main-category" class="control-label text_color">Social Media Platform / Category / Service</label>
-                                    <span class="category_info">
-                                        <img src="https://followizaddons.com/followiz-icons/tooltip_icon.svg">
-                                        <div class="main_category bg_color">
-                                            <div class="service_type text_color">
-                                                <h5 class="text_color" style="margin-bottom:40px;">Service Type [Start Time - Speed/Day - Maximum] [Refill Period]</h5>
-                                                <p><span>⛔</span>Cancel Button Available</p>
-                                                <p class="rba_btn"><span>♻</span>Refill Button Available</p>
-                                                <p><span>AR</span>Auto Refill</p>
-                                                <p><span>R30/R60/R∞</span>Refill 30 Days/60 Days/Lifetime</p>
-                                            </div>
-                                        </div>
-                                    </span>
-                                    <select class="form-control bg_color" id="orderform-main-category" name="main-category">
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <!-- <label for="orderform-category" class="control-label"> 
-                                        {{ lang('neworder.category') }} 
-                                        </label> -->
-                                    
-                                    <select class="form-control" id="orderform-category" name="OrderForm[category]">
-                                    {% for categoryId,categoryName in categories %}
-                                        <option value="{{ categoryId }}" {% if categoryId == data['category'] %} selected {%endif%}> 
-                                            {{ categoryName }} 
-                                        </option>
-                                    {%endfor%}
-                                    </select>
-                                </div>
-                            {% endif %}
-                            <div class="form-group">
-                                <!--  <label for="orderform-service" class="control-label">
-                                    {{ lang('neworder.service') }}
-                                    </label> -->
-                                <select class="form-control" id="orderform-service" name="OrderForm[service]">
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="description fields hidden" id="service_description" style="display:none">
-                            <div class="service-description-split">{{service['description']}}</div>
-                        </div>
-                        <div id="fields" class="text_color"> 
-                        </div>
-                        {% if check_agreement %}
-                            <div class="form-group">
-                                <label class="control-label terms">
-                                    <input type="checkbox"  name="OrderForm[termsofservice]" class="terms-accept-checkbox" value="1" id="terms" {{data['termsofservice'] ? 'checked' : ''}}> {{lang('signup.accept_terms_text')}}
-                                    <a  href="{{ page_url('terms') }}" target="_blank">
-                                    {{ lang('terms.signup_checkbox') }}
-                                    </a>
-                                    <div class="main_category bg_color">
-                                        <div class="service_type text_color">
-                                            <h5 class="text_color">Service Type [Start Time - Speed/Day - Maximum] [Refill Period] [Other Details]</h5>
-                                            <p><span>⛔</span>Cancel Button Avaliable</p>
-                                            <p class="rba_btn"><span>♻</span>Refill Button Avaliable</p>
-                                            <p><span>⭐</span>Most Popular Services</p>
-                                            <p><span>⚡️</span>Fast Start</p>
-                                            <p><span>AR</span>Auto Refill</p>
-                                            <p><span>R30/R60/R∞</span>Refill 30 Days / 60 Days / Lifetime</p>
-                                        </div>
-                                    </div>
-                                </label>
-                            </div>
-                        {%endif%}
-                        <div class="form-group total_charge">
-                            <label for="charge" class="control-label text_color">{{ lang('neworder.charge') }}</label>
-                            <input type="text" class="form-control" id="charge" value="{{order['charge']}}" readonly >
-                        </div>
-                        <input type="hidden" name="_csrf" value="{{ csrftoken }}">
-                        <button type="submit" class="btn btn-primary btn-block">{#{ lang('neworder.button') }#}SUBMIT ORDER</button>
-                    </form>
                 </div>
-                <div class="col-md-6 selection">
-                    <div class="row selection_right review-hover-zone">
-                        <div class="mb-3 ">
-                            <span class="heading text_color">Details</span>
-                            <!-- <span class="reviewShowOnly me-5" style="float:right;color: rgb(252, 215, 3);"></span> -->
-                            <div class="review-wrapper">
-                                <div class="reviewShowOnly me-5"></div>
-                                <div class="review me-5"></div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="selection_deaitls quality ">
-                                <p class="star_icon bg_green"><img src="https://followizaddons.com/followiz-icons/quality_icon.svg"></p>
-                                <p class="real quality-split"> </p>
-                                <p class="quality_content text-color2 ">Quality</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="selection_deaitls min_max ">
-                                <p class="minmax_icon bg_green"><img src="https://followizaddons.com/followiz-icons/minmax_icon.svg">                                       </p>
-                                <p class="max minMax-split"></p>
-                                <p class="minmax_txt text-color2 ">Min/Max</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="selection_deaitls start_time ">
-                                <p class="time_icon bg_green"><img src="https://followizaddons.com/followiz-icons/starttime_icon.svg"></p>
-                                <p class="hour time-split"></p>
-                                <p class="start_content text-color2 ">Start Time</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="selection_deaitls  speed ">
-                                <p class="speed_icon bg_green"><img src="https://followizaddons.com/followiz-icons/speedperday_icon.svg"></p>
-                                <p class="hour speed-split"></p>
-                                <p class="start_content text-color2 ">Speed per Day</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="selection_deaitls refill_avilabel ">
-                                <p class="bg_red" id="refill_avilable_id"><img src="https://followizaddons.com/followiz-icons/refill-available_icon.svg"></p>
-                                <p class="mt_txt refill-split " id="Refill-Available-txt" > None</p>
-                                <p class="ra-txt text-color2 ">Refill</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="selection_deaitls avg_time ">
-                                <p class="avg_icon bg_green"><img src="https://followizaddons.com/followiz-icons/average-time_icon.svg"></p>
-                                <p class="avg_txt">  {{ service['average_time'] }}
-                                </p>
-                                <div class="minute text-color2">
-                                    Average Time {{ service['average_time'] }}
-                                    <span class="info">
-                                    <img src="https://followizaddons.com/followiz-icons/average-time_backicon.svg"> 
-                                    <div class="average_toltip text_color ">
-                                        <p class="text-color2">The Average Time is a result of how much time it took for recent 1,000 quantity orders to be completed.</p>
-                                        <p class="text-color2">Not all services have an Average Time Monitored, if you see “Not enough data”, it means that the service doesn't have it on.</p>
-                                        <p class="text-color2">Switching services may cause a delay when updating the Average Time, please be patient. </p>
-                                    </div>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="selection_deaitls cancellation_btn ">
-                                <p class="bg_red" id="cancel_btn"><img src="https://followizaddons.com/followiz-icons/cancelbtn_icon.svg"></p>
-                                <p class="mt_txt" id="cancel_text">No</p>
-                                <p class="cancell_txt text-color2"> Cancel Button</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="selection_deaitls  refill_button ">
-                                <p class="bg_red" id="refill_btn"><img src="https://followizaddons.com/followiz-icons/refill-button_icon.svg"></p>
-                                <p class="mt_txt" id="refill_text">No</p>
-                                <p class="refill_txt text-color2">Refill Button</p>
-                            </div>
-                        </div>
+                <div class="col-md-6">
+                    <div class="selection_deaitls cancellation_btn ">
+                        <p class="bg_red" id="cancel_btn"><img src="https://followizaddons.com/followiz-icons/cancelbtn_icon.svg"></p>
+                        <p class="mt_txt" id="cancel_text">No</p>
+                        <p class="cancell_txt text-color2"> Cancel Button</p>
                     </div>
-                    <div class="description_section">
-                        <h5 class="text_color">Description</h5>
-                        <div class="description_txt">
-                            <div class="profile text-color2">
-                                <p class="profile_picture text-color2 details-split"></p>
-                            </div> 
-                        </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="selection_deaitls  refill_button ">
+                        <p class="bg_red" id="refill_btn"><img src="https://followizaddons.com/followiz-icons/refill-button_icon.svg"></p>
+                        <p class="mt_txt" id="refill_text">No</p>
+                        <p class="refill_txt text-color2">Refill Button</p>
                     </div>
                 </div>
             </div>
-            
-        </div>
-    </div>
-    <div class="panel services_news">
-        <div class="row">
-        <div class="col-md-6">
-            <div class="services_updates bg_color">
-                
-                <a href="/updates" class="theme-a-title"><h1>Services Updates</h1></a>
-                <!-- Nav tabs -->
-                <div class="service-update-header">
-                    <div class="tabs-header">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#update_all" aria-controls="update_all" role="tab" data-toggle="tab">All</a></li>
-                            <li role="presentation"><a href="#update_new" aria-controls="update_new" role="tab" data-toggle="tab">New service</a></li>
-                            <li role="presentation"><a href="#update_decrease" aria-controls="update_decrease" role="tab" data-toggle="tab">Rate decreased</a></li>
-                            <li role="presentation"><a href="#update_increase" aria-controls="update_increase" role="tab" data-toggle="tab">Rate increased</a></li>
-                            <li role="presentation"><a href="#update_disable" aria-controls="update_disable" role="tab" data-toggle="tab">Service disabled</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="update_all">
-                        <div class="table-responsive" id="">
-                            <table id="table-updates-order" class="table update-table service-tablwa service-well custom-table ">
-                                <thead>
-                                    <tr>
-                                    <th>Id</th>
-                                    <th class="width-service-name">Service</th>
-                                    <th class="nowrap">Date</th>
-                                    <th class="nowrap">Update</th>
-                                    </tr>
-                                </thead>
-                                <tbody> 
-            
-                                </tbody>
-                            </table>
-                            <a class="btn" href="/updates">View More</a>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="update_new">
-                        <div class="table-responsive" id="">
-                            <table id="table-updates-order" class="table update-table service-tablwa service-well custom-table ">
-                                <thead>
-                                    <tr>
-                                    <th>Id</th>
-                                    <th class="width-service-name">Service</th>
-                                    <th class="nowrap">Date</th>
-                                    <th class="nowrap">Update</th>
-                                    </tr>
-                                </thead>
-                                <tbody> 
-            
-                                </tbody>
-                            </table>
-                            <a class="btn" href="/updates">View More</a>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="update_decrease">
-                        <div class="table-responsive" id="">
-                            <table id="table-updates-order" class="table update-table service-tablwa service-well custom-table ">
-                                <thead>
-                                    <tr>
-                                    <th>Id</th>
-                                    <th class="width-service-name">Service</th>
-                                    <th class="nowrap">Date</th>
-                                    <th class="nowrap">Update</th>
-                                    </tr>
-                                </thead>
-                                <tbody> 
-            
-                                </tbody>
-                            </table>
-                            <a class="btn" href="/updates">View More</a>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="update_increase">
-                        <div class="table-responsive" id="">
-                            <table id="table-updates-order" class="table update-table service-tablwa service-well custom-table ">
-                                <thead>
-                                    <tr>
-                                    <th>Id</th>
-                                    <th class="width-service-name">Service</th>
-                                    <th class="nowrap">Date</th>
-                                    <th class="nowrap">Update</th>
-                                    </tr>
-                                </thead>
-                                <tbody> 
-            
-                                </tbody>
-                            </table>
-                            <a class="btn" href="/updates">View More</a>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="update_disable">
-                        <div class="table-responsive" id="">
-                            <table id="table-updates-order" class="table update-table service-tablwa service-well custom-table ">
-                                <thead>
-                                    <tr>
-                                    <th>Id</th>
-                                    <th class="width-service-name">Service</th>
-                                    <th class="nowrap">Date</th>
-                                    <th class="nowrap">Update</th>
-                                    </tr>
-                                </thead>
-                                <tbody> 
-            
-                                </tbody>
-                            </table>
-                            <a class="btn" href="/updates">View More</a>
-                        </div>
-                    </div>
+            <div class="description_section">
+                <h5 class="text_color">Description</h5>
+                <div class="description_txt">
+                    <div class="profile text-color2">
+                        <p class="profile_picture text-color2 details-split"></p>
+                    </div> 
                 </div>
             </div>
         </div>
-        
-        <div class="col-md-6">
-        <div class="latest_news bg_color">
-            <h1>News</h1>
-            <div class="news_data">
-            {% if newOrderText %}
-            {{ newOrderText }}
-            {% endif %}
-            </div>
-			
-        </div>
-        </div>
-        
-        </div>
     </div>
-</div>
-</div>
- <input type="hidden" id="seviceTitle"/>
- {% if newOrderText %}
- <div class="container" style="display:none;">
-    <div class="row">
-       <div class="col-md-8 col-md-offset-2">
-          <div class="well {% if site['rtl'] %} rtl-content {% endif %}">
-             {{ newOrderText }}
-          </div>
-       </div>
-    </div>
- </div>
- {% endif %}
- 
- <script>
-    const categories = {{ categories | json_encode }};
-   
-    const selectedCatId = {{ data['category'] }};
     
- </script>
+</div>
+</div>
+<div class="panel services_news">
+<div class="row">
+<div class="col-md-6">
+    <div class="services_updates bg_color">
+        
+        <a href="/updates" class="theme-a-title"><h1>Services Updates</h1></a>
+        <!-- Nav tabs -->
+        <div class="service-update-header">
+            <div class="tabs-header">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#update_all" aria-controls="update_all" role="tab" data-toggle="tab">All</a></li>
+                    <li role="presentation"><a href="#update_new" aria-controls="update_new" role="tab" data-toggle="tab">New service</a></li>
+                    <li role="presentation"><a href="#update_decrease" aria-controls="update_decrease" role="tab" data-toggle="tab">Rate decreased</a></li>
+                    <li role="presentation"><a href="#update_increase" aria-controls="update_increase" role="tab" data-toggle="tab">Rate increased</a></li>
+                    <li role="presentation"><a href="#update_disable" aria-controls="update_disable" role="tab" data-toggle="tab">Service disabled</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="update_all">
+                <div class="table-responsive" id="">
+                    <table id="table-updates-order" class="table update-table service-tablwa service-well custom-table ">
+                        <thead>
+                            <tr>
+                            <th>Id</th>
+                            <th class="width-service-name">Service</th>
+                            <th class="nowrap">Date</th>
+                            <th class="nowrap">Update</th>
+                            </tr>
+                        </thead>
+                        <tbody> 
+    
+                        </tbody>
+                    </table>
+                    <a class="btn" href="/updates">View More</a>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="update_new">
+                <div class="table-responsive" id="">
+                    <table id="table-updates-order" class="table update-table service-tablwa service-well custom-table ">
+                        <thead>
+                            <tr>
+                            <th>Id</th>
+                            <th class="width-service-name">Service</th>
+                            <th class="nowrap">Date</th>
+                            <th class="nowrap">Update</th>
+                            </tr>
+                        </thead>
+                        <tbody> 
+    
+                        </tbody>
+                    </table>
+                    <a class="btn" href="/updates">View More</a>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="update_decrease">
+                <div class="table-responsive" id="">
+                    <table id="table-updates-order" class="table update-table service-tablwa service-well custom-table ">
+                        <thead>
+                            <tr>
+                            <th>Id</th>
+                            <th class="width-service-name">Service</th>
+                            <th class="nowrap">Date</th>
+                            <th class="nowrap">Update</th>
+                            </tr>
+                        </thead>
+                        <tbody> 
+    
+                        </tbody>
+                    </table>
+                    <a class="btn" href="/updates">View More</a>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="update_increase">
+                <div class="table-responsive" id="">
+                    <table id="table-updates-order" class="table update-table service-tablwa service-well custom-table ">
+                        <thead>
+                            <tr>
+                            <th>Id</th>
+                            <th class="width-service-name">Service</th>
+                            <th class="nowrap">Date</th>
+                            <th class="nowrap">Update</th>
+                            </tr>
+                        </thead>
+                        <tbody> 
+    
+                        </tbody>
+                    </table>
+                    <a class="btn" href="/updates">View More</a>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="update_disable">
+                <div class="table-responsive" id="">
+                    <table id="table-updates-order" class="table update-table service-tablwa service-well custom-table ">
+                        <thead>
+                            <tr>
+                            <th>Id</th>
+                            <th class="width-service-name">Service</th>
+                            <th class="nowrap">Date</th>
+                            <th class="nowrap">Update</th>
+                            </tr>
+                        </thead>
+                        <tbody> 
+    
+                        </tbody>
+                    </table>
+                    <a class="btn" href="/updates">View More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-6">
+<div class="latest_news bg_color">
+    <h1>News</h1>
+    <div class="news_data">
+    {% if newOrderText %}
+    {{ newOrderText }}
+    {% endif %}
+    </div>
+    
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+<input type="hidden" id="seviceTitle"/>
+{% if newOrderText %}
+<div class="container" style="display:none;">
+<div class="row">
+<div class="col-md-8 col-md-offset-2">
+  <div class="well {% if site['rtl'] %} rtl-content {% endif %}">
+     {{ newOrderText }}
+  </div>
+</div>
+</div>
+</div>
+{% endif %}
+
+<script>
+const categories = {{ categories | json_encode }};
+
+const selectedCatId = {{ data['category'] }};
+
+</script>
