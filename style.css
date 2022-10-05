@@ -48,6 +48,24 @@ html {
     font-size:14px;
   }
   
+
+  .theme-dark .top-banner .panel{
+	  background-color:#2FCD94;
+  }
+  .top-banner{
+	  margin-bottom:20px;
+  }
+  .top-banner .panel-body{
+	  padding: 30px 45px !important;
+  }
+  .top-banner .new_order{
+	  margin:0;
+	  line-height:24px;
+	  background:#2FCD94;
+	  color:#fff
+  }
+
+  
   body {
     /* font-family: 'Barlow', sans-serif; */
     /* font-family: 'Trebuchet MS'; */
@@ -7834,4 +7852,12 @@ html {
             font-size: 14px;
         }
     }
-    
+
+    .select2-results__group {
+        color: rgb(252, 215, 3);
+    }
+
+    .id-space {
+        display: inline-block;
+        min-width: 42px;
+    }

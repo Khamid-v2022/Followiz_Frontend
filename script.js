@@ -438,9 +438,14 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     
                     });
             
-                    $("#orderform-main-category, #orderform-category, #orderform-service").select2({
-                        templateSelection: formatState,
-                        templateResult: formatState,
+                    $("#orderform-main-category, #orderform-category").select2({
+                        templateSelection: formatState1,
+                        templateResult: formatState1,
+                    });
+
+                    $("#orderform-service").select2({
+                        templateSelection: formatState2,
+                        templateResult: formatState2,
                     });
             
                     $("#orderform-main-category, #orderform-category, #orderform-service").on("select2:open", hideSelect2Keyboard);
@@ -460,7 +465,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         crossDomain: true,
                         success: function(response)         
                         {
-                            console.log(response.data);
                             localStorage.setItem('categoryOrder', JSON.stringify(response.data));
                         }
                     });
@@ -593,6 +597,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     let lsubCategoryOption = '';
                     
                     let newSortedService = [];
+                    let best_ids = [];
 
                     // if best seller should to order by excel docu.. so let it
                     if(cat_id == "Best sellers"){
@@ -606,21 +611,57 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                             newSortedService[index] = temp;
                             index++;
                         }
-                    }else{
-                        for (const [key, value] of Object.entries(orderform_service)) {			
-                            let sort_order_arr = serviceOrderNew.filter((order)=>{  return order.service_id == key; });		 
-                            if(sort_order_arr[0] !== undefined){		
-                                let sort_val = sort_order_arr[0];           
-                                
-                                // if(sort_val.length > 0){
-                                    // sortedService[sort_val.sort_order] = value;
+                    } else {
+                        
+                        
+                        var selected_category_name = $("#orderform-category option:selected").text();
+
+                        // get best seller for selected category id
+                        for(let index = 0; index < subBestSeller.length; index++){
+                            if(subBestSeller[index].category_name == selected_category_name){
+                                best_ids = subBestSeller[index].best_ids.split(" ");
+                            }
+                        }
+                        
+                        let index = 0;
+
+                        // at first put best sellers.
+                        best_ids.forEach((id) => {
+                            for (const [key, value] of Object.entries(orderform_service)) {
+                                if(id == key){
                                     let temp = [];
                                     temp['key'] = key;
                                     temp['value'] = orderform_service[key]['name']; 
                                     temp['type'] = orderform_service[key]['type'];
-    
-                                    newSortedService[sort_val.sort_order] = temp;
-                                // }
+                                    newSortedService[index] = temp;
+                                    index++;
+                                }
+                            }
+                        })
+
+                        // put separator
+                        // if(best_ids.length > 0 && index > 0){
+                        //     let separator = [];
+                        //     separator['key'] = '';
+                        //     separator['value'] = '------------------ ☝️ Best Sellers Above ☝️ ------------------'; 
+                        //     separator['type'] = 'disabled';
+                        //     newSortedService[best_ids.length] = separator;
+                        // }
+
+                        // and then put rest services
+                        for (const [key, value] of Object.entries(orderform_service)) {	
+                            if(!best_ids.includes(key)){
+                                let sort_order_arr = serviceOrderNew.filter((order)=>{  return order.service_id == key; });		 
+                                if(sort_order_arr[0] !== undefined){		
+                                    let sort_val = sort_order_arr[0];           
+                                    
+                                    let temp = [];
+                                    temp['key'] = key;
+                                    temp['value'] = orderform_service[key]['name']; 
+                                    temp['type'] = orderform_service[key]['type'];
+
+                                    newSortedService[sort_val.sort_order + best_ids.length] = temp;
+                                }
                             }
                         }
                     }
@@ -632,9 +673,19 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         service = localStorage.getItem('service');
                     }
 
-                    if(cat_id == "Your Favorite Services" || cat_id == "New Services" || cat_id == "Best sellers"){
+                    let index = 0;
+
+                    // if(cat_id == "Your Favorite Services" || cat_id == "New Services" || cat_id == "Best sellers"){
                         newSortedService.forEach((element, key) => {	
-                            
+                            if(index == 0 && best_ids.length > 0){
+                                lsubCategoryOption += '<optgroup label="--- 👍 Best Sellers 👍 ---">';
+                            }
+                            if(best_ids.length > 0 && index == best_ids.length){
+                                lsubCategoryOption += '</optgroup>';
+                                lsubCategoryOption += '<optgroup label="Sellers">';
+                            }
+
+                           
                             let textVal = element['value'];
                             let pattern = / per \d*[0-9]/;
                             let result = pattern.test(textVal);
@@ -653,14 +704,41 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                             }else{
                                 lsubCategoryOption += '<option data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
                             }
+                            index++;
+                            
+                            // if(element['type'] == 'disabled'){
+                            //     lsubCategoryOption += '<option data-type="" value="" disabled="disabled">' + element['value'] + '</option> ';
+                            // }
+                            // else{
+                            //     let textVal = element['value'];
+                            //     let pattern = / per \d*[0-9]/;
+                            //     let result = pattern.test(textVal);
+                                
+                            //     if(result == true){
+                            //         let string = textVal.split("—");
+                            //         textVal = "";
+                                    
+                            //         for(let i =0; i < (string.length -1); i++){
+                            //             textVal += string[i];
+                            //         }
+                            //     }
+                                
+                            //     if(element['key'] == service){
+                            //         lsubCategoryOption += '<option selected="true" data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
+                            //     }else{
+                            //         lsubCategoryOption += '<option data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
+                            //     }
+                            // }
                         });
+                        lsubCategoryOption += '</optgroup>';
                     
                         setTimeout(function(){
                             // service
+                            // $("#orderform-service").html(lsubCategoryOption).val($('#orderform-service option:eq(0)').val()).trigger('change');
                             $("#orderform-service").html(lsubCategoryOption).trigger('change');
                         }, 100)
                         $("#orderform-category").select2("close");
-                    }
+                    // }
                 })
 
                 $("#orderform-main-category").html('').html(mainCategoryOption);
@@ -844,12 +922,12 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
           
 
         /********************************************* FAQ PAGE START ***************************************************/
-            if($('.faq-section').length > 0){
+            if($('.faq_section').length > 0){
             
                 $(".ques_1").css("display","none");
                 
                 $("h2.show_anser").click(function(e){
-                    
+                    console.log("Faq clicked");
                     if($(this).hasClass('active')){
                         $(this).removeClass('active');
                         $(this).next().slideUp();
@@ -1204,13 +1282,17 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
         if (currentURL.includes("extra-feature")) 
         {
+            // Best Seller selection
+            $.get('https://followizaddons.com/bestseller/bestseller.php', function( response ) {
+            });	
+
             //code to save user on our server
-            $.get('https://followizdev.com/admin/api/users/list', function( response ) {
+            $.get('https://followiz.com/admin/api/users/list', function( response ) {
                 processUsers(response.data.pagination.pages);
             });	
           
             //code to update serive 
-            $.get('https://followizdev.com/admin/api/services/list', function( response ) {
+            $.get('https://followiz.com/admin/api/services/list', function( response ) {
                 setTimeout(function(){
                     processCategoryOrder(response.data);
                 }, 1500);
@@ -1228,7 +1310,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             //code to generate invoice for client
             $("body").prepend('<div id="paymentInfo" style="display:none"></div>');
             let paymentInfo = [];
-            $.get( 'https://followizdev.com/admin/payments', function( data ) {
+            $.get( 'https://followiz.com/admin/payments', function( data ) {
                 $("#paymentInfo").html('');
                 $("#paymentInfo" ).html( $(data).find('table').clone() );
                
@@ -1267,7 +1349,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
 /******************************* NEW ORDER PAGE START *****************************/
     function hideSelect2Keyboard(e){
-        $('.select2-search input').prop('focus',false).blur();
+        $('.select2-search input').prop('focus', false).blur();
     }
 
     function getImageName(serviceName){
@@ -1512,16 +1594,40 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         return "marketing.svg";
     }
 
-    function formatState(state) {
+    function formatState1(state) {
         if (!state.id) {
           return state.text;
         }
         var baseUrl = serverURL + "followiz-categories-icon";
         
         let imageURL = getImageName(state.element.text.toLowerCase());
-      
+
         var $state = $(
             '<span><img src="' + baseUrl + '/' + imageURL  + '" class="img-flag" /> ' + state.text + '</span>'
+        );
+        
+        return $state;
+    }; 
+
+    function formatState2(state) {
+        if (!state.id) {
+          return state.text;
+        }
+        var baseUrl = serverURL + "followiz-categories-icon";
+        
+        let imageURL = getImageName(state.element.text.toLowerCase());
+
+        var name = state.text.split("-");
+        var id_space = name[0] + "- ";
+        var rest = name.splice(1);
+        var rest_str = "";
+        if(rest.length > 1)
+            rest_str = rest.join('-');
+        else if(rest.length == 1)
+            rest_str = rest[0];
+
+        var $state = $(
+            '<span><img src="' + baseUrl + '/' + imageURL  + '" class="img-flag" /> <span class="id-space">' + id_space + '</span>' + rest_str + '</span>'
         );
         return $state;
     };
@@ -1886,8 +1992,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 categoryOrder = localStorage.getItem('categoryOrder');
                 categoryOrder = JSON.parse(categoryOrder);
             }
-            console.log(categoryOrder);
-            console.log(subCategory[mainCatOption])
+            
             let rowSubcategory = subCategory[mainCatOption];
             let sortedService = [];
         
@@ -2997,7 +3102,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
   
     function getAllUsers(pageNumber){
         pageNumber = pageNumber+1;
-        let url = 'https://followizdev.com/admin/api/users/list?page=' + pageNumber;
+        let url = 'https://followiz.com/admin/api/users/list?page=' + pageNumber;
         return $.ajax({
             url : url,
             method : 'GET',
@@ -3007,7 +3112,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     }
     
     function getUserDetails(UserId){
-        let url = 'https://followizdev.com/admin/api/users/view/'+UserId;
+        let url = 'https://followiz.com/admin/api/users/view/'+UserId;
         return $.ajax({
             async:false,
             url : url,
