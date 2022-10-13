@@ -2115,7 +2115,7 @@ html {
     margin-right: 8px;
   }
   
-  .order_history .rest-details a,.order_history .rest-details span {
+  .order_history .rest-details button,.order_history .rest-details span {
     background: #2FCD94;
     opacity: 1;
     border-radius: 5px;
@@ -2124,7 +2124,7 @@ html {
     cursor:pointer;
   }
   
-  .order_history .rest-details a img,
+  .order_history .rest-details button img,
   .order_history .rest-details span img {
     width: 15px;
   }
@@ -5928,10 +5928,10 @@ html {
       text-shadow: none;
   }
   .child_form .well-float table tbody tr a.btn.btn-xs.btn-default:hover{
-          background: #2FCD94 !important;
+        background: #2FCD94 !important;
   }
   .child_form .well .alert-info{
-          background-color: #2fcd94;
+        background-color: #2fcd94;
       color: #ffffff;
       background-image: none;
   }

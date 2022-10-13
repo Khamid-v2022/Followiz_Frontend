@@ -220,7 +220,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             let service_of_cat = serviceByCate[service_cat_id];
             let filter_text = "";
             let filter_id = "";
-            for (const [key, value] of Object.entries(service_of_cat)) {
+            for (const [key, value] of Object.entries(service_of_cat)) { 
                 filter_text += value['name'] + " ";
                 filter_id += value['id'] + " ";
             }
@@ -243,7 +243,9 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             tbody += '<td class="id review-hover-zone">' + service_id; 
             tbody += '<div class="rating-wrap"><div class="reviewShowOnly" id="reviewShowOnly_' + service_id + '" data-service_id="' + service_id + '"></div>';
             tbody += '<div class="review" id="review_' + service_id + '" data-service_id="' + service_id + '"></div> </div></td>';
-            tbody += '<td class="width-25 name"><a href="#" class="order-again-btn" data-service_id="' + service_id + '" data-service-category="' + category_name + '">' + serviceDetails[k]['name'] + '</a></td>';
+            
+            let service_name = serviceDetails[k]['name'];
+            tbody += '<td class="width-25 name"><a href="#" class="order-again-btn" data-service_id="' + service_id + '" data-service-category="' + category_name + '">' + service_name + '</a></td>';
             
             tbody += '<td>' + serviceDetails[k]['rate'] + ' </td>' ;
             tbody += '<td>' + serviceDetails[k]['min'] + ' / ' + serviceDetails[k]['max'] + '</td>';
@@ -304,23 +306,23 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 
             }//description if
       
-            tbody += ' <span class="quality-split-'+service_id+'">'+quality+'</span></td>';
-            tbody += '<td><span class="time-split-'+service_id+'">'+start_time+' </span></td>';
-            tbody += '<td><span class="speed-split-'+service_id+'">'+speed_per_day+' </span></td>';
-            tbody += '<td><span class="avgtime-split-'+service_id+'">'+serviceDetails[k]['average_time']+'</span></td>';
-            tbody += '<td><span class="refill-split-'+service_id+'">'+refill_available+' </span></td>';
+            tbody += ' <span class="quality-split-' + service_id + '">' + quality + '</span></td>';
+            tbody += '<td><span class="time-split-' + service_id + '">'+start_time+' </span></td>';
+            tbody += '<td><span class="speed-split-' + service_id + '">'+speed_per_day+' </span></td>';
+            tbody += '<td><span class="avgtime-split-' + service_id + '">' + serviceDetails[k]['average_time'] + '</span></td>';
+            tbody += '<td><span class="refill-split-' + service_id + '">' + refill_available + ' </span></td>';
              
-            tbody += '<td class="rest-details" data-serviceid="'+service_id+'">';
+            tbody += '<td class="rest-details" data-serviceid="' + service_id + '">';
             if(model_details == ''){
-                tbody += '<a href="#" class=" icon disabled">';
+                tbody += '<button class=" icon disabled">';
                 tbody += '<img src="https://followizaddons.com/followiz-icons/details_eye_icon.svg">';
-                tbody +='</a>';
+                tbody +='</button>';
             }else{
-                tbody += '<a href="#" class="icon rest-details-modal btn" service_id = "' + service_id + '" service_detail_id = "' + serviceDetails[k]['id'] + '">';
+                tbody += '<button class="icon rest-details-modal btn" service_id = "' + service_id + '" service_detail_id = "' + serviceDetails[k]['id'] + '">';
                 tbody += '<span class="d-hide detail-name">' + serviceDetails[k]['name'] + '</span>';
                 tbody += '<span class="d-hide service-detail">' + model_details + '</span>';
                 tbody += '<img src="https://followizaddons.com/followiz-icons/details_eye_icon.svg">';
-                tbody += '</a>';
+                tbody += '</button>';
             }
             tbody += '</td></tr>'; 
         }
@@ -338,6 +340,14 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             $(this).find(".reviewShowOnly").css("display", "block");
             $(this).find(".review").css("display", "none");
         })
+    }
+
+    // str_time format:  "1 minute", "9 minutes", "1 hour 6 minutes", "54 hours 34 minutes", "Not enough data"   
+    function isLessOneMinute(str_time){
+        if(str_time.includes("hour") || str_time == "Not enough data"){
+            return false;
+        }
+        return true;
     }
 /******************************* SERVICES PAGE END *****************************/
 
@@ -631,8 +641,12 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                                 if(id == key){
                                     let temp = [];
                                     temp['key'] = key;
-                                    temp['value'] = orderform_service[key]['name']; 
+                                    temp['value'] = orderform_service[key]['name'];
+                                    if(isLessOneMinute(orderform_service[key]['average_time'])){
+                                        temp['value'] += " ⚡";
+                                    }
                                     temp['type'] = orderform_service[key]['type'];
+                                   
                                     newSortedService[index] = temp;
                                     index++;
                                 }
@@ -658,8 +672,10 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                                     let temp = [];
                                     temp['key'] = key;
                                     temp['value'] = orderform_service[key]['name']; 
+                                    if(isLessOneMinute(orderform_service[key]['average_time'])){
+                                        temp['value'] += " ⚡";
+                                    }
                                     temp['type'] = orderform_service[key]['type'];
-
                                     newSortedService[sort_val.sort_order + best_ids.length] = temp;
                                 }
                             }
@@ -842,6 +858,15 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 })
 
                 if(typeof serviceByCate != 'undefined'  ){
+                    
+                    for(let i = 0; i < serviceByCate.length; i++){
+                        for(const [key, value] of Object.entries(serviceByCate[i])){
+                            if(isLessOneMinute(value['average_time'])){
+                                serviceByCate[i][key]['name'] += " ⚡";
+                            }
+                        }
+                    }
+
                     const serviceOrderURL = 'https://followizaddons.com/client_js/service_order/index.php';
                     loadServiceOrder(serviceOrderURL);   
                     
@@ -891,7 +916,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             
                             $("#service_detail_name").html($(this).find("span.detail-name").html());
                             $("#service_detail").html($(this).find("span.service-detail").html());
-                            
+
                             $("#service_detail_modal").modal('show');
                         })
             
