@@ -36,7 +36,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 $(".label-success").html("Light Mode");
             
             }else{
-                localStorage.setItem('theme_layout',"theme-default");
+                localStorage.setItem('theme_layout', "theme-default");
                 $('body').removeClass().addClass('theme-default');
                 $(".label-success").html("Dark Mode");
             }
@@ -461,316 +461,282 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     $("#orderform-main-category, #orderform-category, #orderform-service").on("select2:open", hideSelect2Keyboard);
 
                 /***************** Initialize New Order Page Component END **********************/
-
-
-    
-                /**************** get category ordeing and save in local ******************/
-                function loadCategoryOrderLocal(link) {
-                    $.ajax({
-                        async: false,
-                        url: link,      
-                        type: "GET",
-                        dataType: "json",
-                        cache: false,
-                        crossDomain: true,
-                        success: function(response)         
-                        {
-                            localStorage.setItem('categoryOrder', JSON.stringify(response.data));
-                        }
-                    });
-                }
-
-                // if(!localStorage.getItem('categoryOrder')){
-                    const categoryOrderURLlocal = 'https://followizaddons.com/client_js/service_order/category.php'; 
-                    loadCategoryOrderLocal(categoryOrderURLlocal);
-                // }
-
-               
-                function loadServiceOrderNew(link) {
-                    $.ajax({
-                        async: false,
-                        url: link,      
-                        type: "GET",
-                        dataType: "json",
-                        cache: false,
-                        crossDomain: true,
-                        success: function(response)         
-                        {
-                            serviceOrderNew = response.data;
-                        }
-                    });
-                } 
-            
+                const categoryOrderURLlocal = 'https://followizaddons.com/client_js/service_order/category.php';       
                 const serviceOrderURL = 'https://followizaddons.com/client_js/service_order/index.php';
-                loadServiceOrderNew(serviceOrderURL);
-
-
-                getMyFavoriteServices();
-                getNewServices();
-                getBestSellers();
-                
-                // Services Update panel
-                if($("#table-updates-order").length > 0){
-                    loadUpdatesNew("https://followizaddons.com/client_js/updates/updates_service.php");
-                }
-
-                const params = new URLSearchParams(window.location.search);
-                let selected_main_category = "";
-                
-                // if Order Again button clicked
-                if(params.has('service')){
-                    let sel_service_id = params.get('service');
-                
-                    let selected_category =  localStorage.getItem("selected_category");
-                    let ssArr = selected_category.split("-");
-                    selected_main_category = ssArr[0].trim();
-                } 
-                
-                for (const [key, value] of Object.entries(categories)) {
-                    let ssArr = value.split("-");
-                    let ssName = ssArr[0].trim();
+        
+                $.when(
+                    loadCategoryOrderLocal(categoryOrderURLlocal),
+                    loadServiceOrderNew(serviceOrderURL),
+                    getMyFavoriteServices(),
+                    getNewServices(),
+                    getBestSellers(),
+                ).done(function() {
+                            
+                    /**************** get category ordeing and save in local ******************/
                     
-                    if(ssName !== firstSocialPlateForm){
-                        mainCategory[key] = ssName;
-                        firstSocialPlateForm = ssName; 
-                    
-                        if(typeof subCategory[ssName] === 'undefined'){
-                            subCategory[ssName] = [];
-                        }
+                    // Services Update panel
+                    if($("#table-updates-order").length > 0){
+                        loadUpdatesNew("https://followizaddons.com/client_js/updates/updates_service.php");
                     }
-                    subCategory[ssName][key] = value; 
+
+                    const params = new URLSearchParams(window.location.search);
+                    let selected_main_category = "";
                     
-                    // If Order Again button click mode
+                    // if Order Again button clicked
                     if(params.has('service')){
-                        let selected_category =  localStorage.getItem("selected_category");
-                        if(selected_category == value){
-                            localStorage.setItem('category', key);
-                        }
-                    }
-                }
-        
-                //sort categories
-                let sortedMainCategory = [];
-                let sortedCategoryIds = JSON.parse(localStorage.getItem('categoryOrder'));
-                if(sortedCategoryIds){
-                    sortedCategoryIds.forEach((cat)=>{
-                        let catId = parseInt(cat.category_id);
-                        
-                        if(typeof mainCategory[catId] != 'undefined'){
-                            sortedMainCategory[cat.sort_order] = mainCategory[catId];
-                        }
-                        
-                    });
-                }else{
-                    sortedMainCategory = mainCategory;
-                }      
-        
-                let oldMainCat = sortedMainCategory;
-                mainCategory = [];
-        
-                mainCategory = oldMainCat.filter(onlyUnique);
-            
-                let mainCategoryOption = '<option value="New Services">New Services</option>';
-                
-                let firstOption = "";
-                
-                if(params.has('service')){
-                    // selected from services page
-                    firstOption = selected_main_category;
-                } else if (localStorage.getItem('main-category')) {
-                    // re-order
-                    firstOption = localStorage.getItem('main-category');
-                } else {
-                    firstOption = "New Services";
-                    mainCategoryOption = '<option value="New Services" selected="true">New Services</option>';
-                }
-
-                mainCategoryOption += '<option value="Your Favorite Services">Your Favorite Services</option>';
-                
-                mainCategory.forEach(element => {
-                    if(firstOption === '' || firstOption == element){
-                        firstOption = element;
-                        mainCategoryOption += '<option value="' + element + '" selected="true">' + element + '</option> ';
-                    } else {
-                        mainCategoryOption += '<option value="' + element + '" >' + element + '</option> ';
-                    }
-                    
-                }); 
-            
-                $("#orderform-category").change(function(){
-
-                    var cat_id = $('option:selected', $(this)).val();
-
-                    // get services by selected category
-                    let orderform_service = getServiceByCategoryId(cat_id);
-
-                    let lsubCategoryOption = '';
-                    
-                    let newSortedService = [];
-                    let best_ids = [];
-
-                    // if best seller should to order by excel docu.. so let it
-                    if(cat_id == "Best sellers"){
-                        let index = 0;
-                        for (const [key, value] of Object.entries(orderform_service)) {			
-                            let temp = [];
-                            temp['key'] = orderform_service[key]['id'];
-                            temp['value'] = orderform_service[key]['name']; 
-                            temp['type'] = orderform_service[key]['type'];
-
-                            newSortedService[index] = temp;
-                            index++;
-                        }
-                    } else {
-                        
-                        
-                        var selected_category_name = $("#orderform-category option:selected").text();
-
-                        // get best seller for selected category id
-                        for(let index = 0; index < subBestSeller.length; index++){
-                            if(subBestSeller[index].category_name == selected_category_name){
-                                best_ids = subBestSeller[index].best_ids.split(" ");
-                            }
-                        }
-                        
-                        let index = 0;
-
-                        // at first put best sellers.
-                        best_ids.forEach((id) => {
-                            for (const [key, value] of Object.entries(orderform_service)) {
-                                if(id == key){
-                                    let temp = [];
-                                    temp['key'] = key;
-                                    temp['value'] = orderform_service[key]['name'];
-                                    if(isLessOneMinute(orderform_service[key]['average_time'])){
-                                        temp['value'] += " ⚡";
-                                    }
-                                    temp['type'] = orderform_service[key]['type'];
-                                   
-                                    newSortedService[index] = temp;
-                                    index++;
-                                }
-                            }
-                        })
-
-                        // put separator
-                        // if(best_ids.length > 0 && index > 0){
-                        //     let separator = [];
-                        //     separator['key'] = '';
-                        //     separator['value'] = '------------------ ☝️ Best Sellers Above ☝️ ------------------'; 
-                        //     separator['type'] = 'disabled';
-                        //     newSortedService[best_ids.length] = separator;
-                        // }
-
-                        // and then put rest services
-                        for (const [key, value] of Object.entries(orderform_service)) {	
-                            if(!best_ids.includes(key)){
-                                let sort_order_arr = serviceOrderNew.filter((order)=>{  return order.service_id == key; });		 
-                                if(sort_order_arr[0] !== undefined){		
-                                    let sort_val = sort_order_arr[0];           
-                                    
-                                    let temp = [];
-                                    temp['key'] = key;
-                                    temp['value'] = orderform_service[key]['name']; 
-                                    if(isLessOneMinute(orderform_service[key]['average_time'])){
-                                        temp['value'] += " ⚡";
-                                    }
-                                    temp['type'] = orderform_service[key]['type'];
-                                    newSortedService[sort_val.sort_order + best_ids.length] = temp;
-                                }
-                            }
-                        }
-                    }
-                   
-
-                    let service = '';
-                    
-                    if(localStorage.getItem('service')){
-                        service = localStorage.getItem('service');
-                    }
-
-                    let index = 0;
-
-                    // if(cat_id == "Your Favorite Services" || cat_id == "New Services" || cat_id == "Best sellers"){
-                        newSortedService.forEach((element, key) => {	
-                            if(index == 0 && best_ids.length > 0){
-                                lsubCategoryOption += '<optgroup label="--- 👍 Best Sellers 👍 ---">';
-                            }
-                            if(best_ids.length > 0 && index == best_ids.length){
-                                lsubCategoryOption += '</optgroup>';
-                                lsubCategoryOption += '<optgroup label="Sellers">';
-                            }
-
-                           
-                            let textVal = element['value'];
-                            let pattern = / per \d*[0-9]/;
-                            let result = pattern.test(textVal);
-                            
-                            if(result == true){
-                                let string = textVal.split("—");
-                                textVal = "";
-                                
-                                for(let i =0; i < (string.length -1); i++){
-                                    textVal += string[i];
-                                }
-                            }
-                            
-                            if(element['key'] == service){
-                                lsubCategoryOption += '<option selected="true" data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
-                            }else{
-                                lsubCategoryOption += '<option data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
-                            }
-                            index++;
-                            
-                            // if(element['type'] == 'disabled'){
-                            //     lsubCategoryOption += '<option data-type="" value="" disabled="disabled">' + element['value'] + '</option> ';
-                            // }
-                            // else{
-                            //     let textVal = element['value'];
-                            //     let pattern = / per \d*[0-9]/;
-                            //     let result = pattern.test(textVal);
-                                
-                            //     if(result == true){
-                            //         let string = textVal.split("—");
-                            //         textVal = "";
-                                    
-                            //         for(let i =0; i < (string.length -1); i++){
-                            //             textVal += string[i];
-                            //         }
-                            //     }
-                                
-                            //     if(element['key'] == service){
-                            //         lsubCategoryOption += '<option selected="true" data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
-                            //     }else{
-                            //         lsubCategoryOption += '<option data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
-                            //     }
-                            // }
-                        });
-                        lsubCategoryOption += '</optgroup>';
-                    
-                        setTimeout(function(){
-                            // service
-                            // $("#orderform-service").html(lsubCategoryOption).val($('#orderform-service option:eq(0)').val()).trigger('change');
-                            $("#orderform-service").html(lsubCategoryOption).trigger('change');
-                        }, 100)
-                        $("#orderform-category").select2("close");
-                    // }
-                })
-
-                $("#orderform-main-category").html('').html(mainCategoryOption);
-                createSubCategoryOption(firstOption, 1);
-            
-                $("#orderform-main-category").change(function(){
-                    createSubCategoryOption($(this).val(), 2);
-                })
-                
-                // order again button mode
-                if(params.has('service')){
-                    setTimeout(function(){
                         let sel_service_id = params.get('service');
-                        $("#orderform-service").val(sel_service_id).trigger('change');
-                    }, 500);
-                }
+                    
+                        let selected_category =  localStorage.getItem("selected_category");
+                        let ssArr = selected_category.split("-");
+                        selected_main_category = ssArr[0].trim();
+                    } 
+                    
+                    for (const [key, value] of Object.entries(categories)) {
+                        let ssArr = value.split("-");
+                        let ssName = ssArr[0].trim();
+                        
+                        if(ssName !== firstSocialPlateForm){
+                            mainCategory[key] = ssName;
+                            firstSocialPlateForm = ssName; 
+                        
+                            if(typeof subCategory[ssName] === 'undefined'){
+                                subCategory[ssName] = [];
+                            }
+                        }
+                        subCategory[ssName][key] = value; 
+                        
+                        // If Order Again button click mode
+                        if(params.has('service')){
+                            let selected_category =  localStorage.getItem("selected_category");
+                            if(selected_category == value){
+                                localStorage.setItem('category', key);
+                            }
+                        }
+                    }
+            
+                    //sort categories
+                    let sortedMainCategory = [];
+                    let sortedCategoryIds = JSON.parse(localStorage.getItem('categoryOrder'));
+                    if(sortedCategoryIds){
+                        sortedCategoryIds.forEach((cat)=>{
+                            let catId = parseInt(cat.category_id);
+                            
+                            if(typeof mainCategory[catId] != 'undefined'){
+                                sortedMainCategory[cat.sort_order] = mainCategory[catId];
+                            }
+                            
+                        });
+                    }else{
+                        sortedMainCategory = mainCategory;
+                    }      
+            
+                    let oldMainCat = sortedMainCategory;
+                    mainCategory = [];
+            
+                    mainCategory = oldMainCat.filter(onlyUnique);
+                
+                    let mainCategoryOption = '<option value="New Services">New Services</option>';
+                    
+                    let firstOption = "";
+                    
+                    if(params.has('service')){
+                        // selected from services page
+                        firstOption = selected_main_category;
+                    } else if (localStorage.getItem('main-category')) {
+                        // re-order
+                        firstOption = localStorage.getItem('main-category');
+                    } else {
+                        firstOption = "New Services";
+                        mainCategoryOption = '<option value="New Services" selected="true">New Services</option>';
+                    }
+
+                    mainCategoryOption += '<option value="Your Favorite Services">Your Favorite Services</option>';
+                    
+                    mainCategory.forEach(element => {
+                        if(firstOption === '' || firstOption == element){
+                            firstOption = element;
+                            mainCategoryOption += '<option value="' + element + '" selected="true">' + element + '</option> ';
+                        } else {
+                            mainCategoryOption += '<option value="' + element + '" >' + element + '</option> ';
+                        }
+                        
+                    }); 
+                
+                    $("#orderform-category").change(function(){
+
+                        var cat_id = $('option:selected', $(this)).val();
+
+                        // get services by selected category
+                        let orderform_service = getServiceByCategoryId(cat_id);
+
+                        let lsubCategoryOption = '';
+                        
+                        let newSortedService = [];
+                        let best_ids = [];
+
+                        // if best seller should to order by excel docu.. so let it
+                        if(cat_id == "Best sellers"){
+                            let index = 0;
+                            for (const [key, value] of Object.entries(orderform_service)) {			
+                                let temp = [];
+                                temp['key'] = orderform_service[key]['id'];
+                                temp['value'] = orderform_service[key]['name']; 
+                                temp['type'] = orderform_service[key]['type'];
+
+                                newSortedService[index] = temp;
+                                index++;
+                            }
+                        } else {
+                            
+                            
+                            var selected_category_name = $("#orderform-category option:selected").text();
+
+                            // get best seller for selected category id
+                            for(let index = 0; index < subBestSeller.length; index++){
+                                if(subBestSeller[index].category_name == selected_category_name){
+                                    best_ids = subBestSeller[index].best_ids.split(" ");
+                                }
+                            }
+                            
+                            let index = 0;
+
+                            // at first put best sellers.
+                            best_ids.forEach((id) => {
+                                for (const [key, value] of Object.entries(orderform_service)) {
+                                    if(id == key){
+                                        let temp = [];
+                                        temp['key'] = key;
+                                        temp['value'] = orderform_service[key]['name'];
+                                        if(isLessOneMinute(orderform_service[key]['average_time'])){
+                                            temp['value'] += " ⚡";
+                                        }
+                                        temp['type'] = orderform_service[key]['type'];
+                                    
+                                        newSortedService[index] = temp;
+                                        index++;
+                                    }
+                                }
+                            })
+
+                            // put separator
+                            // if(best_ids.length > 0 && index > 0){
+                            //     let separator = [];
+                            //     separator['key'] = '';
+                            //     separator['value'] = '------------------ ☝️ Best Sellers Above ☝️ ------------------'; 
+                            //     separator['type'] = 'disabled';
+                            //     newSortedService[best_ids.length] = separator;
+                            // }
+
+                            // and then put rest services
+                            for (const [key, value] of Object.entries(orderform_service)) {	
+                                if(!best_ids.includes(key)){
+                                    let sort_order_arr = serviceOrderNew.filter((order)=>{  return order.service_id == key; });		 
+                                    if(sort_order_arr[0] !== undefined){		
+                                        let sort_val = sort_order_arr[0];           
+                                        
+                                        let temp = [];
+                                        temp['key'] = key;
+                                        temp['value'] = orderform_service[key]['name']; 
+                                        if(isLessOneMinute(orderform_service[key]['average_time'])){
+                                            temp['value'] += " ⚡";
+                                        }
+                                        temp['type'] = orderform_service[key]['type'];
+                                        newSortedService[sort_val.sort_order + best_ids.length] = temp;
+                                    }
+                                }
+                            }
+                        }
+                    
+
+                        let service = '';
+                        
+                        if(localStorage.getItem('service')){
+                            service = localStorage.getItem('service');
+                        }
+
+                        let index = 0;
+
+                        // if(cat_id == "Your Favorite Services" || cat_id == "New Services" || cat_id == "Best sellers"){
+                            newSortedService.forEach((element, key) => {	
+                                if(index == 0 && best_ids.length > 0){
+                                    lsubCategoryOption += '<optgroup label="--- 👍 Best Sellers 👍 ---">';
+                                }
+                                if(best_ids.length > 0 && index == best_ids.length){
+                                    lsubCategoryOption += '</optgroup>';
+                                    lsubCategoryOption += '<optgroup label="Sellers">';
+                                }
+
+                            
+                                let textVal = element['value'];
+                                let pattern = / per \d*[0-9]/;
+                                let result = pattern.test(textVal);
+                                
+                                if(result == true){
+                                    let string = textVal.split("—");
+                                    textVal = "";
+                                    
+                                    for(let i =0; i < (string.length -1); i++){
+                                        textVal += string[i];
+                                    }
+                                }
+                                
+                                if(element['key'] == service){
+                                    lsubCategoryOption += '<option selected="true" data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
+                                }else{
+                                    lsubCategoryOption += '<option data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
+                                }
+                                index++;
+                                
+                                // if(element['type'] == 'disabled'){
+                                //     lsubCategoryOption += '<option data-type="" value="" disabled="disabled">' + element['value'] + '</option> ';
+                                // }
+                                // else{
+                                //     let textVal = element['value'];
+                                //     let pattern = / per \d*[0-9]/;
+                                //     let result = pattern.test(textVal);
+                                    
+                                //     if(result == true){
+                                //         let string = textVal.split("—");
+                                //         textVal = "";
+                                        
+                                //         for(let i =0; i < (string.length -1); i++){
+                                //             textVal += string[i];
+                                //         }
+                                //     }
+                                    
+                                //     if(element['key'] == service){
+                                //         lsubCategoryOption += '<option selected="true" data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
+                                //     }else{
+                                //         lsubCategoryOption += '<option data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
+                                //     }
+                                // }
+                            });
+                            lsubCategoryOption += '</optgroup>';
+                        
+                            setTimeout(function(){
+                                // service
+                                // $("#orderform-service").html(lsubCategoryOption).val($('#orderform-service option:eq(0)').val()).trigger('change');
+                                $("#orderform-service").html(lsubCategoryOption).trigger('change');
+                            }, 100)
+                            $("#orderform-category").select2("close");
+                        // }
+                    })
+
+                    $("#orderform-main-category").html('').html(mainCategoryOption);
+                    createSubCategoryOption(firstOption, 1);
+                
+                    $("#orderform-main-category").change(function(){
+                        createSubCategoryOption($(this).val(), 2);
+                    })
+                    
+                    // order again button mode
+                    if(params.has('service')){
+                        setTimeout(function(){
+                            let sel_service_id = params.get('service');
+                            $("#orderform-service").val(sel_service_id).trigger('change');
+                        }, 500);
+                    }
+                });
             }
         /********************************************* NEW ORDER PAGE END ***************************************************/
 
@@ -952,7 +918,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 $(".ques_1").css("display","none");
                 
                 $("h2.show_anser").click(function(e){
-                    console.log("Faq clicked");
                     if($(this).hasClass('active')){
                         $(this).removeClass('active');
                         $(this).next().slideUp();
@@ -1372,6 +1337,36 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         }
     });
 
+    function loadCategoryOrderLocal(link) {
+        return $.ajax({
+            // async: false,
+            url: link,      
+            type: "GET",
+            dataType: "json",
+            cache: false,
+            crossDomain: true,
+            success: function(response)         
+            {
+                localStorage.setItem('categoryOrder', JSON.stringify(response.data));
+            }
+        });
+    }
+
+    function loadServiceOrderNew(link) {
+        return $.ajax({
+            // async: false,
+            url: link,      
+            type: "GET",
+            dataType: "json",
+            cache: false,
+            crossDomain: true,
+            success: function(response)         
+            {
+                serviceOrderNew = response.data;
+            }
+        });
+    } 
+
 /******************************* NEW ORDER PAGE START *****************************/
     function hideSelect2Keyboard(e){
         $('.select2-search input').prop('focus', false).blur();
@@ -1713,53 +1708,50 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         $('.split-class-extra').each(function() {
             
             info = $(this).text();
-            infoArr = info.split(":");
-            infoStr = '';
+            detailsData += info + "<br>";
+            // infoArr = info.split(":");
+            // infoStr = '';
             
-            if( infoArr[0]  == 'Profile Has' || infoArr[0]  == 'Quality Examples' ){
-                datakey = infoArr[0];
-            } 
-            
-            if (datakey == "Details") {
-                if(info != '- Profile Picture'){
-                    // detailsData = detailsData + info.replace("-", "") + "<br>";
-                    detailsData = detailsData + info + "<br>";
-                }
+            // if( infoArr[0]  == 'Profile Has' || infoArr[0]  == 'Quality Examples' ){
+            //     datakey = infoArr[0];
+            // } 
+            // if (datakey == "Details") {
+            //     if(info != '- Profile Picture'){
+            //         // detailsData = detailsData + info.replace("-", "") + "<br>";
+            //         detailsData = detailsData + info + "<br>";
+            //     }
                 
-            }
+            // }
             
-            if (datakey == "Profile Has") {
-                if(info != 'Profile Has:'){
-                    // profileData = profileData + info.replace("-", "") + "<br>";
-                    profileData = profileData + info + "<br>";
-                }
-            }
+            // if (datakey == "Profile Has") {
+            //     if(info != 'Profile Has:'){
+            //         // profileData = profileData + info.replace("-", "") + "<br>";
+            //         profileData = profileData + info + "<br>";
+            //     }
+            // }
             
-            if (datakey == "Quality Examples") {
-                if(info != 'Quality Examples:'){
+            // if (datakey == "Quality Examples") {
+            //     if(info != 'Quality Examples:'){
                 
-                // var link = "<p>"+info.replace("-", "")+"</p>";
-                var link = "<p>" + info + "</p>";
-                
-                QualityExamplesData = QualityExamplesData +  link ;
-                }
-            }
+            //         // var link = "<p>"+info.replace("-", "")+"</p>";
+            //         var link = "<p>" + info + "</p>";
+                    
+            //         QualityExamplesData = QualityExamplesData +  link ;
+            //     }
+            // }
     
         })
 
 
-        if(profileData){
-            detailsData += "Profile Has:" + "<br>" + profileData;
-        }
+        // if(profileData){
+        //     detailsData += "Profile Has:" + "<br>" + profileData;
+        // }
 
-        if(QualityExamplesData){
-            detailsData += "Quality Examples:" + "<br>" + QualityExamplesData;
-        }
+        // if(QualityExamplesData){
+        //     detailsData += "Quality Examples:" + "<br>" + QualityExamplesData;
+        // }
         
         jQuery(".details-split").html(detailsData);
-        // jQuery(".details-split").html(detailsData);
-        // jQuery(".Profile-split").html(profileData);
-        // jQuery(".example-split").html(QualityExamplesData);
 
         var splt1 = jQuery( ".split-class1" ).text();
         
@@ -2301,8 +2293,8 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     function getMyFavoriteServices(){
         // get my favorite services vote = 5
         let data = {user_id: user_id};
-        jQuery.ajax({
-            async: false,
+        return jQuery.ajax({
+            // async: false,
             url: "https://followizaddons.com/vote/myfavorite_services.php",
             type: "POST",
             dataType: "json",
@@ -2320,9 +2312,8 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     }
 
     function getNewServices(){
-        
-        $.ajax({
-            async: false,
+        return $.ajax({
+            // async: false,
             url: "https://followizaddons.com/client_js/updates/new_services.php",      
             type: "GET",
             dataType: "json",
@@ -2336,8 +2327,8 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     }
 
     function getBestSellers(){
-        $.ajax({
-            async: false,
+        return $.ajax({
+            // async: false,
             url: "https://followizaddons.com/bestseller/read_bestseller.php",      
             type: "GET",
             dataType: "json",
@@ -2779,7 +2770,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
   
   
     /**************************** update page code *****************************************/
-     /**************************** update page code *****************************************/
    //DO NOT DELETE USED IN FUTURE
    // https://bulkfollows.com/updates
     const updateURL = 'https://followizaddons.com/client_js/updates/index.php';

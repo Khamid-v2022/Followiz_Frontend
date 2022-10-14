@@ -51,7 +51,7 @@
             if(localStorage.getItem("theme_layout")){
                 document.body.className = localStorage.getItem("theme_layout");
             }else{
-                document.body.className = "theme-default";
+                document.body.className = "theme-dark";
             }
         </script>
         <div class="main-wrapper {% if user['auth'] %} for-dashboard {% endif %}">
@@ -186,7 +186,12 @@
                                                 </ul>
                                             </li>
                                         {% endif %}
-                                        {% if  menu['link'] == '/child-panels' %}
+                                        {% if  menu['link'] == '/child-panel' %}
+                                            <li {% if menu['active'] %} class="active"{% endif %}>
+                                                <a href="{{ menu['link'] }}">{{ menu['name'] }}</a>
+                                            </li>
+                                        {% endif %}
+										{% if  menu['link'] == '/affiliates' %}
                                             <li {% if menu['active'] %} class="active"{% endif %}>
                                                 <a href="{{ menu['link'] }}">{{ menu['name'] }}</a>
                                             </li>
@@ -227,8 +232,8 @@
                                 <hr>
                             </div>
                             <div class="material-switch bg_color">
-                                <input id="themeMode" name="themeModeOption" type="checkbox" value="true"/>
-                                <label for="themeMode" class="label-success">Dark Mode</label>
+                                <input id="themeMode" name="themeModeOption" type="checkbox" value="true" checked/>
+                                <label for="themeMode" class="label-success">Light Mode</label>
                             </div>
                             <div class="social-icons text-center mt-5" style="margin-top: 20px">
                                 <a class="btn icon-btn me-2" href="skype:followiz?add" target="_blank">
@@ -311,6 +316,9 @@
                     </div>
                 </nav>
             {% endif %}
+
+          
+          
             <!-- Main variables *content* -->
             <div  {% if user['auth'] %} class= "content-wrapper"  {% else %} class= "content-wrapper-user" {% endif %} >
                 {{ content }}
@@ -348,6 +356,9 @@
         {% endfor %}
         
         <script src="https://followizaddons.com/client_js/rating.js"></script><!--need to change-->
+        
+       
+        
         <!-- select2 js -->
         <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous"></script> -->
         <script src="https://followizaddons.com/client_js/customeSelect.js"></script>
