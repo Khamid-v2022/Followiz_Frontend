@@ -574,13 +574,35 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         let newSortedService = [];
                         let best_ids = [];
 
+
                         // if best seller should to order by excel docu.. so let it
                         if(cat_id == "Best sellers"){
                             let index = 0;
-                            for (const [key, value] of Object.entries(orderform_service)) {			
+                            for (const [key, value] of Object.entries(orderform_service)) {	
+
+                                let quality = "";
+                                if(value['description']){
+                                    let s_des = value['description'].split("<br>");
+                                    for(var j in s_des) {
+                                        let temp_array = s_des[j].split(":");
+                            
+                                        if(temp_array[0].trim() == 'Quality'){
+                                            quality = temp_array[1].trim();
+                                            break;
+                                        }
+                                    }
+                                }
+
+
                                 let temp = [];
                                 temp['key'] = orderform_service[key]['id'];
                                 temp['value'] = orderform_service[key]['name']; 
+                                if(quality == "Real"){
+                                    temp['value'] += " 🥇";
+                                }
+                                if(isLessOneMinute(orderform_service[key]['average_time'])){
+                                    temp['value'] += " ⚡";
+                                }
                                 temp['type'] = orderform_service[key]['type'];
 
                                 newSortedService[index] = temp;
@@ -604,9 +626,25 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                             best_ids.forEach((id) => {
                                 for (const [key, value] of Object.entries(orderform_service)) {
                                     if(id == key){
+                                        let quality = "";
+                                        if(value['description']){
+                                            let s_des = value['description'].split("<br>");
+                                            for(var j in s_des) {
+                                                let temp_array = s_des[j].split(":");
+                                    
+                                                if(temp_array[0].trim() == 'Quality'){
+                                                    quality = temp_array[1].trim();
+                                                    break;
+                                                }
+                                            }
+                                        }
+
                                         let temp = [];
                                         temp['key'] = key;
                                         temp['value'] = orderform_service[key]['name'];
+                                        if(quality == "Real"){
+                                            temp['value'] += " 🥇";
+                                        }
                                         if(isLessOneMinute(orderform_service[key]['average_time'])){
                                             temp['value'] += " ⚡";
                                         }
@@ -618,25 +656,32 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                                 }
                             })
 
-                            // put separator
-                            // if(best_ids.length > 0 && index > 0){
-                            //     let separator = [];
-                            //     separator['key'] = '';
-                            //     separator['value'] = '------------------ ☝️ Best Sellers Above ☝️ ------------------'; 
-                            //     separator['type'] = 'disabled';
-                            //     newSortedService[best_ids.length] = separator;
-                            // }
-
                             // and then put rest services
                             for (const [key, value] of Object.entries(orderform_service)) {	
                                 if(!best_ids.includes(key)){
                                     let sort_order_arr = serviceOrderNew.filter((order)=>{  return order.service_id == key; });		 
-                                    if(sort_order_arr[0] !== undefined){		
+                                    if(sort_order_arr[0] !== undefined){	
+                                        let quality = "";
+                                        if(value['description']){
+                                            let s_des = value['description'].split("<br>");
+                                            for(var j in s_des) {
+                                                let temp_array = s_des[j].split(":");
+                                    
+                                                if(temp_array[0].trim() == 'Quality'){
+                                                    quality = temp_array[1].trim();
+                                                    break;
+                                                }
+                                            }
+                                        }
+
                                         let sort_val = sort_order_arr[0];           
                                         
                                         let temp = [];
                                         temp['key'] = key;
                                         temp['value'] = orderform_service[key]['name']; 
+                                        if(quality == "Real"){
+                                            temp['value'] += " 🥇";
+                                        }
                                         if(isLessOneMinute(orderform_service[key]['average_time'])){
                                             temp['value'] += " ⚡";
                                         }
@@ -656,70 +701,45 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
                         let index = 0;
 
-                        // if(cat_id == "Your Favorite Services" || cat_id == "New Services" || cat_id == "Best sellers"){
-                            newSortedService.forEach((element, key) => {	
-                                if(index == 0 && best_ids.length > 0){
-                                    lsubCategoryOption += '<optgroup label="--- 👍 Best Sellers 👍 ---">';
-                                }
-                                if(best_ids.length > 0 && index == best_ids.length){
-                                    lsubCategoryOption += '</optgroup>';
-                                    lsubCategoryOption += '<optgroup label="Sellers">';
-                                }
-
-                            
-                                let textVal = element['value'];
-                                let pattern = / per \d*[0-9]/;
-                                let result = pattern.test(textVal);
-                                
-                                if(result == true){
-                                    let string = textVal.split("—");
-                                    textVal = "";
-                                    
-                                    for(let i =0; i < (string.length -1); i++){
-                                        textVal += string[i];
-                                    }
-                                }
-                                
-                                if(element['key'] == service){
-                                    lsubCategoryOption += '<option selected="true" data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
-                                }else{
-                                    lsubCategoryOption += '<option data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
-                                }
-                                index++;
-                                
-                                // if(element['type'] == 'disabled'){
-                                //     lsubCategoryOption += '<option data-type="" value="" disabled="disabled">' + element['value'] + '</option> ';
-                                // }
-                                // else{
-                                //     let textVal = element['value'];
-                                //     let pattern = / per \d*[0-9]/;
-                                //     let result = pattern.test(textVal);
-                                    
-                                //     if(result == true){
-                                //         let string = textVal.split("—");
-                                //         textVal = "";
-                                        
-                                //         for(let i =0; i < (string.length -1); i++){
-                                //             textVal += string[i];
-                                //         }
-                                //     }
-                                    
-                                //     if(element['key'] == service){
-                                //         lsubCategoryOption += '<option selected="true" data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
-                                //     }else{
-                                //         lsubCategoryOption += '<option data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
-                                //     }
-                                // }
-                            });
-                            lsubCategoryOption += '</optgroup>';
                         
-                            setTimeout(function(){
-                                // service
-                                // $("#orderform-service").html(lsubCategoryOption).val($('#orderform-service option:eq(0)').val()).trigger('change');
-                                $("#orderform-service").html(lsubCategoryOption).trigger('change');
-                            }, 100)
-                            $("#orderform-category").select2("close");
-                        // }
+                        newSortedService.forEach((element, key) => {	
+                            if(index == 0 && best_ids.length > 0){
+                                lsubCategoryOption += '<optgroup label="--- 👍 Best Sellers 👍 ---">';
+                            }
+                            if(best_ids.length > 0 && index == best_ids.length){
+                                lsubCategoryOption += '</optgroup>';
+                                lsubCategoryOption += '<optgroup label="Sellers">';
+                            }
+
+                        
+                            let textVal = element['value'];
+                            let pattern = / per \d*[0-9]/;
+                            let result = pattern.test(textVal);
+                            
+                            if(result == true){
+                                let string = textVal.split("—");
+                                textVal = "";
+                                
+                                for(let i =0; i < (string.length -1); i++){
+                                    textVal += string[i];
+                                }
+                            }
+                            
+                            if(element['key'] == service){
+                                lsubCategoryOption += '<option selected="true" data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
+                            }else{
+                                lsubCategoryOption += '<option data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
+                            }
+                            index++;
+                        });
+                        lsubCategoryOption += '</optgroup>';
+                    
+                        setTimeout(function(){
+                            // service
+                            $("#orderform-service").html(lsubCategoryOption).trigger('change');
+                        }, 100)
+
+                        $("#orderform-category").select2("close");
                     })
 
                     $("#orderform-main-category").html('').html(mainCategoryOption);
@@ -827,6 +847,24 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     
                     for(let i = 0; i < serviceByCate.length; i++){
                         for(const [key, value] of Object.entries(serviceByCate[i])){
+                            let quality = "";
+                            if(value['description']){
+                                let s_des = value['description'].split("<br>");
+                                for(var j in s_des) {
+                                    let temp_array = s_des[j].split(":");
+                        
+                                    if(temp_array[0].trim() == 'Quality'){
+                                        quality = temp_array[1].trim();
+                                        break;
+                                    }
+                                }
+    
+                                if(quality == "Real"){
+                                    serviceByCate[i][key]['name'] += " 🥇";
+                                }
+                            }
+                            
+
                             if(isLessOneMinute(value['average_time'])){
                                 serviceByCate[i][key]['name'] += " ⚡";
                             }
@@ -1377,15 +1415,22 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         if($("#orderform-main-category").length > 0){
             type = $("#orderform-main-category").val();
         }
-        if(serviceName.includes("website") || type == "Website Traffic"){
+
+        if(serviceName.includes("traffic") && type == "Website Traffic"){
+            if(serviceName.includes('best sellers')){
+                return "bestseller.svg";
+            }
             return "website.svg"
         }
-        if(serviceName.includes("Traffic")){
-            return "website.svg"
-        }
+
+        // if(serviceName.includes("Traffic")){
+        //     return "website.svg"
+        // }
+
         if(serviceName.includes("traffic")){
             return "website.svg"
         }
+
         if(serviceName.includes("instagram")){
             return "instagram-color.svg"
         }
