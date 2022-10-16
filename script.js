@@ -568,7 +568,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
                         // get services by selected category
                         let orderform_service = getServiceByCategoryId(cat_id);
-
+                        
                         let lsubCategoryOption = '';
                         
                         let newSortedService = [];
@@ -609,8 +609,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                                 index++;
                             }
                         } else {
-                            
-                            
+                             
                             var selected_category_name = $("#orderform-category option:selected").text();
 
                             // get best seller for selected category id
@@ -711,24 +710,29 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                                 lsubCategoryOption += '<optgroup label="Sellers">';
                             }
 
-                        
-                            let textVal = element['value'];
-                            let pattern = / per \d*[0-9]/;
-                            let result = pattern.test(textVal);
-                            
-                            if(result == true){
-                                let string = textVal.split("—");
-                                textVal = "";
+                            // let textVal = element['value'];
+                            // let pattern = / per \d*[0-9]/;
+                            // let result = pattern.test(textVal);
+                           
+                            // if(result == true){
+                            //     let string = textVal.split("—");
+                            //     textVal = "";
                                 
-                                for(let i =0; i < (string.length -1); i++){
-                                    textVal += string[i];
-                                }
-                            }
-                            
+                            //     for(let i = 0; i < (string.length - 1); i++){
+                            //         textVal += string[i];
+                            //     }
+                            // }
+
+                            // if(element['key'] == service){
+                            //     lsubCategoryOption += '<option selected="true" data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
+                            // }else{
+                            //     lsubCategoryOption += '<option data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
+                            // }
+
                             if(element['key'] == service){
-                                lsubCategoryOption += '<option selected="true" data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
+                                lsubCategoryOption += '<option selected="true" data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + element['value'] + '</option> ';
                             }else{
-                                lsubCategoryOption += '<option data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + textVal + '</option> ';
+                                lsubCategoryOption += '<option data-type="' + element['type'] + '"  value="' + element['key'] + '" >' + element['value'] + '</option> ';
                             }
                             index++;
                         });
@@ -1206,7 +1210,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     }
                 
                     //For Stripe / Credit Card  
-                    if(paymentTitle == 'Stripe / Credit Card'){
+                    if(paymentTitle == 'Stripe / Credit Card (VIP)'){
                         $("#stripe_content").show();
                     }else{
                         $("#stripe_content").hide();

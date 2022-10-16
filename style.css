@@ -3445,7 +3445,7 @@ html {
   @media(max-width: 767px){
     .ex_response {
         margin: 15px 0px;
-        right: 20px;
+        right: 35px;
     }
   }
   .ex_response img {
@@ -4473,7 +4473,7 @@ html {
   }
   
   .new_order .input-group-btn .btn {
-    height: 50px;
+    height: 45px;
   }
   
   /******update-page css start*****/
@@ -6496,7 +6496,7 @@ html {
     }
     .order_history .pull-left .input-group-btn button,
     .order_history .pull-left .form-control {
-      height: 40px;
+      height: 40px!important;
     }
     .catgorey_section {
       float: left;
@@ -6966,7 +6966,7 @@ html {
       padding: 10px 0px 0px 0px;
     }
     .content-wrapper .panel .panel-body .form-group .form-control {
-      height: 40px;
+      height: 40px!important;
     }
     .content-wrapper .panel .panel-body .btn-block {
       height: 40px;
@@ -7394,9 +7394,18 @@ html {
 		background-color:#fff;
 		color:#1C2323;
 		border:1px solid #ccc;
-		height:50px!important;
+		height:45px!important;
 		box-shadow:none;
 	}
+
+    @media screen and (max-width: 767px) {
+        input[type=text],
+        input[type=password],
+        input[type=search],
+        select{
+            height:40px!important;
+        }
+    }
 	
 	input[type=text]:focus,
 	input[type=password]:focus,
@@ -7574,6 +7583,14 @@ html {
         font-weight: 600;
         font-size: 19.2867px;
         line-height: 135%;
+    }
+    @media screen and (max-width: 767px) {
+        .afip-box .afip-text {
+            font-size: 14px;
+        }
+        .afip-box {
+            padding: 11px;
+        }
     }
 
     .afip-box .afip-btn {
