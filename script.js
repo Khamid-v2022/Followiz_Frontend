@@ -464,13 +464,13 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 const categoryOrderURLlocal = 'https://followizaddons.com/client_js/service_order/category.php';       
                 const serviceOrderURL = 'https://followizaddons.com/client_js/service_order/index.php';
         
-                $.when(
-                    loadCategoryOrderLocal(categoryOrderURLlocal),
-                    loadServiceOrderNew(serviceOrderURL),
-                    getMyFavoriteServices(),
-                    getNewServices(),
-                    getBestSellers(),
-                ).done(function() {
+                // $.when(
+                    loadCategoryOrderLocal(categoryOrderURLlocal);
+                    loadServiceOrderNew(serviceOrderURL);
+                    getMyFavoriteServices();
+                    getNewServices();
+                    getBestSellers();
+                // ).done(function() {
                             
                     /**************** get category ordeing and save in local ******************/
                     
@@ -760,7 +760,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                             $("#orderform-service").val(sel_service_id).trigger('change');
                         }, 500);
                     }
-                });
+                // });
             }
         /********************************************* NEW ORDER PAGE END ***************************************************/
 
@@ -1381,7 +1381,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
     function loadCategoryOrderLocal(link) {
         return $.ajax({
-            // async: false,
+            async: false,
             url: link,      
             type: "GET",
             dataType: "json",
@@ -1396,7 +1396,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
     function loadServiceOrderNew(link) {
         return $.ajax({
-            // async: false,
+            async: false,
             url: link,      
             type: "GET",
             dataType: "json",
@@ -2343,7 +2343,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         // get my favorite services vote = 5
         let data = {user_id: user_id};
         return jQuery.ajax({
-            // async: false,
+            async: false,
             url: "https://followizaddons.com/vote/myfavorite_services.php",
             type: "POST",
             dataType: "json",
@@ -2362,7 +2362,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
     function getNewServices(){
         return $.ajax({
-            // async: false,
+            async: false,
             url: "https://followizaddons.com/client_js/updates/new_services.php",      
             type: "GET",
             dataType: "json",
@@ -2377,7 +2377,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
     function getBestSellers(){
         return $.ajax({
-            // async: false,
+            async: false,
             url: "https://followizaddons.com/bestseller/read_bestseller.php",      
             type: "GET",
             dataType: "json",
