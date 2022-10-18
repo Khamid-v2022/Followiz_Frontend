@@ -7878,3 +7878,13 @@ html {
         display: inline-block;
         min-width: 42px;
     }
+
+    .best-seller-separator > td {
+        color: rgb(252, 215, 3)!important;
+    }
+
+    .order_history .well tbody tr.best-seller-separator:hover, 
+    .transaction_history tbody tr.best-seller-separator:hover
+    {
+        background: unset;
+    }

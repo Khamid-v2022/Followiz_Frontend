@@ -26,7 +26,10 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             if(checkThemeMode == "theme-dark"){
                 $("#themeMode").prop("checked",true); 
                 $(".label-success").html("Light Mode");
-            } 	
+            }else{
+                $("#themeMode").prop("checked", false)
+                $(".label-success").html("Dark Mode");
+            }
         } 
 
         $("#themeMode").on('change',function(){
@@ -233,101 +236,145 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     }    
       
     function getTbodyForService(serviceDetails, category_name){
-        let tbody = '';
-        for(var k in serviceDetails) {
-           
-            let service = serviceDetails[k];
-            let service_id = serviceDetails[k]['id'];
-
-            tbody += '<tr class="tablerowid" id="trow-' + service_id + '">'; 
-            tbody += '<td class="id review-hover-zone">' + service_id; 
-            tbody += '<div class="rating-wrap"><div class="reviewShowOnly" id="reviewShowOnly_' + service_id + '" data-service_id="' + service_id + '"></div>';
-            tbody += '<div class="review" id="review_' + service_id + '" data-service_id="' + service_id + '"></div> </div></td>';
-            
-            let service_name = serviceDetails[k]['name'];
-            tbody += '<td class="width-25 name"><a href="#" class="order-again-btn" data-service_id="' + service_id + '" data-service-category="' + category_name + '">' + service_name + '</a></td>';
-            
-            tbody += '<td>' + serviceDetails[k]['rate'] + ' </td>' ;
-            tbody += '<td>' + serviceDetails[k]['min'] + ' / ' + serviceDetails[k]['max'] + '</td>';
-            tbody += '<td><div class="service-description service-description-split" id="' + service_id + '"></div>';
-              
-            let quality = start_time = speed_per_day = min_max = refill_available = price_per_1000 = details = drop = model_details = '';
-           
-            if(isNotEmpty(serviceDetails[k]['description']) ){
-            
-                let s_des = serviceDetails[k]['description'].split("<br>");
-                let model_des_arr = serviceDetails[k]['description'].split("Details");
-                
-                if(isNotEmpty(model_des_arr[1]) ){
-                    model_details = model_des_arr[1].ltrim(':');
-                    model_details = serviceDetails[k]['description'];//override all feature show details plain
+        let best_sellers = [];
+        if(subBestSeller.length > 0){
+            for(let item of subBestSeller){
+                if(category_name == item['category_name']){
+                    best_sellers = item['best_ids'].split(" ");
+                    break;
                 }
-          
-                for(var j in s_des) {
-                    let temp_array = s_des[j].split(":");
-        
-                    if(temp_array[0] == 'Quality'){
-                        quality = temp_array[1];
-                    }
-        
-                    if(temp_array[0] == 'Start Time'){
-                        start_time = temp_array[1];
-                    }
-        
-                    if(temp_array[0] == 'Speed per Day'){
-                        speed_per_day = temp_array[1];
-                    }
-                
-                    if(temp_array[0] == 'Min/Max'){
-                        min_max = temp_array[1];
-                    }
-        
-                    if(temp_array[0] == 'HQ Refill Available'){
-                        refill_available = temp_array[1];
-                    }
-        
-                    if(temp_array[0] == 'Refill Available'){
-                        refill_available = temp_array[1];
-                    }
-        
-                    if(temp_array[0] == 'Price per 1000'){
-                        price_per_1000 = temp_array[1];
-                    }
-        
-                    if(temp_array[0] == 'Details'){
-                        details = temp_array[1];
-                    }
-        
-                    if(temp_array[0] == 'Drop'){
-                        drop = temp_array[1];
-                    }
-                
-                }
-                
-            }//description if
-      
-            tbody += ' <span class="quality-split-' + service_id + '">' + quality + '</span></td>';
-            tbody += '<td><span class="time-split-' + service_id + '">'+start_time+' </span></td>';
-            tbody += '<td><span class="speed-split-' + service_id + '">'+speed_per_day+' </span></td>';
-            tbody += '<td><span class="avgtime-split-' + service_id + '">' + serviceDetails[k]['average_time'] + '</span></td>';
-            tbody += '<td><span class="refill-split-' + service_id + '">' + refill_available + ' </span></td>';
-             
-            tbody += '<td class="rest-details" data-serviceid="' + service_id + '">';
-            if(model_details == ''){
-                tbody += '<button class=" icon disabled">';
-                tbody += '<img src="https://followizaddons.com/followiz-icons/details_eye_icon.svg">';
-                tbody +='</button>';
-            }else{
-                tbody += '<button class="icon rest-details-modal btn" service_id = "' + service_id + '" service_detail_id = "' + serviceDetails[k]['id'] + '">';
-                tbody += '<span class="d-hide detail-name">' + serviceDetails[k]['name'] + '</span>';
-                tbody += '<span class="d-hide service-detail">' + model_details + '</span>';
-                tbody += '<img src="https://followizaddons.com/followiz-icons/details_eye_icon.svg">';
-                tbody += '</button>';
             }
-            tbody += '</td></tr>'; 
         }
-        return tbody;
         
+        let result_best_seller = []
+        // pick best sellers from search result
+        for(var k in serviceDetails) {
+            for(let i = 0; i < best_sellers.length; i++){
+                if(serviceDetails[k]['id'] == best_sellers[i]){
+                    result_best_seller.push(serviceDetails[k]['id']);
+                    break;
+                }
+            }
+        }
+
+        let tbody = '';
+        if(result_best_seller.length > 0){
+            tbody += '<tr class="tablerowid best-seller-separator"><td colspan="10" class="text-center">---------- 👇 Best Sellers 👇 ----------</td></tr>'; 
+            for(var k in serviceDetails) {
+                for(let i = 0; i < result_best_seller.length; i++){
+                    if(serviceDetails[k]['id'] == result_best_seller[i]){
+                        tbody += getTRow(serviceDetails[k], category_name);
+                        break;
+                    }
+                }
+            }
+            tbody += '<tr class="tablerowid best-seller-separator"><td colspan="10" class="text-center">---------- ☝️ Best Sellers ☝️ ----------</td></tr>'; 
+        }
+
+        for(var k in serviceDetails) {
+            if(!result_best_seller.includes(serviceDetails[k]['id'])){
+                tbody += getTRow(serviceDetails[k], category_name);
+            }
+        }
+        
+        return tbody;
+    }
+
+    function getTRow(serviceItemDetail, category_name){
+        let tbody = '';
+        // let service = serviceDetails[k];
+        // let service_id = serviceDetails[k]['id'];
+
+        let service = serviceItemDetail;
+        let service_id = serviceItemDetail['id'];
+
+        tbody += '<tr class="tablerowid" id="trow-' + service_id + '">'; 
+        tbody += '<td class="id review-hover-zone">' + service_id; 
+        tbody += '<div class="rating-wrap"><div class="reviewShowOnly" id="reviewShowOnly_' + service_id + '" data-service_id="' + service_id + '"></div>';
+        tbody += '<div class="review" id="review_' + service_id + '" data-service_id="' + service_id + '"></div> </div></td>';
+        
+        let service_name = service['name'];
+        tbody += '<td class="width-25 name"><a href="#" class="order-again-btn" data-service_id="' + service_id + '" data-service-category="' + category_name + '">' + service_name + '</a></td>';
+        
+        tbody += '<td>' + service['rate'] + ' </td>' ;
+        tbody += '<td>' + service['min'] + ' / ' + service['max'] + '</td>';
+        tbody += '<td><div class="service-description service-description-split" id="' + service_id + '"></div>';
+          
+        let quality = start_time = speed_per_day = min_max = refill_available = price_per_1000 = details = drop = model_details = '';
+       
+        if(isNotEmpty(service['description']) ){
+        
+            let s_des = service['description'].split("<br>");
+            let model_des_arr = service['description'].split("Details");
+            
+            if(isNotEmpty(model_des_arr[1]) ){
+                model_details = model_des_arr[1].ltrim(':');
+                model_details = service['description'];//override all feature show details plain
+            }
+      
+            for(var j in s_des) {
+                let temp_array = s_des[j].split(":");
+    
+                if(temp_array[0] == 'Quality'){
+                    quality = temp_array[1];
+                }
+    
+                if(temp_array[0] == 'Start Time'){
+                    start_time = temp_array[1];
+                }
+    
+                if(temp_array[0] == 'Speed per Day'){
+                    speed_per_day = temp_array[1];
+                }
+            
+                if(temp_array[0] == 'Min/Max'){
+                    min_max = temp_array[1];
+                }
+    
+                if(temp_array[0] == 'HQ Refill Available'){
+                    refill_available = temp_array[1];
+                }
+    
+                if(temp_array[0] == 'Refill Available'){
+                    refill_available = temp_array[1];
+                }
+    
+                if(temp_array[0] == 'Price per 1000'){
+                    price_per_1000 = temp_array[1];
+                }
+    
+                if(temp_array[0] == 'Details'){
+                    details = temp_array[1];
+                }
+    
+                if(temp_array[0] == 'Drop'){
+                    drop = temp_array[1];
+                }
+            
+            }
+            
+        }//description if
+  
+        tbody += ' <span class="quality-split-' + service_id + '">' + quality + '</span></td>';
+        tbody += '<td><span class="time-split-' + service_id + '">'+start_time+' </span></td>';
+        tbody += '<td><span class="speed-split-' + service_id + '">'+speed_per_day+' </span></td>';
+        tbody += '<td><span class="avgtime-split-' + service_id + '">' + service['average_time'] + '</span></td>';
+        tbody += '<td><span class="refill-split-' + service_id + '">' + refill_available + ' </span></td>';
+         
+        tbody += '<td class="rest-details" data-serviceid="' + service_id + '">';
+        if(model_details == ''){
+            tbody += '<button class=" icon disabled">';
+            tbody += '<img src="https://followizaddons.com/followiz-icons/details_eye_icon.svg">';
+            tbody +='</button>';
+        }else{
+            tbody += '<button class="icon rest-details-modal btn" service_id = "' + service_id + '" service_detail_id = "' + service['id'] + '">';
+            tbody += '<span class="d-hide detail-name">' + service['name'] + '</span>';
+            tbody += '<span class="d-hide service-detail">' + model_details + '</span>';
+            tbody += '<img src="https://followizaddons.com/followiz-icons/details_eye_icon.svg">';
+            tbody += '</button>';
+        }
+        tbody += '</td></tr>'; 
+        return tbody;
     }
   
     function TRowHoverAction(){
@@ -703,11 +750,11 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         
                         newSortedService.forEach((element, key) => {	
                             if(index == 0 && best_ids.length > 0){
-                                lsubCategoryOption += '<optgroup label="--- 👍 Best Sellers 👍 ---">';
+                                lsubCategoryOption += '<optgroup label="---------- 👇 Best Sellers 👇 ----------">';
                             }
                             if(best_ids.length > 0 && index == best_ids.length){
                                 lsubCategoryOption += '</optgroup>';
-                                lsubCategoryOption += '<optgroup label="Sellers">';
+                                lsubCategoryOption += '<optgroup label="---------- ☝️ Best Sellers ☝️ ----------">';
                             }
 
                             // let textVal = element['value'];
@@ -768,6 +815,8 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
         /********************************************* SERVICE PAGE START ***************************************************/
             if($('.service_page').length > 0){
+                // get BestSellers
+                getBestSellers();
                 // search category
                 $(document).on("change", ".selectpicker",function() {
             
@@ -829,7 +878,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     // Loop through the comment list
                     $('.well .servie-data-panel tr').each(function() {
                         // If the list item does not contain the text phrase fade it out
-                        if ($(this).html().search(new RegExp(filter, "i")) < 0) {
+                        if ($(this).html().search(new RegExp(filter, "i")) < 0 && !$(this).hasClass("best-seller-separator")) {
                             $(this).hide();  // MY CHANGE
                         // Show the list item if the phrase matches and increase the count by 1
                         } else {
