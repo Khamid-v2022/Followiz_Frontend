@@ -421,7 +421,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
     $(document).ready(function(){
     
-        /********************************************* NEW ORDER PAGE START ***************************************************/
+        /********************************************* NEW ORDER PAGE START *************************************************/
             if($('#order-form').length > 0){
                 
                 /***************** Initialize New Order Page Component START **********************/
@@ -813,7 +813,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
 
 
-        /********************************************* SERVICE PAGE START ***************************************************/
+        /********************************************* SERVICE PAGE START *************************************************/
             if($('.service_page').length > 0){
                 // get BestSellers
                 getBestSellers();
@@ -1003,7 +1003,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
           
 
-        /********************************************* FAQ PAGE START ***************************************************/
+        /********************************************* FAQ PAGE START *************************************************/
             if($('.faq_section').length > 0){
             
                 $(".ques_1").css("display","none");
@@ -1036,7 +1036,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         
         
         
-        /********************************************* TICKET PAGE START ***************************************************/
+        /********************************************* TICKET PAGE START *************************************************/
         // $(".custom-tabing .tab-panel:first-child h2").first().addClass("active");
             if($(".ticket-page").length > 0){
                 $(document).on('click', '.custom-radio li', function(e) {
@@ -1238,8 +1238,19 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         /********************************************* TICKET PAGE END ***************************************************/
 
 
-        /********************************************* DEPOSIT PAGE START ***************************************************/
+        /********************************************* DEPOSIT PAGE START *************************************************/
             if($(".deposit_page").length > 0){
+                // get user Other detail info from External server
+                $.ajax({
+                    url: api_end_point + "/user/getUserInfo.php?user_id=" + user_info.id,      
+                    type: "GET",
+                    success: function(data) {
+                       data = JSON.parse(data);
+                       $("#other_detail").html(data.user_info.other_detail);
+                    
+                    }
+                });
+
                 $(".payment_tab_link").click(function(){
                     var paymentTitle = $(this).attr("data-paymentName");
                     $("#form_payment_name").text(paymentTitle);
@@ -1323,14 +1334,49 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     data.user_name = user_info.username;
                     data.first_name = user_info.first_name;
                     data.last_name = user_info.last_name;
-                    data.email = user_info.email;
-                    
+                    data.email = user_info.email;         
+                    data.other_detail = $("#other_detail").html();
                     generateInvoice(data);
                 
                 })
             }
         /********************************************* DEPOSIT PAGE END ***************************************************/
+        
+        /********************************************* ACCOUNT PAGE START *************************************************/
+            if($(".account_detail").length > 0){
+                $.ajax({
+                    url: api_end_point + "/user/getUserInfo.php?user_id=" + user_info.id,      
+                    type: "GET",
+                    success: function(data) {
+                       data = JSON.parse(data);
+                       $("#other_detail").html(data.user_info.other_detail);
+                    }
+                });
 
+                $("#save_other_details").on("click", function(){
+                    let other_detail = $("#other_detail").val();
+                    // other_detail = other_detail.replace(/<.*?>/g,'');
+                    // other_detail = other_detail.replace(/"/g,'');
+                    const data = {
+                        username: user_info.username,
+                        first_name: user_info.first_name,
+                        last_name: user_info.last_name,
+                        email: user_info.email,
+                        followiz_id: user_info.id,
+                        other_detail: other_detail
+                    }
+
+                    $.ajax({
+                        url: api_end_point + "/user/insertOrUpdateOneUser.php",      
+                        type: "POST",                  
+                        data:  data,
+                        success: function(data) {
+                        }
+                    });
+                })
+                
+            }
+        /********************************************* ACCOUNT PAGE END ***************************************************/
 
         if ( 
             currentURL.includes('subscriptions') ||
@@ -1338,6 +1384,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             currentURL.includes('refill') ) { 
         }
 
+        /********************************************* UPDATE PAGE START *************************************************/
         if (currentURL.includes("updates"))  {
             $('#search').click(function(e) {
                 var parentOffset = $(this).parent().offset();
@@ -1360,7 +1407,10 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         
             loadUpdates(updateURL);
         };
+        /********************************************* UPDATE PAGE END *************************************************/
 
+
+        /********************************************* EXTRA FEATURE PAGE START *************************************************/
         if (currentURL.includes("extra-feature")) 
         {
             // Best Seller selection
@@ -1426,6 +1476,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             });
               
         }
+        /********************************************* EXTRA FEATURE PAGE END *************************************************/
     });
 
     function loadCategoryOrderLocal(link) {
