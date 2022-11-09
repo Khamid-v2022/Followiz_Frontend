@@ -1246,6 +1246,14 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     type: "GET",
                     success: function(data) {
                        data = JSON.parse(data);
+                       console.log(data);
+                       $("#other_name").val(data.user_info.other_name);
+                       $("#other_phone").val(data.user_info.other_phone);
+                       $("#other_address").val(data.user_info.other_address);
+                       $("#other_city").val(data.user_info.other_city);
+                       $("#other_country").val(data.user_info.other_country);
+                       $("#other_province").val(data.user_info.other_province);
+                       $("#other_postal").val(data.user_info.other_postal);
                        $("#other_detail").html(data.user_info.other_detail);
                     
                     }
@@ -1334,7 +1342,14 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     data.user_name = user_info.username;
                     data.first_name = user_info.first_name;
                     data.last_name = user_info.last_name;
-                    data.email = user_info.email;         
+                    data.email = user_info.email;     
+                    data.other_name =   $("#other_name").val();
+                    data.other_phone =   $("#other_phone").val();
+                    data.other_address =   $("#other_address").val();
+                    data.other_city =   $("#other_city").val();
+                    data.other_country =   $("#other_country").val();
+                    data.other_province =   $("#other_province").val();
+                    data.other_postal =   $("#other_postal").val();
                     data.other_detail = $("#other_detail").html();
                     generateInvoice(data);
                 
@@ -1349,21 +1364,35 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     type: "GET",
                     success: function(data) {
                        data = JSON.parse(data);
+                       
+                       $("#other_name").val(data.user_info.other_name);
+                       $("#other_phone").val(data.user_info.other_phone);
+                       $("#other_address").val(data.user_info.other_address);
+                       $("#other_city").val(data.user_info.other_city);
+                       $("#other_province").val(data.user_info.other_province);
+                       $("#other_postal").val(data.user_info.other_postal);
+                       $("#other_country").val(data.user_info.other_country);
                        $("#other_detail").html(data.user_info.other_detail);
                     }
                 });
 
                 $("#save_other_details").on("click", function(){
-                    let other_detail = $("#other_detail").val();
-                    // other_detail = other_detail.replace(/<.*?>/g,'');
-                    // other_detail = other_detail.replace(/"/g,'');
+                    
+                    $(".fa-spinner").css({display: "flex"});
                     const data = {
                         username: user_info.username,
                         first_name: user_info.first_name,
                         last_name: user_info.last_name,
                         email: user_info.email,
                         followiz_id: user_info.id,
-                        other_detail: other_detail
+                        other_name: $("#other_name").val(),
+                        other_phone: $("#other_phone").val(),
+                        other_address: $("#other_address").val(),
+                        other_city: $("#other_city").val(),
+                        other_province: $("#other_province").val(),
+                        other_postal: $("#other_postal").val(),
+                        other_country: $("#other_country").val(),
+                        other_detail: $("#other_detail").val()
                     }
 
                     $.ajax({
@@ -1371,6 +1400,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         type: "POST",                  
                         data:  data,
                         success: function(data) {
+                            $(".fa-spinner").css({display: "none"});
                         }
                     });
                 })

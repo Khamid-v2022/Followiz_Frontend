@@ -1960,10 +1960,10 @@ html {
   .account_page.mt-5 .api_copy {
     float: right;
     position: relative;
-    top: -50px;
+    top: -45px;
     background: #2FCD94;
     width: 50px;
-    height: 50px;
+    height: 45px;
     border-bottom-right-radius: 5px;
     border-top-right-radius: 5px;
   }
@@ -1973,6 +1973,17 @@ html {
     font-size: 20px;
     color: #fff;
     cursor: pointer;
+  }
+
+  @media screen and (max-width: 767px)
+ {
+        .account_page.mt-5 .api_copy i {
+            padding: 10px 15px;
+        }
+        .account_page.mt-5 .api_copy {
+            top: -40px;
+            height: 40px;
+        }
   }
   
   .account_page.mt-5 p {
@@ -3933,8 +3944,8 @@ html {
   
   span.download_icon {
     display: flex;
-    margin: -15px;
-    padding: 12px 0px 0px 0px;
+    margin: -10px;
+    padding: 0;
   }
   
   button.hamburger {
@@ -6624,7 +6635,7 @@ html {
       padding: 10px 0 0 0px;
     }
     .panel.account.account_detail .col-md-6:nth-child(2) {
-      margin: 30px 0px;
+      /* margin: 30px 0px; */
     }
     .account_page .well button {
       margin: 30px 0 6px 0;
@@ -7119,7 +7130,7 @@ html {
       padding: 20px 20px 20px 20px;
     }
     .account_page.mt-5 .api_copy {
-      top: -41px;
+      top: -40px;
       height: 40px;
       width: 40px;
     }
@@ -7689,10 +7700,9 @@ html {
     }
 
     .cpap-card {
-        background: url(https://cdn.smmspot.net/nlo/assets/images/cpap.svg) no-repeat #2FCD94;
-        background-size: cover;
-        background-position: center;
-        border-radius: 10px;
+        background:#2FCD94;
+
+        border-radius: 5px;
     }
 
     .cpap-card .cpap-body {
@@ -7706,8 +7716,8 @@ html {
         color: #FFFFFF;
         margin-bottom: 8px;
     }
+
     .cpap-card .cpap-box {
-        background: #0D1321;
         border-radius: 5px;
         display: -webkit-box;
         display: -ms-flexbox;
@@ -7723,6 +7733,16 @@ html {
         -ms-flex-align: center;
         align-items: center;
         height: 60px;
+		margin:10px;
+    }
+
+    .theme-dark .cpap-card .cpap-box {
+        background: #14171c;
+    }
+
+    .theme-default .cpap-card .cpap-box {
+        background: white;
+        color: #1C2323 !important;
     }
     .cpap-card .cpap-box .btn {
         padding: 4px 10px;
@@ -7753,6 +7773,15 @@ html {
         color: #FFFFFF;
         padding-right: 7px;
     }
+	.table-child-panel-pending > tbody > tr:last-child{
+		background-color:red;
+	}
+	.child-panel-new-alert{
+		font-weight:bold;
+		padding-bottom:20px;
+		display:block;
+		color:red;
+	}
 
     .fg .fg-icon {
         border-radius: 5px;

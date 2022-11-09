@@ -287,6 +287,13 @@
                    <h2 class="text_color">Transaction History</h2>
                 </div>
                 <div class="well text_color text-color2">
+                    <input type="hidden" id="other_name">
+                    <input type="hidden" id="other_phone">
+                    <input type="hidden" id="other_address">
+                    <input type="hidden" id="other_city">
+                    <input type="hidden" id="other_country">
+                    <input type="hidden" id="other_province">
+                    <input type="hidden" id="other_postal">
                     <pre style="display: none;" id="other_detail"></pre>
                     <div class="transaction_history" style="padding-top: 20px">
                         <table class="table data-table">
@@ -348,16 +355,16 @@
 									<td>
 									{% if user['spent'] > 5000 %}
 									<span class="download_icon">
-                                    <a href="#"  data-payment-id="{{ payment['id'] }}"
-                                    data-payment-date="{{ payment['date'] }}"
-                                    data-payment-method="{{ payment['method'] }}"
-                                    {% if payment["original_amount"] %}
-                                    data-payment-amount="{{ payment['original_amount'] }}"
-                                    {% else %}
-                                    data-payment-amount="{{ payment['amount'] }}"
-                                    {% endif %}
-                                    class="btn btn-blue getInvoiceBtn" >
-                            <img src="https://followizaddons.com/followiz-icons/download_icon.svg">
+                                        <a href="#"  data-payment-id="{{ payment['id'] }}"
+                                            data-payment-date="{{ payment['date'] }}"
+                                            data-payment-method="{{ payment['method'] }}"
+                                            {% if payment["original_amount"] %}
+                                            data-payment-amount="{{ payment['original_amount'] }}"
+                                            {% else %}
+                                            data-payment-amount="{{ payment['amount'] }}"
+                                            {% endif %}
+                                            class="btn btn-blue getInvoiceBtn" >
+                                                <img src="https://followizaddons.com/followiz-icons/download_icon.svg">
                                         </a>
                                     </span>
 									{% endif %} 
@@ -460,15 +467,15 @@
                          </td>
                          <td>
                             <button
-                            data-payment-id="{{ payment['id'] }}"
-                            data-payment-date="{{ payment['date'] }}"
-                            data-payment-method="{{ payment['method'] }}"
-                            {% if payment["original_amount"] %}
-                            data-payment-amount="{{ payment['original_amount'] }}"
-                            {% else %}
-                            data-payment-amount="{{ payment['amount'] }}"
-                            {% endif %}
-                            class="btn btn-blue getInvoiceBtn" 
+                                data-payment-id="{{ payment['id'] }}"
+                                data-payment-date="{{ payment['date'] }}"
+                                data-payment-method="{{ payment['method'] }}"
+                                {% if payment["original_amount"] %}
+                                data-payment-amount="{{ payment['original_amount'] }}"
+                                {% else %}
+                                data-payment-amount="{{ payment['amount'] }}"
+                                {% endif %}
+                                class="btn btn-blue getInvoiceBtn" 
                             >
                             Invoice
                             </button>
