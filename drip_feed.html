@@ -25,16 +25,17 @@
          <table class="table {% if site['rtl'] %} rtl-table {% endif %}">
            <thead>
            <tr>
-             <th>{{ lang('dripfeed.id') }}</th>
-              <th>{{ lang('dripfeed.service') }}</th>
-               <th>{{ lang('dripfeed.link') }}</th>
+                <th><input class="check-all" type="checkbox"></th>
+                <th>{{ lang('dripfeed.id') }}</th>
+                <th>{{ lang('dripfeed.service') }}</th>
+                <th>{{ lang('dripfeed.link') }}</th>
                 <th>{{ lang('dripfeed.quantity') }}</th>
-             <th>{{ lang('dripfeed.runs') }}</th>
-             <th>{{ lang('dripfeed.interval') }}</th>
-             <th>{{ lang('dripfeed.total_quantity') }}</th>
-             <th>{{ lang('dripfeed.date') }}</th>
-             <th>{{ lang('dripfeed.total_charge') }}</th>
-             <th>{{ lang('dripfeed.status') }}</th>
+                <th>{{ lang('dripfeed.runs') }}</th>
+                <th>{{ lang('dripfeed.interval') }}</th>
+                <th>{{ lang('dripfeed.total_quantity') }}</th>
+                <th>{{ lang('dripfeed.date') }}</th>
+                <th>{{ lang('dripfeed.total_charge') }}</th>
+                <th>{{ lang('dripfeed.status') }}</th>
             
            </tr>
            </thead>
@@ -42,6 +43,9 @@
  
            {% for dripFeed in dripFeedList %}
              <tr>
+                <td class="check-box">
+                    <input type="checkbox" value="{{ dripFeed['id'] }}" data-order_id="{{ dripFeed['id'] }}">
+                </td>
                <td>{{ dripFeed['id'] }}
                     <div class="reviewShowOnly" id="review_reviewShowOnly_{{ dripFeed['id'] }}" data-service_id="{{ dripFeed['id'] }}" ></div> 
                     <!-- <div class="review" id="review_{{ dripFeed['id'] }}" data-service_id="{{ dripFeed['service_id'] }}" ></div> -->

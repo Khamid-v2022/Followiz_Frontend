@@ -29,6 +29,7 @@
                 <table class="table {% if site['rtl'] %} rtl-table {% endif %}">
                    <thead>
                       <tr>
+                        <th><input class="check-all" type="checkbox"></th>
                          <th>{{ lang('subscriptions.id') }}</th>
                          <th class="width-20 "  >{{ lang('subscriptions.service') }}</th>
                          <th>{{ lang('subscriptions.username') }}</th>
@@ -45,6 +46,9 @@
                    <tbody>
                       {% for order in orderList  %}
                       <tr>
+                        <td class="check-box">
+                            <input type="checkbox" value="{{ order['id'] }}" data-order_id="{{ order['id'] }}">
+                        </td>
                          <td data="{{ order | json_encode() }}" >{{ order['id'] }}
                             <div class="reviewShowOnly" id="review_reviewShowOnly_{{ order['id'] }}" data-service_id="{{ order['id'] }}" ></div>
                            <!-- <div class="reviewShowOnly" id="review_reviewShowOnly_{{ order['service_id'] }}" data-service_id="{{ order['service_id'] }}" ></div>  -->

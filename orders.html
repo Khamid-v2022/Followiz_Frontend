@@ -28,6 +28,7 @@
                 <table class="table {% if site['rtl'] %} rtl-table {% endif %}">
                    <thead>
                       <tr>
+                        <th><input class="check-all" type="checkbox"></th>
                          <th>{{ lang('orders.id') }}</th>
                          <th class="width-20 "  >{{ lang('orders.service') }}</th>
                          <th class="width-20th-30">{{ lang('orders.link') }}</th>
@@ -36,7 +37,7 @@
                          <th class="width-10 ">{{ lang('orders.date') }}</th>
                          <th>{{ lang('orders.charge') }}</th>
                          <th>{{ lang('orders.status') }}</th>
-                         <!-- <th>{{ lang('orders.remains') }}</th> -->
+                         <th>{{ lang('orders.remains') }}</th>
                          <th class="width-22">Action</th>
                          {% if task == 1 %}
                          {% endif %}
@@ -45,6 +46,9 @@
                    <tbody>
                       {% for order in orderList %}
                       <tr class="tablerowid" id="trow-{{ order['service_id'] }}">
+                        <td class="check-box">
+                            <input type="checkbox" value="{{ order['id'] }}" data-order_id="{{ order['id'] }}">
+                        </td>
                         <td class="review-hover-zone">{{ order['id'] }}
                             <div class="review-wrapper">
                                 <div class="reviewShowOnly" id="reviewShowOnly_{{ order['id'] }}" data-service_id="{{ order['service_id'] }}" data-order_id="{{ order['id'] }}" ></div>
@@ -72,6 +76,7 @@
                         {%endif%}
                         <td><span class="status {{ statusclass }}">{{ order['status'] }}</span></td>
                        
+						<td><span class="">{{ order['remains'] }}</span></td>
                         <td>
                             <div class="order-actions">
                                 {% if order['refilling'] == 1 %}
