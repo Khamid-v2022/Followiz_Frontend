@@ -418,6 +418,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     let mainBestSeller = [];
     let subBestSeller =[];
     let serviceOrderNew = [];
+    let invoices = [];
 
     $(document).ready(function(){
     
@@ -992,8 +993,40 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             // ORDER, Services page
             if($('.order_page').length > 0){ 
                 orderAgainBtn_action();
+               
             }
-        
+            
+            if($('.order_page').length > 0 || $('.dripfeed_page').length > 0 ){
+                $(".check-all").on("click", function(){
+                    if($(this).prop('checked') == true){
+                        $("td.check-box input[type='checkbox']").prop('checked', true);
+                    }else {
+                        $("td.check-box input[type='checkbox']").prop('checked', false);
+                    }
+
+                    copyIdsToClipboard();
+                })
+
+                
+                $("td.check-box input[type='checkbox']").on("click", function(){
+                    copyIdsToClipboard();
+                })
+
+                function copyIdsToClipboard(){
+                    let selected_ids = "";
+                 
+                    $('td.check-box input[type=checkbox]').each(function () {
+                        if(this.checked){
+                            selected_ids += $(this).attr('data-order_id') + ", ";
+                        }
+                    });
+                    if(selected_ids){
+                        selected_ids = selected_ids.substr(0, selected_ids.length-2);
+                    }
+                    navigator.clipboard.writeText(selected_ids);
+                }
+            }
+
             //code to sow readonly ration on order page
             if (currentURL.includes('orders')) {
                 getUserRatingForOrder();
@@ -1245,17 +1278,42 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     url: api_end_point + "/user/getUserInfo.php?user_id=" + user_info.id,      
                     type: "GET",
                     success: function(data) {
-                       data = JSON.parse(data);
-                       console.log(data);
-                       $("#other_name").val(data.user_info.other_name);
-                       $("#other_phone").val(data.user_info.other_phone);
-                       $("#other_address").val(data.user_info.other_address);
-                       $("#other_city").val(data.user_info.other_city);
-                       $("#other_country").val(data.user_info.other_country);
-                       $("#other_province").val(data.user_info.other_province);
-                       $("#other_postal").val(data.user_info.other_postal);
-                       $("#other_detail").html(data.user_info.other_detail);
-                    
+                        data = JSON.parse(data);
+                        $("#other_name").val(data.user_info.other_name);
+                        $("#other_phone").val(data.user_info.other_phone);
+                        $("#other_address").val(data.user_info.other_address);
+                        $("#other_city").val(data.user_info.other_city);
+                        $("#other_country").val(data.user_info.other_country);
+                        $("#other_province").val(data.user_info.other_province);
+                        $("#other_postal").val(data.user_info.other_postal);
+                        $("#other_detail").html(data.user_info.other_detail);
+                    }
+                });
+
+                // register Payment & generate PDF list to external server
+                $.ajax({
+                    url: api_end_point + "/invoice/register_paymentlist.php", 
+                    async: false,    
+                    type: "POST",
+                    data:  { 
+                        "paymentList": paymentList,
+                        "user_id": user_info.id,
+                        "user_name": user_info.username,
+                        "first_name": user_info.first_name,
+                        "last_name": user_info.last_name,
+                        "email": user_info.email,
+                    },
+                    success: function(data) {
+                    }
+                });
+
+                // read PDF path from external server 
+                $.ajax({
+                    url: api_end_point + "/invoice/read_paymentlist.php?user_id=" + user_info.id, 
+                    type: "GET",
+                    success: function(data) {
+                        data = JSON.parse(data);
+                        invoices = data.data;
                     }
                 });
 
@@ -1329,31 +1387,37 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     $("#method").val($(this).attr("data-paymentId")).change();
                 
                 });
-
-                $(".getInvoiceBtn").click(function(){
-        
-                    var data = {};
-                    
-                    data.payment_id = $(this).attr('data-payment-id');
-                    data.payment_date = $(this).attr('data-payment-date');
-                    data.payment_method = $(this).attr('data-payment-method');
-                    data.payment_amount = $(this).attr('data-payment-amount');
-                    data.user_id = user_info.id;
-                    data.user_name = user_info.username;
-                    data.first_name = user_info.first_name;
-                    data.last_name = user_info.last_name;
-                    data.email = user_info.email;     
-                    data.other_name =   $("#other_name").val();
-                    data.other_phone =   $("#other_phone").val();
-                    data.other_address =   $("#other_address").val();
-                    data.other_city =   $("#other_city").val();
-                    data.other_country =   $("#other_country").val();
-                    data.other_province =   $("#other_province").val();
-                    data.other_postal =   $("#other_postal").val();
-                    data.other_detail = $("#other_detail").html();
-                    generateInvoice(data);
                 
-                })
+                $('.data-table tbody').on('click', 'tr .getInvoiceBtn', function () {
+                    if(invoices.length > 0){
+                        for(let index = 0; index < invoices.length; index++){
+                            if(invoices[index].id == $(this).attr('data-payment-id')){
+                                window.open("https://followizaddons.com" + invoices[index].path);
+                            }
+                        }
+                    }
+
+                    // var data = {};
+                    
+                    // data.payment_id = $(this).attr('data-payment-id');
+                    // data.payment_date = $(this).attr('data-payment-date');
+                    // data.payment_method = $(this).attr('data-payment-method');
+                    // data.payment_amount = $(this).attr('data-payment-amount');
+                    // data.user_id = user_info.id;
+                    // data.user_name = user_info.username;
+                    // data.first_name = user_info.first_name;
+                    // data.last_name = user_info.last_name;
+                    // data.email = user_info.email;     
+                    // data.other_name =   $("#other_name").val();
+                    // data.other_phone =   $("#other_phone").val();
+                    // data.other_address =   $("#other_address").val();
+                    // data.other_city =   $("#other_city").val();
+                    // data.other_country =   $("#other_country").val();
+                    // data.other_province =   $("#other_province").val();
+                    // data.other_postal =   $("#other_postal").val();
+                    // data.other_detail = $("#other_detail").html();
+                    // generateInvoice(data);
+                } ); 
             }
         /********************************************* DEPOSIT PAGE END ***************************************************/
         

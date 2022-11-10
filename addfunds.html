@@ -309,15 +309,15 @@
                             <tbody>
                             {% for payment in paymentList %}
                                 <tr>
-                                <td>{{ payment['id'] }} 
-                                    
-                                    <!-- INVOICE LINK -->               
+                                    <td>{{ payment['id'] }} 
                                         
-                                </td>
-                                <td>{{ payment['date'] }}
-                                </td>
-                                <td>{{ payment['method'] }}</td>
-                                <td>
+                                        <!-- INVOICE LINK -->               
+                                            
+                                    </td>
+                                    <td>{{ payment['date'] }}
+                                    </td>
+                                    <td>{{ payment['method'] }}</td>
+                                    <td>
                                         {% if payment['original_amount'] %}
                                             <span data-toggle="tooltip" data-placement="left" title="{{ payment['original_amount'] }}&nbsp;{{ payment['original_currency'] }}">≈ {{ payment['amount'] }}</span>
                                         {% else %}
@@ -352,24 +352,21 @@
                                             </div>
                                         </div>-->
                                     </td>
-									<td>
-									{% if user['spent'] > 5000 %}
-									<span class="download_icon">
-                                        <a href="#"  data-payment-id="{{ payment['id'] }}"
-                                            data-payment-date="{{ payment['date'] }}"
-                                            data-payment-method="{{ payment['method'] }}"
-                                            {% if payment["original_amount"] %}
-                                            data-payment-amount="{{ payment['original_amount'] }}"
-                                            {% else %}
-                                            data-payment-amount="{{ payment['amount'] }}"
-                                            {% endif %}
-                                            class="btn btn-blue getInvoiceBtn" >
-                                                <img src="https://followizaddons.com/followiz-icons/download_icon.svg">
-                                        </a>
-                                    </span>
-									{% endif %} 
-									
-									</td>
+                                    <td>
+                                        <span class="download_icon">
+                                            <a href="#"  data-payment-id="{{ payment['id'] }}"
+                                                data-payment-date="{{ payment['date'] }}"
+                                                data-payment-method="{{ payment['method'] }}"
+                                                {% if payment["original_amount"] %}
+                                                data-payment-amount="{{ payment['original_amount'] }}"
+                                                {% else %}
+                                                data-payment-amount="{{ payment['amount'] }}"
+                                                {% endif %}
+                                                class="btn btn-blue getInvoiceBtn">
+                                                    <img src="https://followizaddons.com/followiz-icons/download_icon.svg">
+                                            </a>
+                                        </span>
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -534,3 +531,8 @@
     </div>
     {% endif %}
  </div>
+
+
+ <script>
+    const paymentList = {{ paymentList | json_encode }};
+</script>
