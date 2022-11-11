@@ -997,33 +997,44 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             }
             
             if($('.order_page').length > 0 || $('.dripfeed_page').length > 0 ){
-                $(".check-all").on("click", function(){
+                $(".check-all").on("click", function(e){
                     if($(this).prop('checked') == true){
                         $("td.check-box input[type='checkbox']").prop('checked', true);
                     }else {
                         $("td.check-box input[type='checkbox']").prop('checked', false);
                     }
 
-                    copyIdsToClipboard();
+                    copyIdsToClipboard(e);
                 })
 
                 
-                $("td.check-box input[type='checkbox']").on("click", function(){
-                    copyIdsToClipboard();
+                $("td.check-box input[type='checkbox']").on("click", function(e){
+                    copyIdsToClipboard(e);
                 })
 
-                function copyIdsToClipboard(){
+                function copyIdsToClipboard(e){
                     let selected_ids = "";
                  
                     $('td.check-box input[type=checkbox]').each(function () {
+                        $(this).parents(".checkbox").find("path").css({display: "none"});
                         if(this.checked){
+                            $(this).parents(".checkbox").find("path").css({display: "block"});
                             selected_ids += $(this).attr('data-order_id') + ", ";
                         }
                     });
                     if(selected_ids){
                         selected_ids = selected_ids.substr(0, selected_ids.length-2);
                     }
+
                     navigator.clipboard.writeText(selected_ids);
+
+                    const el = document.getElementById('sparkling-txt');
+                    el.className      = 'glitter-star';
+                    el.style.display = 'block';
+                   
+                    setTimeout(function(){
+                        el.style.display = 'none';
+                    }, 4000);
                 }
             }
 
@@ -1093,7 +1104,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     $("#txtIdInput").attr('style','display:none');
                     $("#acNumIdInput").attr('style','display:none');
                     $("#opIdInput").attr('style','display:none');
-                    $("#message_box").val('');
+                    $("#message_box1").val('');
                     $("#txtIdInput").val('');
                     $("#acNumIdInput").val('');
                     $("#opIdInput").val('');
@@ -1162,17 +1173,17 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 //code to process ticket form befor submit
                 /*$("#txt_id").change(function(){
                     let msgVal = "TXT ID :: "+ $("#txt_id").val();
-                    $("#message_box").val(msgVal);
+                    $("#message_box1").val(msgVal);
                 })
                         
                 $("#acNum").change(function(){
                     let msgVal = "Account Number :: "+ $("#acNum").val();
-                    $("#message_box").val(msgVal);
+                    $("#message_box1").val(msgVal);
                 })
             
                 $("#op_id").change(function(){
                     let msgVal = "Operation ID :: "+ $("#op_id").val();
-                    $("#message_box").val(msgVal);
+                    $("#message_box1").val(msgVal);
                 })*/
 
 
@@ -1264,7 +1275,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     }
                     
                     $("#ticketSubject").val(ticketSubject);
-                
+                    $("#message_box2").html(ticketSubject + "\r\n" + $("#message_box1").val());
                     $("#submitTicketBtn").submit();
                 })
             }
