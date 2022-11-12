@@ -34,13 +34,21 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         
+        <!-- jquery -->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
         <!-- Followiz Fontawesome Kit -->
         <script src="https://kit.fontawesome.com/28e57db20b.js" crossorigin="anonymous"></script>
         <!-- Select2 css for stylish dropdown -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" />
         <!-- datatable -->
         <link rel="style" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap.min.css">
-        
+        <!-- eChart -->
+        <script src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+        <!-- daterange picker -->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
         <!-- Custom css -->
         {% for style in site['styles'] %}
             <link rel="stylesheet" type="text/css" href="{{ style['href'] }}">
@@ -77,7 +85,7 @@
                         <div class="toogle_menu bg_color">
                             <a class="navbar-brand" href="{{ page_url('index') }}">
                                 {% if site['logo'] %}
-                                    <img src="https://cdn.mypanel.link/f909ae/tjxcdcy8jdrow1pj.png" alt="Followiz" title="" class="theme_default">
+                                    <img src="https://followizaddons.com/followiz-icons/logo-white.png" alt="Followiz" title="" class="theme_default">
                                     <img src="https://followizaddons.com/followiz-icons/darkmode_logo.png" alt="Followiz" title="" class="theme_dark">
                                 {% else %}
                                     {{ site['name'] }}

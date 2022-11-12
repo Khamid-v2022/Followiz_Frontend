@@ -1026,12 +1026,21 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         selected_ids = selected_ids.substr(0, selected_ids.length-2);
                     }
 
+                    console.log(e.clientX, e.clientY, e.screenY);
                     navigator.clipboard.writeText(selected_ids);
 
                     const el = document.getElementById('sparkling-txt');
                     el.className      = 'glitter-star';
                     el.style.display = 'block';
-                   
+                    
+                    if( window.innerWidth <= 768){
+                        el.style.left = (e.clientX + 20) + 'px';
+                        el.style.top = (e.pageY - e.currentTarget.offsetTop - 70) + 'px';
+                    } else {
+                        el.style.left = (e.clientX - 215) + 'px';
+                        el.style.top = (e.pageY - e.currentTarget.offsetTop - 30) + 'px';
+                    }
+                    
                     setTimeout(function(){
                         el.style.display = 'none';
                     }, 4000);
@@ -1284,6 +1293,19 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
         /********************************************* DEPOSIT PAGE START *************************************************/
             if($(".deposit_page").length > 0){
+
+                // $('.datepick').daterangepicker({
+                //     timePicker: true,
+                //     startDate: moment().startOf('hour'),
+                //     endDate: moment().startOf('hour').add(32, 'hour'),
+                //     locale: {
+                //       format: 'M/DD hh:mm A'
+                //     }
+                // });
+
+                $("#user_balance").html("$" + parseFloat(user_info.balance).toFixed(2));
+                $("#user_spent").html("$" + parseFloat(user_info.spent).toFixed(2));
+                
                 // get user Other detail info from External server
                 $.ajax({
                     url: api_end_point + "/user/getUserInfo.php?user_id=" + user_info.id,      
@@ -1408,27 +1430,78 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         }
                     }
 
-                    // var data = {};
-                    
-                    // data.payment_id = $(this).attr('data-payment-id');
-                    // data.payment_date = $(this).attr('data-payment-date');
-                    // data.payment_method = $(this).attr('data-payment-method');
-                    // data.payment_amount = $(this).attr('data-payment-amount');
-                    // data.user_id = user_info.id;
-                    // data.user_name = user_info.username;
-                    // data.first_name = user_info.first_name;
-                    // data.last_name = user_info.last_name;
-                    // data.email = user_info.email;     
-                    // data.other_name =   $("#other_name").val();
-                    // data.other_phone =   $("#other_phone").val();
-                    // data.other_address =   $("#other_address").val();
-                    // data.other_city =   $("#other_city").val();
-                    // data.other_country =   $("#other_country").val();
-                    // data.other_province =   $("#other_province").val();
-                    // data.other_postal =   $("#other_postal").val();
-                    // data.other_detail = $("#other_detail").html();
-                    // generateInvoice(data);
                 } ); 
+
+                // continue button click
+                $(".btn-continue").on('click', function(){
+                    $(".note").css("display", "block");
+                })
+
+                let xAxis = [];
+                let yAxis= [];
+                let yAxis_obj = {};
+
+                console.log(paymentList);
+                for(let index = paymentList.length - 1; index >= 0; index--){
+                    let item = paymentList[index];
+                    let date = item.date.substr(5, 5);
+                    if(xAxis.includes(date)){
+                        yAxis_obj[date] += parseFloat(item.amount);
+                    } else {
+                        xAxis.push(date);
+                        yAxis_obj[date] = 0;
+                    }
+                }
+
+                for (var key in yAxis_obj) {
+                    yAxis.push(yAxis_obj[key]);
+                }
+
+                if(xAxis.length > 7) {
+                    xAxis = xAxis.slice(-7);
+                    yAxis = yAxis.slice(-7);
+                }
+
+                // Initialize the echarts instance based on the prepared dom
+                var dom = document.getElementById('e-chart');
+                var myChart = echarts.init(dom, null, {
+                    renderer: 'canvas',
+                    useDirtyRect: false
+                });
+
+                var option;
+
+                option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        formatter: 'Spent : ${c}'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: xAxis
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLabel: {
+                            formatter: '${value}'
+                        },
+                    },
+                    series: [
+                        {
+                            data: yAxis,
+                            type: 'line',
+                            lineStyle: {
+                                color: "#2FCD94"
+                            }
+                        }
+                    ]
+                };
+
+                if (option && typeof option === 'object') {
+                    myChart.setOption(option);
+                }
+
+                window.addEventListener('resize', myChart.resize);
             }
         /********************************************* DEPOSIT PAGE END ***************************************************/
         
@@ -3306,7 +3379,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         let country = countryInfo.country;
                         if(country.hasOwnProperty('isoName')){
                         if(country.isoName !== "Canada"){
-                            $('.addfund_page').css('display','block');
+                            $('.deposit_page').css('display','block');
                             $('.deposit_toltip').remove();
                             $('.badgeLink').css('display','inline-flex');
                             $('.badgeBtn').css('display','none');

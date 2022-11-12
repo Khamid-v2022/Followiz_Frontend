@@ -2,11 +2,7 @@ html {
     position: relative;
     height: 100vh;
   }
-  /*
-  body {
-  padding-bottom: 436px !important;
-  } */
-  
+
   .orders-table td{
       display:inline-block;
   }
@@ -281,6 +277,7 @@ html {
   .theme-dark .api_document h2,
   .theme-dark .faq_details .card,
   .theme-dark .account_page h2,
+  .theme-dark .deposit_page .card h2.text_color,
   .theme-dark p.note,
   .theme-dark .transaction_history table tr td,
   .theme-dark .order_refill,
@@ -458,15 +455,12 @@ html {
     border: 1px solid #323A3A !important;
   }
   
-  .theme-dark .addfund_page .radio_button input:checked~.checkmark {
-    /* background: #535e5c; */
-  }
-  
-  .theme-dark .addfund_page .radio_button input:checked~.checkmark {
+
+  .theme-dark .deposit_page .radio_button input:checked~.checkmark {
     border: 1px solid #2FCD94
   }
   
-  .addfund_page .radio_button .checkmark:hover {
+  .deposit_page .radio_button .checkmark:hover {
     border: 1px solid #2FCD94
   }
   
@@ -571,19 +565,12 @@ html {
   .theme-dark  .select2-results__option[aria-selected]:hover {
       background: #000;
   }
-  /* .theme-dark .select2-container--default .select2-results__option--highlighted[aria-selected] {
-    background: #191C21;
-  } */
   
   .theme-dark .select2-container--default .select2-results__option--highlighted[aria-selected] {
       background-color: #000;
       color: white;
   }
   
-  /*.theme-dark .order_history .pull-left .form-control {
-    background: #191C21;
-    border: 1px solid #323A3A;
-  }*/
   
   .theme-dark .ticket-message-left {
     border-color:#323A3A;
@@ -605,10 +592,6 @@ html {
     background: #2FCD94;
   }
   
-  /*.theme-dark .main-menu .dropdown .dropdown-menu {
-    background-color: #191C21;
-  }*/
-  
   .theme-dark .main-menu .dropdown .dropdown-menu>li>a {
     color: #fff;
     font-weight:400 !important;
@@ -616,12 +599,6 @@ html {
   
   .theme-dark .dropdown-menu>li>a:hover {
     background-color: #191C21;
-  }
-  
-  .theme-dark .order_history .pull-left .input-group-btn button {
-    /*background-color: #191C21;
-    border-color: #323A3A;
-    color: #fff;*/
   }
   
   .theme-dark .ticket.faq_section h2 {
@@ -1920,38 +1897,9 @@ html {
     margin: 0px;
   }
   
-  /*.account_page .well .username_first label {
-    color: #7E8E8D !important;
-  }*/
-  
-/*  .account_page .well .form-group label {
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 24px;
-    font-style: normal;
-    padding-bottom: 5px;
-    padding-top: 10px;
-  }*/
-  
   .account_page .well .form-group .form-control {
     height: 50px;
   }
-  
-  .btn-block {
-    /*background: #2FCD94;
-    text-align: center;
-    color: #FFFFFF;
-    border-color: #2FCD94;*/
-  }
-  
-  /*.account_page .well button {
-    height: 60px;
-    font-weight: bold;
-    font-size: 20px;
-    line-height: 24px;
-    text-transform: uppercase;
-    margin: 30px 0 6px 0;
-  }*/
   
   .account_page.mt-5 {
     margin-top: 20px;
@@ -3022,15 +2970,51 @@ html {
     justify-content: center;
   }
   
+ 
   .deposit_page .deposit_icon img {
     margin: auto;
     width: 45px;
     height: 45px;
   }
-  
-  .account_page.deposit_page {
-    padding: 15px 20px 20px 20px;
+
+
+
+  .deposit_page .card {
+    border-radius: 5px;
+    padding: 20px 20px 20px 20px;
+    margin-left: 5px;
   }
+
+  .deposit_page .card.balance-card,  .deposit_page .card.spend-card {
+    height: 120px;
+  }
+
+  .deposit_page .card .card-number {
+    position: absolute;
+    bottom: 0;
+  }
+
+  .deposit_page .card h2.text_color {
+    padding: 0px 0px 20px 0px;
+    border-bottom: 1px solid #DEE4E4;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    margin: 0px;
+    }
+
+  .deposit_page .card .card-title {
+    color: #7E8E8D;
+    font-size: 18px;
+  }
+
+  .deposit_page .card .e-chart {
+    height: 300px;
+    position: relative;
+    overflow: hidden;
+  }
+
   
   .deposit_deposit_txt {
     font-style: normal;
@@ -3065,7 +3049,7 @@ html {
     border-bottom: 1px solid #DEE4E4;
   }
   
-  .account_page .well .ammount_send button {
+  .well .ammount_send button {
     margin: 28px 0px 6px 0px !important;
   }
   
@@ -3083,11 +3067,14 @@ html {
     font-size: 12px;
   }
   
-  .col-md-6.transaction_history .account_page {
+  .col-md-6.transaction_history {
     border-radius: 5px;
     padding: 15px 0px 20px 0px;
   }
   
+  .transaction_history p {
+    color: #7E8E8D!important;
+  }
   .col-md-6.transaction_history h2 {
     padding: 0px 0px 20px 0px;
   }
@@ -3567,7 +3554,7 @@ html {
     padding: 0px;
   }
   
-  .panel.addfund_page {
+  .panel.deposit_page {
     background: none;
     padding: 0px;
     box-shadow: none;
@@ -4211,7 +4198,7 @@ html {
   
   /*******vip-status tolltip********/
   
-  .addfund_page .panel-body {
+  .deposit_page .panel-body {
     padding: 0px 0px !important;
   }
   
@@ -5080,7 +5067,7 @@ html {
     margin: 0px -20px;
     border-bottom: 1px solid #DEE4E4;
     padding: 0px 20px 15px;
-}
+  }
   .theme-dark .services_news h1{
     border-bottom: 1px solid #323A3A;
     text-align:left;
@@ -5392,7 +5379,7 @@ html {
       padding: 0px 10px;
     }
    
-    .transaction_history .account_page {
+    .transaction_history {
       padding: 35px 35px;
     }
     
@@ -5404,9 +5391,7 @@ html {
     .order_history .well thead tr th:last-child {
       padding-right: 45px !important;
     }
-    .account_page {
-      padding: 35px 45px 31px 45px;
-    }
+ 
     .api_document {
       padding: 0px 55px 1px 55px;
     }
@@ -6556,10 +6541,10 @@ html {
     .payment_option ul {
       margin: 0px;
     }
-    .panel.addfund_page .panel-body {
+    .panel.deposit_page .panel-body {
       padding: 0px 0px !important;
     }
-    .account_page h2 {
+    .deposit_page h2 {
       padding: 0px 0px 20px 0px;
     }
     /* .col-md-6.transaction_history h2 {
@@ -6617,7 +6602,7 @@ html {
     .transaction_history table tr td {
       padding: 15px 0px;
     }
-    .account_page.deposit_page .radio_button .checkmark {
+    .deposit_page .radio_button .checkmark {
       min-height: 110px;
     }
     .deposit_deposit_txt {
@@ -6777,14 +6762,7 @@ html {
     .request {
       padding: 20px 0 20px 0;
     }
-    .request ul li {
-      /*width: 44% !important;
-      margin: auto !important;
-      margin-bottom: 18px !important;*/
-    }
-    /*.request ul {
-      margin: 0px 0px 0px 0px !important;
-    }*/
+   
     .form_design .category_name .form-group {
       margin-bottom: 8px !important;
     }
@@ -6837,7 +6815,7 @@ html {
       width: 100%;
     }
     .send_button {
-      margin-top: -20px
+        margin-top: -20px;
         width:100%;
     }
   
@@ -7161,41 +7139,41 @@ html {
     }
   }
   
-  @media screen and (min-width: 768px) and (max-width: 992px){
-    .new_ticket_apply {
-      height: 400px;
+    @media screen and (min-width: 768px) and (max-width: 992px){
+        .new_ticket_apply {
+            height: 400px;
+        }
+        .history_ticket .reviews_ticket {
+            height: 360px;
+        }
+    
+        .new_ticket .well.history_ticket {
+            height: 658px;
+        }
+        .service .order_page select.selectpicker.all_socialmedia{
+            background-position: 178px 18px !important;
+        }
+        .service .order_page .dropdown_section form .input-group {
+            width: 205px !important;
+        }
+        .service_page a .caret {
+            padding-left: 0 !important;
+        }
+        .collapsed span.caret{
+            margin-top:8px !important;
+            padding-left:0 !important;
+        }
+        .order_history.service_page .table-responsive-xl {
+            overflow-x: scroll !important;
+        }
+        .send_button {    
+            margin-top: -20px;
+        }
+        .col-md-8.tab_ans {
+            margin: 0;
+    
+        }
     }
-    .history_ticket .reviews_ticket {
-      height: 360px;}
-  
-    .new_ticket .well.history_ticket {
-      height: 658px;
-    }
-    .service .order_page select.selectpicker.all_socialmedia{
-      background-position: 178px 18px !important;
-    }
-    .service .order_page .dropdown_section form .input-group {
-      width: 205px !important;
-    }
-    .service_page a .caret {
-      padding-left: 0 !important;
-    }
-    .collapsed span.caret{
-      margin-top:8px !important;
-      padding-left:0 !important;
-    }
-    .order_history.service_page .table-responsive-xl {
-      overflow-x: scroll !important;
-    }
-    .send_button {    
-      margin-top: -20px;
-    }
-    .col-md-8.tab_ans {
-      margin: 0;
-  
-    }
-  }
-  
   
   .icon-btn {
       padding: 4px 8px;
@@ -7203,41 +7181,6 @@ html {
       min-width: 38px;
   }
   
-/*    
-  .dataTables_wrapper > div.row:first-child div.col-sm-6, .dataTables_wrapper > div.row:last-child div.col-sm-6 {
-    width: unset;
-  } 
-  .dataTables_wrapper > div.row:first-child,
-   .dataTables_wrapper > div.row:last-child 
-  {
-      margin: 0px;
-      display: flex;
-      justify-content: space-between;
-  }
-  
-  @media(max-width: 767px) { 
-    .dataTables_wrapper > div.row:last-child {
-      display: block;
-      justify-content: unset;
-    }
-  }
-  
-   
-  
-  .dataTables_wrapper > div.row:first-child::before,
-  .dataTables_wrapper > div.row:first-child::after {
-    display: none;
-  }
-  
-  .dataTables_wrapper > div.row:first-child .dataTables_filter {
-    float: right;
-  }
-  
-  
-  .dataTables_wrapper  .pagination {
-    float: right;
-  } */
-
   .dataTables_wrapper .top {
     padding: 0 20px;
   }
@@ -7253,11 +7196,15 @@ html {
     margin: 0px 2px;
   }
   
+  .dataTables_wrapper input {
+        margin-left: 8px;
+  }
+ 
+
   .theme-dark .dataTables_wrapper input,  .theme-dark .dataTables_wrapper select{
     border: 1px solid #323A3A;
     color: white;
     background-color: #323A3A;
-    margin-left: 8px;
   }
   
   .theme-dark .form-control.bg_color, .theme-dark select.bg_color, .theme-dark .dataTables_wrapper input, .theme-dark .dataTables_wrapper select {
@@ -7269,10 +7216,7 @@ html {
   
   
   
-  /* .dataTables_wrapper input {
-    width: 130px!important;
-  }
-   */
+
   .theme-dark .main_category {
     border: 1px solid #323A3A !important;
   }
@@ -8004,15 +7948,25 @@ html {
        }
    }
 
+   label.checkbox input[type="file"]:focus, input[type="radio"]:focus, input[type="checkbox"]:focus{
+    outline: none;
+   }
+
    #sparkling-txt {
         color: white;
-        font-size: 18px;
+        font-size: 14px;
         display: none;
         position: absolute;
-        top: 30px;
-        right: 70px;
-        font-weight: 800;
-        -webkit-text-stroke: 1px red;
+        font-weight: 400;
+        background-color: #14171c;
+        color: #2FCD94;
+        border-radius: 10px;
+        padding: 2px 4px;
+        z-index: 100;
+   }
+
+   .theme-dark #sparkling-txt {
+        background-color: white;
    }
 
    .glitter-star {
