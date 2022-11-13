@@ -1293,15 +1293,13 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
         /********************************************* DEPOSIT PAGE START *************************************************/
             if($(".deposit_page").length > 0){
-
-                // $('.datepick').daterangepicker({
-                //     timePicker: true,
-                //     startDate: moment().startOf('hour'),
-                //     endDate: moment().startOf('hour').add(32, 'hour'),
-                //     locale: {
-                //       format: 'M/DD hh:mm A'
-                //     }
-                // });
+                $('.datepick').daterangepicker({
+                    startDate: moment().add(-30, 'day'),
+                    endDate: moment(),
+                    locale: {
+                      format: 'Y/M/DD'
+                    }
+                });
 
                 $("#user_balance").html("$" + parseFloat(user_info.balance).toFixed(2));
                 $("#user_spent").html("$" + parseFloat(user_info.spent).toFixed(2));
@@ -1437,71 +1435,214 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     $(".note").css("display", "block");
                 })
 
-                let xAxis = [];
-                let yAxis= [];
-                let yAxis_obj = {};
 
-                console.log(paymentList);
-                for(let index = paymentList.length - 1; index >= 0; index--){
-                    let item = paymentList[index];
-                    let date = item.date.substr(5, 5);
-                    if(xAxis.includes(date)){
-                        yAxis_obj[date] += parseFloat(item.amount);
-                    } else {
-                        xAxis.push(date);
-                        yAxis_obj[date] = 0;
-                    }
-                }
+                $(".datepick").on("change", function(){
+                    showChart();
+                })
+                
+                $('.datepick').trigger("change");
+                
+                function showChart(){
+                    // get selected date range from datepicker
+                    let daterange = $("#date_range").val();
+                    let fromDate = new Date(daterange.split("-")[0].trim());
+                    let toDate = new Date(daterange.split("-")[1].trim());
 
-                for (var key in yAxis_obj) {
-                    yAxis.push(yAxis_obj[key]);
-                }
+                    let xAxis = [];
+                    let data1 = [];
+                    let data2 = [];
+                    let data3 = [];
+                    let data4 = [];
+                    let data5 = [];
+                    let data6 = [];
 
-                if(xAxis.length > 7) {
-                    xAxis = xAxis.slice(-7);
-                    yAxis = yAxis.slice(-7);
-                }
+                    let data1_obj = {};
+                    let data2_obj = {};
+                    let data3_obj = {};
+                    let data4_obj = {};
+                    let data5_obj = {};
+                    let data6_obj = {};
+    
+                    console.log(paymentList);
 
-                // Initialize the echarts instance based on the prepared dom
-                var dom = document.getElementById('e-chart');
-                var myChart = echarts.init(dom, null, {
-                    renderer: 'canvas',
-                    useDirtyRect: false
-                });
-
-                var option;
-
-                option = {
-                    tooltip: {
-                        trigger: 'axis',
-                        formatter: 'Spent : ${c}'
-                    },
-                    xAxis: {
-                        type: 'category',
-                        data: xAxis
-                    },
-                    yAxis: {
-                        type: 'value',
-                        axisLabel: {
-                            formatter: '${value}'
-                        },
-                    },
-                    series: [
-                        {
-                            data: yAxis,
-                            type: 'line',
-                            lineStyle: {
-                                color: "#2FCD94"
+                    for(let index = paymentList.length - 1; index >= 0; index--){
+                        
+                        let item = paymentList[index];
+                        let date = new Date(item.date.substr(0, 10));
+                        
+                        if(date >= fromDate && date <= toDate){                       
+                            let date_show = item.date.substr(5, 5);
+                            
+                            if(xAxis.includes(date_show)){
+                                switch(item.method) {
+                                    case "Perfect Money USD":
+                                        data1_obj[date_show] += parseFloat(item.amount);
+                                        break;
+                                    case "Payoneer":
+                                        data2_obj[date_show] += parseFloat(item.amount);
+                                        break;
+                                    case "Coinpayments":
+                                        data3_obj[date_show] += parseFloat(item.amount);
+                                        break;
+                                    case "Coinbase":
+                                        data4_obj[date_show] += parseFloat(item.amount);
+                                        break;
+                                    case "Stripe / Credit Card":
+                                        data5_obj[date_show] += parseFloat(item.amount);
+                                        break;
+                                    default:
+                                        data6_obj[date_show] += parseFloat(item.amount);
+                                        break;
+                                }
+                            } else {
+                                xAxis.push(date_show);
+                                data1_obj[date_show] = 0;
+                                data2_obj[date_show] = 0;
+                                data3_obj[date_show] = 0;
+                                data4_obj[date_show] = 0;
+                                data5_obj[date_show] = 0;
+                                data6_obj[date_show] = 0;
                             }
                         }
-                    ]
-                };
+                    }
 
-                if (option && typeof option === 'object') {
-                    myChart.setOption(option);
+                    if(xAxis.length == 0){
+                        $(".error-message").html("No payment");
+                        $(".error-message").css("display", "block");
+                        $(".e-chart").css("display", "none");
+                        return;
+                    }
+                    $(".error-message").css("display", "none");
+                    $(".e-chart").css("display", "block");
+                    
+                    for (var key in data1_obj) {
+                        data1.push(data1_obj[key]);
+                    }
+                    for (var key in data2_obj) {
+                        data2.push(data2_obj[key]);
+                    }
+                    for (var key in data3_obj) {
+                        data3.push(data3_obj[key]);
+                    }
+                    for (var key in data4_obj) {
+                        data4.push(data4_obj[key]);
+                    }
+                    for (var key in data5_obj) {
+                        data5.push(data5_obj[key]);
+                    }
+                    for (var key in data6_obj) {
+                        data6.push(data6_obj[key]);
+                    }
+    
+                    // Initialize the echarts instance based on the prepared dom
+                    var dom = document.getElementById('e-chart');
+                    var myChart = echarts.init(dom);
+                    // var myChart = echarts.init(dom, null, {
+                    //     renderer: 'canvas',
+                    //     useDirtyRect: false
+                    // });
+    
+                    var option;
+                    var emphasisStyle = {
+                        itemStyle: {
+                          shadowBlur: 10,
+                          shadowColor: 'rgba(0,0,0,0.3)'
+                        }
+                    };
+
+                    option = {
+                        legend: {
+                            data: ['Perfect Money USD', 'Payeer', 'CoinPayments', 'Coinbase Commerce', 'Stripe Checkout Gateway', 'Others'],
+                            left: '10%',
+                            textStyle:{
+                                color:'green'
+                            }
+                        },
+                        tooltip: {},
+                        xAxis: {
+                            data: xAxis,
+                            name: 'Date',
+                            axisLine: { onZero: true },
+                            splitLine: { show: false },
+                            splitArea: { show: false }
+                        },
+                        yAxis: {},
+                        grid: {
+                            bottom: 30
+                        },
+                        series: [
+                            {
+                                name: 'Perfect Money USD',
+                                type: 'bar',
+                                stack: 'one',
+                                emphasis: emphasisStyle,
+                                data: data1
+                            },
+                            {
+                                name: 'Payeer',
+                                type: 'bar',
+                                stack: 'one',
+                                emphasis: emphasisStyle,
+                                data: data2
+                            },
+                            {
+                                name: 'CoinPayments',
+                                type: 'bar',
+                                stack: 'one',
+                                emphasis: emphasisStyle,
+                                data: data3
+                            },
+                            {
+                                name: 'Coinbase Commerce',
+                                type: 'bar',
+                                stack: 'one',
+                                emphasis: emphasisStyle,
+                                data: data4
+                            },
+                            {
+                                name: 'Stripe Checkout Gateway',
+                                type: 'bar',
+                                stack: 'one',
+                                emphasis: emphasisStyle,
+                                data: data5
+                            },
+                            {
+                                name: 'Others',
+                                type: 'bar',
+                                stack: 'one',
+                                emphasis: emphasisStyle,
+                                data: data6
+                            }
+                        ]
+                    };
+    
+                    if (option && typeof option === 'object') {
+                        myChart.setOption(option);
+                    }
+    
+                    window.addEventListener('resize', myChart.resize);
+                    myChart.on('brushSelected', function (params) {
+                        var brushed = [];
+                        var brushComponent = params.batch[0];
+                        for (var sIdx = 0; sIdx < brushComponent.selected.length; sIdx++) {
+                          var rawIndices = brushComponent.selected[sIdx].dataIndex;
+                          brushed.push('[Series ' + sIdx + '] ' + rawIndices.join(', '));
+                        }
+                        myChart.setOption({
+                          title: {
+                            backgroundColor: '#333',
+                            text: 'SELECTED DATA INDICES: \n' + brushed.join('\n'),
+                            bottom: 0,
+                            right: '10%',
+                            width: 100,
+                            textStyle: {
+                              fontSize: 12,
+                              color: '#fff'
+                            }
+                          }
+                        });
+                    });
                 }
-
-                window.addEventListener('resize', myChart.resize);
             }
         /********************************************* DEPOSIT PAGE END ***************************************************/
         

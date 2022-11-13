@@ -5,204 +5,202 @@
                 <div class="account_page bg_color">
                     <h2 class="text_color">Deposit Cash</h2>
                     <div class="well">
+                        <div class="payment_option">
+                            <ul class="text_color">
+                                {% for payment in paymentsList %} 
+                                    {% if payment['name'] == 'Payoneer' %}
+                                        <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
+                                            <label class="radio_button">
+                                                <input type="radio" checked="checked" name="radio">
+                                                <span class="checkmark radio_txt">
+                                                    <img src="https://www.startdesigns.com/followiz-icons/payoneer.svg">
+                                                    <p>{{payment['name']}}</p>
+                                                </span>
+                                            </label>
+                                        </li>
+                                    {% elseif payment['name'] == 'Perfect Money USD' %}
+                                        <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
+                                            <label class="radio_button">
+                                                <input type="radio" checked="checked" name="radio">
+                                                <span class="checkmark radio_txt">
+                                                    <img src="https://followizaddons.com/followiz-icons/perfect-money_icon.svg">
+                                                    <p>{{payment['name']}}</p>
+                                                </span>
+                                            </label>
+                                        </li>
+                                    {% elseif payment['name'] == 'Stripe / Credit Card' %}
+                                        <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
+                                            <label class="radio_button">
+                                                <input type="radio"  name="radio">
+                                                <span class="checkmark radio_txt">
+                                                    <img src="https://followizaddons.com/followiz-icons/strip_icon.svg">
+                                                    <p>{{payment['name']}}</p>
+                                                </span>
+                                            </label>
+                                        </li>
+                                    {% elseif payment['name'] == 'Stripe / Credit Card (VIP)' %}
+                                        <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
+                                            <label class="radio_button">
+                                                <input type="radio"  name="radio">
+                                                <span class="checkmark radio_txt">
+                                                    <img src="https://followizaddons.com/followiz-icons/strip_icon.svg">
+                                                    <p>{{payment['name']}}</p>
+                                                </span>
+                                            </label>
+                                        </li>
+                                    {% elseif payment['name'] == 'PayPal Invoice' %}
+                                        <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
+                                            <label class="radio_button">
+                                                <input type="radio"  name="radio">
+                                                <span class="checkmark radio_txt">
+                                                    <img src="https://followizaddons.com/followiz-icons/strip_icon.svg">
+                                                    <p>{{payment['name']}}</p>
+                                                </span>
+                                            </label>
+                                        </li>
+                                    {% elseif payment['name'] == 'PayPal' %}
+                                        <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
+                                            <label class="radio_button">
+                                                <input type="radio"  name="radio">
+                                                <span class="checkmark radio_txt">
+                                                    <img src="https://followizaddons.com/followiz-icons/strip_icon.svg">
+                                                    <p>{{payment['name']}}</p>
+                                                </span>
+                                            </label>
+                                        </li>
+                                    {% elseif payment['name'] == 'Coinbase' %}
+                                        <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
+                                            <label class="radio_button">
+                                                <input type="radio" name="radio">
+                                                <span class="checkmark radio_txt">
+                                                    <img src="https://followizaddons.com/followiz-icons/coinbase.svg">
+                                                    <p>{{payment['name']}}</p>
+                                                </span>
+                                            </label>
+                                        </li>
+                                    {% elseif payment['name'] == 'Coinpayments' %}
+                                        <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
+                                            <label class="radio_button">
+                                                <input type="radio" name="radio">
+                                                <span class="checkmark radio_txt">
+                                                    <img src="https://followizaddons.com/followiz-icons/coinpayments.svg">
+                                                    <p>{{payment['name']}}</p>
+                                                </span>
+                                            </label>
+                                        </li>
+                                    {% else %}
+                                        <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
+                                            <label class="radio_button">
+                                                <input type="radio" name="radio">
+                                                <span class="checkmark radio_txt">
+                                                    <img src="https://followizaddons.com/followiz-icons/payeer_icon.svg">
+                                                    <p>{{payment['name']}}</p>
+                                                </span>
+                                            </label>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
                         <div class="row">
-                            <div class="col-md-7 payment_option">
-                                <ul class="text_color" style="justify-content: space-between;">
-                                    {% for payment in paymentsList %} 
-                                        {% if payment['name'] == 'Payoneer' %}
-                                            <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
-                                                <label class="radio_button">
-                                                    <input type="radio" checked="checked" name="radio">
-                                                    <span class="checkmark radio_txt">
-                                                        <img src="https://www.startdesigns.com/followiz-icons/payoneer.svg">
-                                                        <p>{{payment['name']}}</p>
-                                                    </span>
-                                                </label>
-                                            </li>
-                                        {% elseif payment['name'] == 'Perfect Money USD' %}
-                                            <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
-                                                <label class="radio_button">
-                                                    <input type="radio" checked="checked" name="radio">
-                                                    <span class="checkmark radio_txt">
-                                                        <img src="https://followizaddons.com/followiz-icons/perfect-money_icon.svg">
-                                                        <p>{{payment['name']}}</p>
-                                                    </span>
-                                                </label>
-                                            </li>
-                                        {% elseif payment['name'] == 'Stripe / Credit Card' %}
-                                            <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
-                                                <label class="radio_button">
-                                                    <input type="radio"  name="radio">
-                                                    <span class="checkmark radio_txt">
-                                                        <img src="https://followizaddons.com/followiz-icons/strip_icon.svg">
-                                                        <p>{{payment['name']}}</p>
-                                                    </span>
-                                                </label>
-                                            </li>
-                                        {% elseif payment['name'] == 'Stripe / Credit Card (VIP)' %}
-                                            <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
-                                                <label class="radio_button">
-                                                    <input type="radio"  name="radio">
-                                                    <span class="checkmark radio_txt">
-                                                        <img src="https://followizaddons.com/followiz-icons/strip_icon.svg">
-                                                        <p>{{payment['name']}}</p>
-                                                    </span>
-                                                </label>
-                                            </li>
-                                        {% elseif payment['name'] == 'PayPal Invoice' %}
-                                            <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
-                                                <label class="radio_button">
-                                                    <input type="radio"  name="radio">
-                                                    <span class="checkmark radio_txt">
-                                                        <img src="https://followizaddons.com/followiz-icons/strip_icon.svg">
-                                                        <p>{{payment['name']}}</p>
-                                                    </span>
-                                                </label>
-                                            </li>
-                                        {% elseif payment['name'] == 'PayPal' %}
-                                            <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
-                                                <label class="radio_button">
-                                                    <input type="radio"  name="radio">
-                                                    <span class="checkmark radio_txt">
-                                                        <img src="https://followizaddons.com/followiz-icons/strip_icon.svg">
-                                                        <p>{{payment['name']}}</p>
-                                                    </span>
-                                                </label>
-                                            </li>
-                                        {% elseif payment['name'] == 'Coinbase' %}
-                                            <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
-                                                <label class="radio_button">
-                                                    <input type="radio" name="radio">
-                                                    <span class="checkmark radio_txt">
-                                                        <img src="https://followizaddons.com/followiz-icons/coinbase.svg">
-                                                        <p>{{payment['name']}}</p>
-                                                    </span>
-                                                </label>
-                                            </li>
-                                        {% elseif payment['name'] == 'Coinpayments' %}
-                                            <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
-                                                <label class="radio_button">
-                                                    <input type="radio" name="radio">
-                                                    <span class="checkmark radio_txt">
-                                                        <img src="https://followizaddons.com/followiz-icons/coinpayments.svg">
-                                                        <p>{{payment['name']}}</p>
-                                                    </span>
-                                                </label>
-                                            </li>
-                                        {% else %}
-                                            <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
-                                                <label class="radio_button">
-                                                    <input type="radio" name="radio">
-                                                    <span class="checkmark radio_txt">
-                                                        <img src="https://followizaddons.com/followiz-icons/payeer_icon.svg">
-                                                        <p>{{payment['name']}}</p>
-                                                    </span>
-                                                </label>
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                                <div class="text-right px-5">
-                                    <button class="btn btn-continue">Continue <i class="fa fa-arrow-right ms-2" aria-hidden="true"></i></button>
+                            <div class="col-md-7">
+                                <div class="row" id="perfect_eur_content" style="display:none">
+                                    <div class="col-md-4 center_txt">
+                                        <p>Bonus:<span>0%</span></p>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <p>Minimum: <span>$5</span></p>
+                                        <p>Estimated Time:<span>1 Minute</span></p>
+                                        <p>Bonus:<span>0%</span></p>
+                                    </div>
+                                </div>
+                                <div class="row" id="perfect_usd_content">
+                                    <div class="col-md-12">
+                                        <p>Minimum: <span>$5</span></p>
+                                        <p>Estimated Time:<span>1 Minute</span></p>
+                                        <p>Bonus:<span>0%</span></p>
+                                        <p class="">Note: <span>For Perfect Money USD Payments Only</span></p>
+                                    </div>
+                                </div>
+                                <div class="row" id="stripe_content" style="display:none">
+                                    <div class="col-md-12">
+                                        <p>Minimum: <span>$10</span></p>
+                                        <p>Estimated Time:<span>5 Minutes</span></p>
+                                        <p>Bonus:<span>0%</span></p>
+                                    </div>
+                                </div>
+                                <div class="row" id="payPal_invoice_content" style="display:none">
+                                    <div class="col-md-4 center_txt">
+                                        <p>Minimum: <span>$20</span></p>
+                                        <p>Maximum:<span>$100</span></p>
+                                    </div>
+                                    <div class="col-md-4 center_txt">
+                                        <p>Estimated Time:<span>15 Minute</span></p>
+                                        <p>Bonus:<span>0%</span></p>
+                                    </div>
+                                    <div class="col-md-4 center_txt">
+                                        <p>Fees:<span>N/A</span></p>
+                                    </div>
+                                </div>
+                                <div class="row" id="payPal_content" style="display:none">
+                                    <div class="col-md-4 center_txt">
+                                        <p>Minimum: <span>$5</span></p>
+                                        <p>Maximum:<span>N/A</span></p>
+                                    </div>
+                                    <div class="col-md-4 center_txt">
+                                        <p>Estimated Time:<span>1 Minute</span></p>
+                                        <p>Bonus:<span>0%</span></p>
+                                    </div>
+                                    <div class="col-md-4 center_txt">
+                                        <p>Fees:<span>N/A</span></p>
+                                    </div>
+                                </div>
+                                <div class="row" id="skrill_content" style="display:none">
+                                    <div class="col-md-4 center_txt">
+                                        <p>Minimum: <span>$5</span></p>
+                                        <p>Maximum:<span>100</span></p>
+                                    </div>
+                                    <div class="col-md-4 center_txt">
+                                        <p>Estimated Time:<span>5 Minute</span></p>
+                                        <p>Bonus:<span>0%</span></p>
+                                    </div>
+                                    <div class="col-md-4 center_txt">
+                                        <p>Fees:<span>N/A</span></p>
+                                    </div>
+                                </div>
+                                <div class="row" id="coinPayments_content" style="display:none" >
+                                    <div class="col-md-12">
+                                        <p>Minimum: <span>$1</span></p>
+                                        <p>Estimated Time:<span>30 Minutes</span></p>
+                                        <p>Bonus:<span>0%</span></p>
+                                        <p class="">Note: 
+                                            <span>Always send the right amount of BTC and not USD, else your payment might get canceled.<br>
+                                            If the transaction haven't received the right amount of BTC, it will get canceled automatically and you will get an email from coinpayments explaining the issue from where you will be able to get a refund for the funds you sent.</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row" id="coinbase_content" style="display:none" >
+                                    <div class="col-md-12">
+                                        <p>Minimum: <span>$1</span></p>
+                                        <p>Estimated Time:<span>30 Minutes</span></p>
+                                        <p>Bonus:<span>0%</span></p>
+                                        <p class="">Note: 
+                                            <span>Always send the right amount of BTC and not USD, else your payment might get canceled.<br>
+                                                If the transaction haven't received the right amount of BTC, the transaction may be underpaid and stuck. If no payment is added under your balance after 1 hour, open up a ticket with the transaction details. We will manually verify the payment and add it to your balance.</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row" id="payeer_content" style="display:none" >
+                                    <div class="col-md-12">
+                                        <p>Minimum: <span>$5</span></p>
+                                        <p>Estimated Time:<span>5 Minutes</span></p>
+                                        <p>Bonus:<span>0%</span></p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-5 note" style="display: none;">
+                            <div class="col-md-5 note">
                                 <form {% if site['rtl'] %} class="rtl-form"{% endif %} method="post" action="">        
                                     <div class="deposit_deposit_txt text_color">
-                                        <div class="row" id="perfect_eur_content" style="display:none">
-                                            <div class="col-md-4 center_txt">
-                                                <p>Bonus:<span>0%</span></p>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <p>Minimum: <span>$5</span></p>
-                                                <p>Estimated Time:<span>1 Minute</span></p>
-                                                <p>Bonus:<span>0%</span></p>
-                                            </div>
-                                        </div>
-                                        <div class="row" id="perfect_usd_content">
-                                            <div class="col-md-12">
-                                                <p>Minimum: <span>$5</span></p>
-                                                <p>Estimated Time:<span>1 Minute</span></p>
-                                                <p>Bonus:<span>0%</span></p>
-                                                <p class="note">Note: <span>For Perfect Money USD Payments Only</span></p>
-                                            </div>
-                                        </div>
-                                        <div class="row" id="stripe_content" style="display:none">
-                                            <div class="col-md-12">
-                                                <p>Minimum: <span>$10</span></p>
-                                                <p>Estimated Time:<span>5 Minutes</span></p>
-                                                <p>Bonus:<span>0%</span></p>
-                                            </div>
-                                        </div>
-                                        <div class="row" id="payPal_invoice_content" style="display:none">
-                                            <div class="col-md-4 center_txt">
-                                                <p>Minimum: <span>$20</span></p>
-                                                <p>Maximum:<span>$100</span></p>
-                                            </div>
-                                            <div class="col-md-4 center_txt">
-                                                <p>Estimated Time:<span>15 Minute</span></p>
-                                                <p>Bonus:<span>0%</span></p>
-                                            </div>
-                                            <div class="col-md-4 center_txt">
-                                                <p>Fees:<span>N/A</span></p>
-                                            </div>
-                                        </div>
-                                        <div class="row" id="payPal_content" style="display:none">
-                                            <div class="col-md-4 center_txt">
-                                                <p>Minimum: <span>$5</span></p>
-                                                <p>Maximum:<span>N/A</span></p>
-                                            </div>
-                                            <div class="col-md-4 center_txt">
-                                                <p>Estimated Time:<span>1 Minute</span></p>
-                                                <p>Bonus:<span>0%</span></p>
-                                            </div>
-                                            <div class="col-md-4 center_txt">
-                                                <p>Fees:<span>N/A</span></p>
-                                            </div>
-                                        </div>
-                                        <div class="row" id="skrill_content" style="display:none">
-                                            <div class="col-md-4 center_txt">
-                                                <p>Minimum: <span>$5</span></p>
-                                                <p>Maximum:<span>100</span></p>
-                                            </div>
-                                            <div class="col-md-4 center_txt">
-                                                <p>Estimated Time:<span>5 Minute</span></p>
-                                                <p>Bonus:<span>0%</span></p>
-                                            </div>
-                                            <div class="col-md-4 center_txt">
-                                                <p>Fees:<span>N/A</span></p>
-                                            </div>
-                                        </div>
-                                        <div class="row" id="coinPayments_content" style="display:none" >
-                                            <div class="col-md-12">
-                                                <p>Minimum: <span>$1</span></p>
-                                                <p>Estimated Time:<span>30 Minutes</span></p>
-                                                <p>Bonus:<span>0%</span></p>
-                                                <p class="note">Note: 
-                                                    <span>Always send the right amount of BTC and not USD, else your payment might get canceled.<br>
-                                                    If the transaction haven't received the right amount of BTC, it will get canceled automatically and you will get an email from coinpayments explaining the issue from where you will be able to get a refund for the funds you sent.</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="row" id="coinbase_content" style="display:none" >
-                                            <div class="col-md-12">
-                                                <p>Minimum: <span>$1</span></p>
-                                                <p>Estimated Time:<span>30 Minutes</span></p>
-                                                <p>Bonus:<span>0%</span></p>
-                                                <p class="note">Note: 
-                                                    <span>Always send the right amount of BTC and not USD, else your payment might get canceled.<br>
-                                                        If the transaction haven't received the right amount of BTC, the transaction may be underpaid and stuck. If no payment is added under your balance after 1 hour, open up a ticket with the transaction details. We will manually verify the payment and add it to your balance.</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="row" id="payeer_content" style="display:none" >
-                                            <div class="col-md-12">
-                                                <p>Minimum: <span>$5</span></p>
-                                                <p>Estimated Time:<span>5 Minutes</span></p>
-                                                <p>Bonus:<span>0%</span></p>
-                                            </div>
-                                        </div>
-
                                         <div class="form-group hidden">
                                             <label for="method" class="control-label">{{ lang('addfunds.method') }}</label>
                                             <select class="form-control" id="method" name="AddFoundsForm[type]" id="order_type">
@@ -231,8 +229,16 @@
             <div class="row">
                 <div class="col-md-7">
                     <div class="card bg_color  mt-5">
-                        <h2 class="text_color">Transaction Volume</h2>
-                        <div class="e-chart" id="e-chart"></div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h2 class="text_color">Transaction Volume</h2>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <input type="text" id="date_range" class="datepick form-control bg_color" readonly>
+                            </div>
+                        </div>
+                        <div class="error-message text-center" style="display: none"></div>
+                        <div class="e-chart mt-5" id="e-chart"></div>
                     </div>
                 </div>
                 <div class="col-md-5">
@@ -272,6 +278,7 @@
                                     <th>ID</th>
                                     <th>Date</th>
                                     <th>Type</th>
+                                    <th>Status</th>
                                     <th>Amount</th>
                                     <th></th>
                                 </tr>
@@ -282,6 +289,7 @@
                                     <td>{{ payment['id'] }}</td>
                                     <td>{{ payment['date'] }}</td>
                                     <td>{{ payment['method'] }}</td>
+                                    <td><span class="payment-status">complate</span></td>
                                     <td>
                                         {% if payment['original_amount'] %}
                                             <span data-toggle="tooltip" data-placement="left" title="{{ payment['original_amount'] }}&nbsp;{{ payment['original_currency'] }}">≈ ${{ payment['amount'] }}</span>

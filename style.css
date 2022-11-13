@@ -96,12 +96,6 @@ html {
     color: #fff !important;
     background-color: #14171c;
   }
-  /* .theme-dark a {
-    color: #fff;
-  } */
-  body .panel .deposit_page ul .deposit_icon {
-    /*  width: 28%; */
-  }
   
   .main-menu .navbar .navbar-nav li.active a {
     color: #2FCD94 !important;
@@ -277,7 +271,6 @@ html {
   .theme-dark .api_document h2,
   .theme-dark .faq_details .card,
   .theme-dark .account_page h2,
-  .theme-dark .deposit_page .card h2.text_color,
   .theme-dark p.note,
   .theme-dark .transaction_history table tr td,
   .theme-dark .order_refill,
@@ -2951,7 +2944,7 @@ html {
   }
   
   .deposit_page ul .deposit_icon {
-    width: 20%;
+    width: 145px;
     margin: 0 11px;
     text-align: center;
     height: 135px;
@@ -2977,8 +2970,6 @@ html {
     height: 45px;
   }
 
-
-
   .deposit_page .card {
     border-radius: 5px;
     padding: 20px 20px 20px 20px;
@@ -2996,13 +2987,12 @@ html {
 
   .deposit_page .card h2.text_color {
     padding: 0px 0px 20px 0px;
-    border-bottom: 1px solid #DEE4E4;
     font-style: normal;
     font-weight: 600;
     font-size: 20px;
     line-height: 24px;
     margin: 0px;
-    }
+}
 
   .deposit_page .card .card-title {
     color: #7E8E8D;
@@ -3014,8 +3004,25 @@ html {
     position: relative;
     overflow: hidden;
   }
-
   
+  .deposit_page .datepick {
+    width: 186px;
+    float: right;
+  }
+
+  .deposit_page .card .error-message {
+    padding: 20px 0 0 0;
+  }
+
+  .deposit_page span.payment-status {
+    padding: 2px 6px;
+    background-color: #cdfFe3;
+    border-radius: 50px;
+    font-size: 14px;
+    color: #2FCD94;
+    font-weight: 500;
+  }
+
   .deposit_deposit_txt {
     font-style: normal;
     font-weight: 600;
@@ -7998,4 +8005,45 @@ html {
             -webkit-transform: scale(0);
             opacity: 0;
         }
+    }
+
+
+    /* datepicker */
+    .datepick {
+        padding: 5px 10px;
+    }
+    .daterangepicker .drp-buttons .btn {
+        min-height: 40px;
+        box-shadow: none;
+    }
+
+    .daterangepicker td.active, .daterangepicker td.active:hover {
+        background-color: #2FCD94!important;
+    }
+
+    .daterangepicker td.in-range {
+        background-color: #E4FFF5;
+    }
+
+    .theme-dark .daterangepicker, 
+    .theme-dark .daterangepicker .calendar-table,
+    .theme-dark .daterangepicker td.off,
+    .theme-dark .daterangepicker td.off.in-range,
+    .theme-dark .daterangepicker td.off.start-date,
+    .theme-dark .daterangepicker td.off.end-date {
+        background-color: #191C21;
+    }
+
+    .theme-dark .daterangepicker {
+        border: 1px solid #323A3A;
+    }
+
+    .theme-dark .daterangepicker .calendar-table {
+        border: none;
+    }
+
+    .theme-dark .daterangepicker .calendar-table .next span,
+    .theme-dark .daterangepicker .calendar-table .prev span {
+        border: solid #7E8E8D;
+        border-width: 0 2px 2px 0;
     }
