@@ -103,6 +103,30 @@
                             </ul>
                         </div>
                         <div class="row">
+                            <div class="col-md-5 note">
+                                <form {% if site['rtl'] %} class="rtl-form"{% endif %} method="post" action="">        
+                                    <div class="deposit_deposit_txt text_color">
+                                        <div class="form-group hidden">
+                                            <label for="method" class="control-label">{{ lang('addfunds.method') }}</label>
+                                            <select class="form-control" id="method" name="AddFoundsForm[type]" id="order_type">
+                                                {% for payment in paymentsList %}
+                                                    <option value="{{ payment['id'] }}"{% if currentPayment == payment['id'] %} selected{% endif %}>
+                                                        {{ payment['name'] }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="ammount_send">
+                                            <div class="form-group">
+                                                <label for="amount" class="control-label">Amount to Deposit</label>
+                                                <input type="amount" class="form-control bg_color" name="AddFoundsForm[amount]" id="amount" placeholder="ex. $120">
+                                            </div>
+                                            <input type="hidden" name="_csrf" value="{{ csrftoken }}">
+                                            <button type="submit" class="btn btn-primary btn-block">CONTINUE ORDER</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                             <div class="col-md-7">
                                 <div class="row" id="perfect_eur_content" style="display:none">
                                     <div class="col-md-4 center_txt">
@@ -198,59 +222,36 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-5 note">
-                                <form {% if site['rtl'] %} class="rtl-form"{% endif %} method="post" action="">        
-                                    <div class="deposit_deposit_txt text_color">
-                                        <div class="form-group hidden">
-                                            <label for="method" class="control-label">{{ lang('addfunds.method') }}</label>
-                                            <select class="form-control" id="method" name="AddFoundsForm[type]" id="order_type">
-                                                {% for payment in paymentsList %}
-                                                    <option value="{{ payment['id'] }}"{% if currentPayment == payment['id'] %} selected{% endif %}>
-                                                        {{ payment['name'] }}
-                                                    </option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                        <div class="ammount_send">
-                                            <div class="form-group">
-                                                <label for="amount" class="control-label">Amount to Deposit</label>
-                                                <input type="amount" class="form-control bg_color" name="AddFoundsForm[amount]" id="amount" placeholder="ex. $120">
-                                            </div>
-                                            <input type="hidden" name="_csrf" value="{{ csrftoken }}">
-                                            <button type="submit" class="btn btn-primary btn-block">SUBMIT ORDER</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
                         </div>
                     </div>
                 </div>
             {% endif %}
             <div class="row">
-                <div class="col-md-7">
+                <div class="col-md-8">
                     <div class="card bg_color  mt-5">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h2 class="text_color">Transaction Volume</h2>
-                            </div>
-                            <div class="col-md-6 text-right">
+                        <h2 class="text_color">Transaction Volume</h2>
+                        <div class="error-message text-center" style="display: none"></div>
+                        <div class="e-chart mt-5" id="e-chart"></div>
+                        <div style="display: flex">
+                            <label for="date_range" class="col-form-label mt-4 me-5" style="width: 125px">Select Daterange: </label>
+                            <div class="">
                                 <input type="text" id="date_range" class="datepick form-control bg_color" readonly>
                             </div>
                         </div>
-                        <div class="error-message text-center" style="display: none"></div>
-                        <div class="e-chart mt-5" id="e-chart"></div>
                     </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <div class="row">
-                        <div class="col-sm-6  mt-5">
+                        <div class="col-md-12 col-sm-6 mt-5">
                             <div class="card bg_color balance-card">
+                                <i class="fa fa-university" aria-hidden="true"></i>
                                 <h3 class="card-title">Balance</h3>
                                 <h1 class="card-number" id="user_balance">0</h1>
                             </div>
                         </div>
-                        <div class="col-sm-6 mt-5">
+                        <div class="col-md-12 col-sm-6 mt-5">
                             <div class="card bg_color spend-card">
+                                <i class="fa fa-line-chart" aria-hidden="true"></i>
                                 <h3 class="card-title">Total Transaction</h3>
                                 <h1 class="card-number" id="user_spent">0</h1>
                             </div>

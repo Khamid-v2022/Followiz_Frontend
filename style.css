@@ -2944,7 +2944,7 @@ html {
   }
   
   .deposit_page ul .deposit_icon {
-    width: 145px;
+    width: 180px;
     margin: 0 11px;
     text-align: center;
     height: 135px;
@@ -2976,13 +2976,28 @@ html {
     margin-left: 5px;
   }
 
-  .deposit_page .card.balance-card,  .deposit_page .card.spend-card {
-    height: 120px;
+  .deposit_page .card.balance-card, 
+  .deposit_page .card.spend-card {
+    height: 138px;
+  }
+
+  .deposit_page .card.balance-card i, 
+  .deposit_page .card.spend-card i {
+    color: #DEE4E4;
+    font-size: 90px;
+    position: absolute;
+    top: 35px;
+  }
+
+  .theme-dark .deposit_page .card.balance-card i, 
+  .theme-dark .deposit_page .card.spend-card i {
+    color: #323A3A;
   }
 
   .deposit_page .card .card-number {
     position: absolute;
     bottom: 0;
+    right: 35px;
   }
 
   .deposit_page .card h2.text_color {
@@ -2997,6 +3012,7 @@ html {
   .deposit_page .card .card-title {
     color: #7E8E8D;
     font-size: 18px;
+    text-align: right;
   }
 
   .deposit_page .card .e-chart {
@@ -3007,7 +3023,6 @@ html {
   
   .deposit_page .datepick {
     width: 186px;
-    float: right;
   }
 
   .deposit_page .card .error-message {
