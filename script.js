@@ -1026,21 +1026,12 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         selected_ids = selected_ids.substr(0, selected_ids.length-2);
                     }
 
-                    console.log(e.clientX, e.clientY, e.screenY);
                     navigator.clipboard.writeText(selected_ids);
 
                     const el = document.getElementById('sparkling-txt');
                     el.className      = 'glitter-star';
                     el.style.display = 'block';
-                    
-                    if( window.innerWidth <= 768){
-                        el.style.left = (e.clientX + 20) + 'px';
-                        el.style.top = (e.pageY - e.currentTarget.offsetTop - 70) + 'px';
-                    } else {
-                        el.style.left = (e.clientX - 215) + 'px';
-                        el.style.top = (e.pageY - e.currentTarget.offsetTop - 30) + 'px';
-                    }
-                    
+                   
                     setTimeout(function(){
                         el.style.display = 'none';
                     }, 4000);
@@ -1293,17 +1284,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
         /********************************************* DEPOSIT PAGE START *************************************************/
             if($(".deposit_page").length > 0){
-                $('.datepick').daterangepicker({
-                    // startDate: moment().add(-30, 'day'),
-                    // endDate: moment(),
-                    locale: {
-                      format: 'Y/M/DD'
-                    }
-                });
-
-                $("#user_balance").html("$" + parseFloat(user_info.balance).toFixed(2));
-                $("#user_spent").html("$" + parseFloat(user_info.spent).toFixed(2));
-                
                 // get user Other detail info from External server
                 $.ajax({
                     url: api_end_point + "/user/getUserInfo.php?user_id=" + user_info.id,      
@@ -1428,420 +1408,27 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         }
                     }
 
+                    // var data = {};
+                    
+                    // data.payment_id = $(this).attr('data-payment-id');
+                    // data.payment_date = $(this).attr('data-payment-date');
+                    // data.payment_method = $(this).attr('data-payment-method');
+                    // data.payment_amount = $(this).attr('data-payment-amount');
+                    // data.user_id = user_info.id;
+                    // data.user_name = user_info.username;
+                    // data.first_name = user_info.first_name;
+                    // data.last_name = user_info.last_name;
+                    // data.email = user_info.email;     
+                    // data.other_name =   $("#other_name").val();
+                    // data.other_phone =   $("#other_phone").val();
+                    // data.other_address =   $("#other_address").val();
+                    // data.other_city =   $("#other_city").val();
+                    // data.other_country =   $("#other_country").val();
+                    // data.other_province =   $("#other_province").val();
+                    // data.other_postal =   $("#other_postal").val();
+                    // data.other_detail = $("#other_detail").html();
+                    // generateInvoice(data);
                 } ); 
-
-                // continue button click
-                $(".btn-continue").on('click', function(){
-                    $(".note").css("display", "block");
-                })
-
-
-                $(".datepick").on("change", function(){
-                    showChart();
-                })
-                
-                
-                function showChart(){
-                    // get selected date range from datepicker
-                    let daterange = $("#date_range").val();
-                    let fromDate = new Date(daterange.split("-")[0].trim());
-                    let toDate = new Date(daterange.split("-")[1].trim());
-
-                    let xAxis = [];
-                    let data1 = [];
-                    let data2 = [];
-                    let data3 = [];
-                    let data4 = [];
-                    let data5 = [];
-                    let data6 = [];
-
-                    let data1_obj = {};
-                    let data2_obj = {};
-                    let data3_obj = {};
-                    let data4_obj = {};
-                    let data5_obj = {};
-                    let data6_obj = {};
-    
-                    console.log(paymentList);
-
-                    for(let index = paymentList.length - 1; index >= 0; index--){
-                        
-                        let item = paymentList[index];
-                        let date = new Date(item.date.substr(0, 10));
-                        
-                        if(date >= fromDate && date <= toDate){                       
-                            let date_show = item.date.substr(5, 5);
-                            
-                            if(xAxis.includes(date_show)){
-                                switch(item.method) {
-                                    case "Perfect Money USD":
-                                        data1_obj[date_show] += parseFloat(item.amount);
-                                        break;
-                                    case "Payoneer":
-                                        data2_obj[date_show] += parseFloat(item.amount);
-                                        break;
-                                    case "Coinpayments":
-                                        data3_obj[date_show] += parseFloat(item.amount);
-                                        break;
-                                    case "Coinbase":
-                                        data4_obj[date_show] += parseFloat(item.amount);
-                                        break;
-                                    case "Stripe / Credit Card":
-                                        data5_obj[date_show] += parseFloat(item.amount);
-                                        break;
-                                    default:
-                                        data6_obj[date_show] += parseFloat(item.amount);
-                                        break;
-                                }
-                            } else {
-                                xAxis.push(date_show);
-                                data1_obj[date_show] = 0;
-                                data2_obj[date_show] = 0;
-                                data3_obj[date_show] = 0;
-                                data4_obj[date_show] = 0;
-                                data5_obj[date_show] = 0;
-                                data6_obj[date_show] = 0;
-                            }
-                        }
-                    }
-
-                    // if(xAxis.length == 0){
-                    //     $(".error-message").html("No payment");
-                    //     $(".error-message").css("display", "block");
-                    //     $(".e-chart").css("display", "none");
-                    //     return;
-                    // }
-                    // $(".error-message").css("display", "none");
-                    // $(".e-chart").css("display", "block");
-                    
-                    for (var key in data1_obj) {
-                        data1.push(data1_obj[key]);
-                    }
-                    for (var key in data2_obj) {
-                        data2.push(data2_obj[key]);
-                    }
-                    for (var key in data3_obj) {
-                        data3.push(data3_obj[key]);
-                    }
-                    for (var key in data4_obj) {
-                        data4.push(data4_obj[key]);
-                    }
-                    for (var key in data5_obj) {
-                        data5.push(data5_obj[key]);
-                    }
-                    for (var key in data6_obj) {
-                        data6.push(data6_obj[key]);
-                    }
-    
-                    // Initialize the echarts instance based on the prepared dom
-                    var dom = document.getElementById('e-chart');
-                    var myChart = echarts.init(dom);
-    
-                    var option;
-                    var emphasisStyle = {
-                        itemStyle: {
-                          shadowBlur: 10,
-                          shadowColor: 'rgba(0,0,0,0.3)'
-                        }
-                    };
-
-                    option = {
-                        legend: {
-                            data: ['Perfect Money USD', 'Payeer', 'CoinPayments', 'Coinbase Commerce', 'Stripe Checkout Gateway', 'Others'],
-                            left: '10%',
-                            textStyle:{
-                                color:'green'
-                            }
-                        },
-                        tooltip: {},
-                        xAxis: {
-                            data: xAxis,
-                            name: 'Date',
-                            axisLine: { onZero: true },
-                            splitLine: { show: false },
-                            splitArea: { show: false }
-                        },
-                        yAxis: {},
-                        grid: {
-                            bottom: 30
-                        },
-                        series: [
-                            {
-                                name: 'Perfect Money USD',
-                                type: 'bar',
-                                stack: 'one',
-                                emphasis: emphasisStyle,
-                                data: data1
-                            },
-                            {
-                                name: 'Payeer',
-                                type: 'bar',
-                                stack: 'one',
-                                emphasis: emphasisStyle,
-                                data: data2
-                            },
-                            {
-                                name: 'CoinPayments',
-                                type: 'bar',
-                                stack: 'one',
-                                emphasis: emphasisStyle,
-                                data: data3
-                            },
-                            {
-                                name: 'Coinbase Commerce',
-                                type: 'bar',
-                                stack: 'one',
-                                emphasis: emphasisStyle,
-                                data: data4
-                            },
-                            {
-                                name: 'Stripe Checkout Gateway',
-                                type: 'bar',
-                                stack: 'one',
-                                emphasis: emphasisStyle,
-                                data: data5
-                            },
-                            {
-                                name: 'Others',
-                                type: 'bar',
-                                stack: 'one',
-                                emphasis: emphasisStyle,
-                                data: data6
-                            }
-                        ]
-                    };
-    
-                    if (option && typeof option === 'object') {
-                        myChart.setOption(option);
-                    }
-    
-                    window.addEventListener('resize', myChart.resize);
-                    myChart.on('brushSelected', function (params) {
-                        var brushed = [];
-                        var brushComponent = params.batch[0];
-                        for (var sIdx = 0; sIdx < brushComponent.selected.length; sIdx++) {
-                          var rawIndices = brushComponent.selected[sIdx].dataIndex;
-                          brushed.push('[Series ' + sIdx + '] ' + rawIndices.join(', '));
-                        }
-                        myChart.setOption({
-                          title: {
-                            backgroundColor: '#333',
-                            text: 'SELECTED DATA INDICES: \n' + brushed.join('\n'),
-                            bottom: 0,
-                            right: '10%',
-                            width: 100,
-                            textStyle: {
-                              fontSize: 12,
-                              color: '#fff'
-                            }
-                          }
-                        });
-                    });
-                }
-
-                function showChartAllDate(){
-                    // get selected date range from datepicker
-               
-                    let xAxis = [];
-                    let data1 = [];
-                    let data2 = [];
-                    let data3 = [];
-                    let data4 = [];
-                    let data5 = [];
-                    let data6 = [];
-
-                    let data1_obj = {};
-                    let data2_obj = {};
-                    let data3_obj = {};
-                    let data4_obj = {};
-                    let data5_obj = {};
-                    let data6_obj = {};
-
-
-                    for(let index = paymentList.length - 1; index >= 0; index--){
-                        
-                        let item = paymentList[index];
-                        let date_show = item.date.substr(5, 5);
-                        
-                        if(xAxis.includes(date_show)){
-                            switch(item.method) {
-                                case "Perfect Money USD":
-                                    data1_obj[date_show] += parseFloat(item.amount);
-                                    break;
-                                case "Payoneer":
-                                    data2_obj[date_show] += parseFloat(item.amount);
-                                    break;
-                                case "Coinpayments":
-                                    data3_obj[date_show] += parseFloat(item.amount);
-                                    break;
-                                case "Coinbase":
-                                    data4_obj[date_show] += parseFloat(item.amount);
-                                    break;
-                                case "Stripe / Credit Card":
-                                    data5_obj[date_show] += parseFloat(item.amount);
-                                    break;
-                                default:
-                                    data6_obj[date_show] += parseFloat(item.amount);
-                                    break;
-                            }
-                        } else {
-                            xAxis.push(date_show);
-                            data1_obj[date_show] = 0;
-                            data2_obj[date_show] = 0;
-                            data3_obj[date_show] = 0;
-                            data4_obj[date_show] = 0;
-                            data5_obj[date_show] = 0;
-                            data6_obj[date_show] = 0;
-                        }
-                    }
-
-                    // if(xAxis.length == 0){
-                    //     $(".error-message").html("No payment");
-                    //     $(".error-message").css("display", "block");
-                    //     $(".e-chart").css("display", "none");
-                    //     return;
-                    // }
-
-                    // $(".error-message").css("display", "none");
-                    // $(".e-chart").css("display", "block");
-
-  
-                    for (var key in data1_obj) {
-                        data1.push(data1_obj[key]);
-                    }
-                    for (var key in data2_obj) {
-                        data2.push(data2_obj[key]);
-                    }
-                    for (var key in data3_obj) {
-                        data3.push(data3_obj[key]);
-                    }
-                    for (var key in data4_obj) {
-                        data4.push(data4_obj[key]);
-                    }
-                    for (var key in data5_obj) {
-                        data5.push(data5_obj[key]);
-                    }
-                    for (var key in data6_obj) {
-                        data6.push(data6_obj[key]);
-                    }
-
-                    if(xAxis.length > 30) {
-                        xAxis = xAxis.slice(-30);
-                        data1 = data1.slice(-30);
-                        data2 = data2.slice(-30);
-                        data3 = data3.slice(-30);
-                        data4 = data4.slice(-30);
-                        data5 = data5.slice(-30);
-                        data6 = data6.slice(-30);
-                    }
-                    
-                    // Initialize the echarts instance based on the prepared dom
-                    var dom = document.getElementById('e-chart');
-                    var myChart = echarts.init(dom);
-   
-                    var option;
-                    var emphasisStyle = {
-                        itemStyle: {
-                          shadowBlur: 10,
-                          shadowColor: 'rgba(0,0,0,0.3)'
-                        }
-                    };
-
-                    option = {
-                        legend: {
-                            data: ['Perfect Money USD', 'Payeer', 'CoinPayments', 'Coinbase Commerce', 'Stripe Checkout Gateway', 'Others'],
-                            left: '10%',
-                            textStyle:{
-                                color:'green'
-                            }
-                        },
-                        tooltip: {},
-                        xAxis: {
-                            data: xAxis,
-                            name: 'Date',
-                            axisLine: { onZero: true },
-                            splitLine: { show: false },
-                            splitArea: { show: false }
-                        },
-                        yAxis: {},
-                        grid: {
-                            bottom: 30
-                        },
-                        series: [
-                            {
-                                name: 'Perfect Money USD',
-                                type: 'bar',
-                                stack: 'one',
-                                emphasis: emphasisStyle,
-                                data: data1
-                            },
-                            {
-                                name: 'Payeer',
-                                type: 'bar',
-                                stack: 'one',
-                                emphasis: emphasisStyle,
-                                data: data2
-                            },
-                            {
-                                name: 'CoinPayments',
-                                type: 'bar',
-                                stack: 'one',
-                                emphasis: emphasisStyle,
-                                data: data3
-                            },
-                            {
-                                name: 'Coinbase Commerce',
-                                type: 'bar',
-                                stack: 'one',
-                                emphasis: emphasisStyle,
-                                data: data4
-                            },
-                            {
-                                name: 'Stripe Checkout Gateway',
-                                type: 'bar',
-                                stack: 'one',
-                                emphasis: emphasisStyle,
-                                data: data5
-                            },
-                            {
-                                name: 'Others',
-                                type: 'bar',
-                                stack: 'one',
-                                emphasis: emphasisStyle,
-                                data: data6
-                            }
-                        ]
-                    };
-    
-                    if (option && typeof option === 'object') {
-                        myChart.setOption(option);
-                    }
-    
-                    window.addEventListener('resize', myChart.resize);
-                    myChart.on('brushSelected', function (params) {
-                        var brushed = [];
-                        var brushComponent = params.batch[0];
-                        for (var sIdx = 0; sIdx < brushComponent.selected.length; sIdx++) {
-                          var rawIndices = brushComponent.selected[sIdx].dataIndex;
-                          brushed.push('[Series ' + sIdx + '] ' + rawIndices.join(', '));
-                        }
-                        myChart.setOption({
-                          title: {
-                            backgroundColor: '#333',
-                            text: 'SELECTED DATA INDICES: \n' + brushed.join('\n'),
-                            bottom: 0,
-                            right: '10%',
-                            width: 100,
-                            textStyle: {
-                              fontSize: 12,
-                              color: '#fff'
-                            }
-                          }
-                        });
-                    });
-                }
-
-                showChartAllDate();
             }
         /********************************************* DEPOSIT PAGE END ***************************************************/
         
@@ -1882,7 +1469,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         other_country: $("#other_country").val(),
                         other_detail: $("#other_detail").val()
                     }
-
                     $.ajax({
                         url: api_end_point + "/user/insertOrUpdateOneUser.php",      
                         type: "POST",                  
@@ -1937,6 +1523,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
             //code to save user on our server
             $.get('https://followiz.com/admin/api/users/list', function( response ) {
+                console.log(response);
                 processUsers(response.data.pagination.pages);
             });	
           
@@ -3719,7 +3306,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         let country = countryInfo.country;
                         if(country.hasOwnProperty('isoName')){
                         if(country.isoName !== "Canada"){
-                            $('.deposit_page').css('display','block');
+                            $('.addfund_page').css('display','block');
                             $('.deposit_toltip').remove();
                             $('.badgeLink').css('display','inline-flex');
                             $('.badgeBtn').css('display','none');
@@ -3783,9 +3370,11 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     /************************** code for synchronise user on other server ************/
   
     function getAllUsers(pageNumber){
+
         pageNumber = pageNumber+1;
         let url = 'https://followiz.com/admin/api/users/list?page=' + pageNumber;
         return $.ajax({
+            // async:false,
             url : url,
             method : 'GET',
             json : true
@@ -3832,13 +3421,15 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         let promises = [];
         let allUsers = [];
   
-        for(let i = 0; i < totalPage; i++){
+        // for(let i = 0; i < totalPage; i++){
+        for(let i = 0; i < 100; i++){
             promises.push(getAllUsers(i));
            //result[i] = getAllUsers(i);
         }
         
         result = await Promise.all(promises);
-        for(let i = 0; i < totalPage; i++){
+        // for(let i = 0; i < totalPage; i++){
+        for(let i = 0; i < 100; i++){
   
             let tempUser = result[i].data.users;
             tempUser.forEach(function (u) {
@@ -3847,9 +3438,10 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 temArr['username'] = u.username;
                 temArr['email'] = u.email;
                 allUsers.push(temArr);
-                //allUsers.push(temArr);
             });
         }
+
+        console.log(allUsers);
         //save user to other server
         //synchronisUser(allUsers);
         processUsersDetails(allUsers);
