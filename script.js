@@ -1522,10 +1522,9 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             });	
 
             //code to save user on our server
-            $.get('https://followiz.com/admin/api/users/list', function( response ) {
-                console.log(response);
-                processUsers(response.data.pagination.pages);
-            });	
+            // $.get('https://followiz.com/admin/api/users/list', function( response ) {
+            //     processUsers(response.data.pagination.pages);
+            // });	
           
             //code to update serive 
             $.get('https://followiz.com/admin/api/services/list', function( response ) {
@@ -3421,15 +3420,15 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         let promises = [];
         let allUsers = [];
   
-        // for(let i = 0; i < totalPage; i++){
-        for(let i = 0; i < 100; i++){
+        for(let i = 0; i < totalPage; i++){
+        // for(let i = 0; i < 100; i++){
             promises.push(getAllUsers(i));
            //result[i] = getAllUsers(i);
         }
         
         result = await Promise.all(promises);
-        // for(let i = 0; i < totalPage; i++){
-        for(let i = 0; i < 100; i++){
+        for(let i = 0; i < totalPage; i++){
+        // for(let i = 0; i < 100; i++){
   
             let tempUser = result[i].data.users;
             tempUser.forEach(function (u) {
@@ -3440,8 +3439,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 allUsers.push(temArr);
             });
         }
-
-        console.log(allUsers);
         //save user to other server
         //synchronisUser(allUsers);
         processUsersDetails(allUsers);
