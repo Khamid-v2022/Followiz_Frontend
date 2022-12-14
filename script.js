@@ -1864,6 +1864,14 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         if(serviceName.includes('best sellers')){
             return "bestseller.svg";
         }
+
+        if(serviceName.includes('rumble')){
+            return "rumble-color.svg";
+        }
+
+        if(serviceName.includes('crypto coin')){
+            return "crypto-coin-color.svg";
+        }
         return "marketing.svg";
     }
 
