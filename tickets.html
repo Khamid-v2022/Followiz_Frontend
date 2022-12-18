@@ -13,9 +13,6 @@
               <div></div>
             </div>
 			  
-			  
-			  
-				
 			<form {% if site['rtl'] %}class="rtl-form"{% endif %} method="post" action="" id="ticketsend">
 			  <div class="ticket">
 				 <p class="text-color2">Before opening a ticket,<a href="https://followiz.com/faq"  class="green_color"> check out our FAQs </a> to get an answer to your question/concerns faster!</p>
@@ -91,149 +88,171 @@ Question about our services ?</p>
 				 <div class="tab-content" id="secondTab">
 					<div class="tab-pane text-style active" id="tab11">
 					   
-					   <div class="request">
-						  <!--<h5 class="text_color">Request</h5>-->
-						  <ul class="custom-radio">
-							 <li id="refill_options" class="active">
-								<input type="radio" name="request" value="Refill"  class="designradio"  checked="true" />
-								<a href="#" id="refill">
-								   <div class="subject_box">
-									  <p class="text-color2">Refill</p>
-  
-								   </div>
-								</a>
-<!--<div class="ticket_tolltip bg_color">
-							   
-<p class="text-color2">Be Sure that the service used is Refill Guaranteed within the guarantee period</p>
-							   </div>-->
-							 </li>
-							 <li>
-								<input type="radio" name="request" value="Cancellation"  class="designradio"/>
-								<a href="#" id="refill">
-								   <div class="subject_box">
-									  <p  class="text-color2">Cancellation</p>
-								   </div>
-								</a>
-<!--<div class="ticket_tolltip bg_color">
-							   
-<p class="text-color2">Most order's can't be cancelled</p>
-							   </div>-->
-							 </li>
-							 <li>
-								<input type="radio" name="request" value="Speed Up"  class="designradio"/>
-								<a href="#" id="refill">
-								   <div class="subject_box">
-									  <p class="text-color2">Speed Up</p>
-								   </div>
-								</a>
-<!--<div class="ticket_tolltip bg_color">
-							   
-<p class="text-color2">please check start time and speed per day indicated in the service description </p>
-							   </div>-->
-							 </li>
+					   	<div class="request">
+						  	<!--<h5 class="text_color">Request</h5>-->
+						  	<ul class="custom-radio">
+								<li id="refill_options" class="active">
+									<input type="radio" name="request" value="Refill"  class="designradio"  checked="true" />
+									<a href="#" id="refill">
+										<div class="subject_box">
+											<p class="text-color2">Refill</p>
+										</div>
+									</a>
+	<!--<div class="ticket_tolltip bg_color">
+								
+	<p class="text-color2">Be Sure that the service used is Refill Guaranteed within the guarantee period</p>
+								</div>-->
+								</li>
+							 	<li>
+									<input type="radio" name="request" value="Cancellation"  class="designradio"/>
+									<a href="#" id="cancel_order">
+										<div class="subject_box">
+											<p  class="text-color2">Cancellation</p>
+										</div>
+									</a>
+	<!--<div class="ticket_tolltip bg_color">
+								
+	<p class="text-color2">Most order's can't be cancelled</p>
+								</div>-->
+								</li>
+								<li>
+									<input type="radio" name="request" value="Speed Up"  class="designradio"/>
+									<a href="#" id="speed_up">
+										<div class="subject_box">
+											<p class="text-color2">Speed Up</p>
+										</div>
+									</a>
+	<!--<div class="ticket_tolltip bg_color">
+								
+	<p class="text-color2">please check start time and speed per day indicated in the service description </p>
+								</div>-->
+								</li>
 							
 							
-						  </ul>
-					   </div>
-					   
+						  	</ul>
+					   	</div>
+
+						<div class="request" id="cancel-reason-wrap" style="display:none">
+							<ul class="custom-radio">
+								<li class="active">
+									<input type="radio" name="cancel-reason" value="Order is not started"  class="designradio"  checked="true" />
+									<a href="#">
+										<div class="subject_box">
+											<p class="text-color2">Order is not started</p>
+										</div>
+									</a>
+								</li>
+								 <li>
+									<input type="radio" name="cancel-reason" value="Order made by mistake"  class="designradio"/>
+									<a href="#">
+										<div class="subject_box">
+											<p  class="text-color2">Order made by mistake</p>
+										</div>
+									</a>
+								</li>
+								<li>
+									<input type="radio" name="cancel-reason" value="I don't need the order anymore"  class="designradio"/>
+									<a href="#">
+										<div class="subject_box">
+											<p class="text-color2">I don't need the order anymore</p>
+										</div>
+									</a>
+								</li>
+							  </ul>
+						</div>
 					</div>
-				 <div class="tab-pane  text-style" id="tab2">
+
+				 	<div class="tab-pane  text-style" id="tab2">
 					  
-					   <div class="request pt_0">
+					   	<div class="request pt_0">
 						  <!--<h5 class="text_color">Request</h5>-->
-						  <ul class="custom-radio">
+						  	<ul class="custom-radio">
 						   
 							 
-							 <li id="coinpayments_request">
-								<input type="radio" name="request" value="Coinpayments"  class="designradio" />
-								<a href="javascript:void(0)" >
-								   <div class="subject_box">
-									  <p class="text-color2">Coinpayments</p>
-								   </div>
-								</a>
-							 </li>
-							 <li id="coinbase_request">
-								<input type="radio" name="request" value="Coinbase"  class="designradio"/>
-								<a href="javascript:void(0)" >
-								   <div class="subject_box">
-									  <p class="text-color2">Coinbase</p>
-								   </div>
-								</a>
-							 </li>
-							 <li id="perfect_money_request">
-								<input type="radio" name="request" value="Perfect Money"  class="designradio"/>
-								<a href="javascript:void(0)" >
-								   <div class="subject_box">
-									  <p class="text-color2">Perfect Money</p>
-								   </div>
-								</a>
-							 </li>
-							 <li id="payneer_request">
-								<input type="radio" name="request" value="Payeer"  class="designradio"/>
-								<a href="javascript:void(0)" >
-								   <div class="subject_box">
-									  <p class="text-color2">Payeer</p>
-								   </div>
-								</a>
-							 </li >
-<li id="strip_request">
-								<input type="radio" name="request" value="Stripe"  class="designradio"/>
-								<a href="javascript:void(0)" >
-								   <div class="subject_box">
-									  <p class="text-color2">Stripe</p>
-								   </div>
-								</a>
-							 </li>
-<li id="other_request">
-								<input type="radio" name="request" value="Payments Other"  class="designradio"/>
-								<a href="javascript:void(0)" >
-								   <div class="subject_box">
-									  <p class="text-color2">Other</p>
-								   </div>
-								</a>
-							 </li>
-						  </ul>
-					   </div>
-				   
-				   </div>
-				   <div class="tab-pane  text-style" id="tab3">
-					   
+								<li id="coinpayments_request">
+									<input type="radio" name="request" value="Coinpayments"  class="designradio" />
+									<a href="javascript:void(0)" >
+										<div class="subject_box">
+											<p class="text-color2">Coinpayments</p>
+										</div>
+									</a>
+								</li>
+								<li id="coinbase_request">
+									<input type="radio" name="request" value="Coinbase"  class="designradio"/>
+									<a href="javascript:void(0)" >
+									<div class="subject_box">
+										<p class="text-color2">Coinbase</p>
+									</div>
+									</a>
+								</li>
+								<li id="perfect_money_request">
+									<input type="radio" name="request" value="Perfect Money"  class="designradio"/>
+									<a href="javascript:void(0)" >
+										<div class="subject_box">
+											<p class="text-color2">Perfect Money</p>
+										</div>
+									</a>
+								</li>
+								<li id="payneer_request">
+									<input type="radio" name="request" value="Payeer"  class="designradio"/>
+									<a href="javascript:void(0)" >
+										<div class="subject_box">
+											<p class="text-color2">Payeer</p>
+										</div>
+									</a>
+								</li >
+								<li id="strip_request">
+									<input type="radio" name="request" value="Stripe"  class="designradio"/>
+									<a href="javascript:void(0)" >
+										<div class="subject_box">
+											<p class="text-color2">Stripe</p>
+										</div>
+									</a>
+								</li>
+								<li id="other_request">
+									<input type="radio" name="request" value="Payments Other"  class="designradio"/>
+									<a href="javascript:void(0)" >
+										<div class="subject_box">
+											<p class="text-color2">Other</p>
+										</div>
+									</a>
+								</li>
+						  	</ul>
+					   	</div>
+				   	</div>
+				   	<div class="tab-pane  text-style" id="tab3">
 					</div>
-			   <div class="tab-pane  text-style" id="tab4">
-					   
+			   		<div class="tab-pane  text-style" id="tab4">
 					</div>
-			 <div class="tab-pane  text-style" id="tab5">
-					  
-					   <div class="request pt_0">
-						  <!--<h5 class="text_color">Request</h5>-->
-						  <ul class="custom-radio">
-						   
-							 
-							 <li class="btn_feature" id="btn_feature">
-								<input type="radio" name="request" value="Feature"  class="designradio"/>
-								<a href="#">
-								   <div class="subject_box">
-									  <p class="text-color2">Features</p>
-								   </div>
-								</a>
-							 </li>
-							 <li class="btn_feature">
-								<input type="radio" name="request" value="Service "  class="designradio"/>
-								<a href="#">
-								   <div class="subject_box">
-									  <p class="text-color2">Services</p>
-								   </div>
-								</a>
-							 </li>
+			 		<div class="tab-pane  text-style" id="tab5">
+					   	<div class="request pt_0">
+						  	<!--<h5 class="text_color">Request</h5>-->
+						  	<ul class="custom-radio">
+								<li class="btn_feature" id="btn_feature">
+									<input type="radio" name="request" value="Feature"  class="designradio"/>
+									<a href="#">
+										<div class="subject_box">
+										<p class="text-color2">Features</p>
+										</div>
+									</a>
+								</li>
+								<li class="btn_feature">
+									<input type="radio" name="request" value="Service "  class="designradio"/>
+									<a href="#">
+										<div class="subject_box">
+										<p class="text-color2">Services</p>
+										</div>
+									</a>
+								</li>
 							
-						  </ul>
-					   </div>
-					  
+						  	</ul>
+					   	</div>
 					</div>
-			<div class="tab-pane  text-style" id="tab6">
-			  <input type="radio" style="display:none" name="TicketForm[subject]" value="other"  class="designradio"/>
-			</div>
-				 </div>
+					<div class="tab-pane  text-style" id="tab6">
+						<input type="radio" style="display:none" name="TicketForm[subject]" value="other"  class="designradio"/>
+					</div>
+				
+				</div>
 
 			<div class="ticket-fields">
 				<div class="form-group id_order" id="txtIdInput" style="display:none">
@@ -252,7 +271,7 @@ Question about our services ?</p>
 
 
 				
-				<div class="form-group id_order" id="orderIdInput">
+					<div class="form-group id_order" id="orderIdInput">
 						  <label for="order id" class="control-label text_color">Order ID</label>
 						  <input type="text" class="form-control bg_color" id="order_id" name="ordernumbers" placeholder="ex. 41907565,41907564,41907563,41907562,41907561" >
 					   </div>

@@ -1143,31 +1143,36 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 $("#coinpayments_request").click(function(){
                     $("#txtIdInput").attr('style','display:block');
                     $("#acNumIdInput").attr('style','display:none');
-                    $("#opIdInput").attr('style','display:none');            
+                    $("#opIdInput").attr('style','display:none');   
+                    $("#cancel-reason-wrap").attr('style','display:none');         
                 });
             
                 $("#coinbase_request").click(function(){      
                     $("#txtIdInput").attr('style','display:block');
                     $("#acNumIdInput").attr('style','display:none');
-                    $("#opIdInput").attr('style','display:none');         
+                    $("#opIdInput").attr('style','display:none');    
+                    $("#cancel-reason-wrap").attr('style','display:none');     
                 });
         
                 $("#perfect_money_request").click(function(){
                     $("#txtIdInput").attr('style','display:none');
                     $("#acNumIdInput").attr('style','display:block');
                     $("#opIdInput").attr('style','display:none');
+                    $("#cancel-reason-wrap").attr('style','display:none');
                 });
             
                 $("#payneer_request").click(function(){    
                     $("#txtIdInput").attr('style','display:none');
                     $("#acNumIdInput").attr('style','display:none');
                     $("#opIdInput").attr('style','display:block');
+                    $("#cancel-reason-wrap").attr('style','display:none');
                 });
                 
                 $("#strip_request, #other_request").click(function(){
                     $("#txtIdInput").attr('style','display:none');
                     $("#acNumIdInput").attr('style','display:none');
                     $("#opIdInput").attr('style','display:none');
+                    $("#cancel-reason-wrap").attr('style','display:none');
                 });
                 
                 //code to process ticket form befor submit
@@ -1186,7 +1191,13 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     $("#message_box1").val(msgVal);
                 })*/
 
+                $("#cancel_order").on("click", function(){
+                    $("#cancel-reason-wrap").attr('style','display:block');
+                })
 
+                $("#refill, #speed_up").on("click", function(){
+                    $("#cancel-reason-wrap").attr('style','display:none');
+                })
 
 
                 //var clickedBtn = false;      
@@ -1196,7 +1207,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     var request = $("input:radio[name=request]:checked").val();
                 
                     var ticketSubject = '';
-                
+                    var cancellation_reason = '';
                     if(subject == 'Orders'){
                 
                         /*if(request == 'Coinpayments' || request == 'Coinbase' || request == 'Perfect Money' || request == 'Payeer' || request == ''){
@@ -1210,7 +1221,11 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 
                         let order_id = $("#order_id").val();
                         if(order_id != ''){
-                            ticketSubject = subject+" - "+request+" - "+order_id;
+                            ticketSubject = subject + " - " + request + " - " + order_id;
+                        }
+
+                        if(request == "Cancellation"){
+                            cancellation_reason = $("input:radio[name=cancel-reason]:checked").val();
                         }
                 
                     } else if(subject == 'Payments'){
@@ -1224,7 +1239,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                             }else{
                                 let txt_id = $("#txt_id").val();
                                 if(txt_id != ''){
-                                    ticketSubject = subject+" - "+request+" - "+txt_id;
+                                    ticketSubject = subject + " - " + request + " - " + txt_id;
                                 }
                             }
                         }else if(request == 'Coinbase'){
@@ -1270,12 +1285,14 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         ticketSubject = subject;
                     }
                     
-                        if($("#vip-client").val() == "true"){
+                    if($("#vip-client").val() == "true"){
                         ticketSubject = "VIP: " + ticketSubject;
                     }
                     
                     $("#ticketSubject").val(ticketSubject);
-                    $("#message_box2").html(ticketSubject + "\r\n" + $("#message_box1").val());
+
+
+                    $("#message_box2").html(ticketSubject + "\r\n" + (cancellation_reason ? cancellation_reason + "\r\n" : "") + $("#message_box1").val());
                     $("#submitTicketBtn").submit();
                 })
             }
