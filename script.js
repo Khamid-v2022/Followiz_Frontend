@@ -1193,6 +1193,8 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
                 $("#cancel_order").on("click", function(){
                     $("#cancel-reason-wrap").attr('style','display:block');
+                    $("input:radio[name=cancel-reason]").prop( "checked", false);
+                    $("input:radio[name=cancel-reason]").parents("li").removeClass("active");
                 })
 
                 $("#refill, #speed_up").on("click", function(){
@@ -1226,6 +1228,12 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
                         if(request == "Cancellation"){
                             cancellation_reason = $("input:radio[name=cancel-reason]:checked").val();
+                            if(!cancellation_reason){
+                                $('.alert-danger').show();
+                                $('.alert-danger > div').html('<div>Please select a reason for the cancellation.</div>');
+                                return;
+                            }
+                                
                         }
                 
                     } else if(subject == 'Payments'){
