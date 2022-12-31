@@ -10,6 +10,12 @@
                             {{ successText }}
                         </div>
                         {% endif %}
+                        {% if twofactorauth.success %}
+                        <div class="alert alert-dismissible alert-success {% if site['rtl'] %} rtl-alert {% endif %}">
+                          <button type="button" class="close">&times;</button>
+                          {{ twofactorauth.success }}
+                        </div>
+                        {% endif %}
                         {% if successChangeEmail %}
                         <div class="alert alert-dismissible alert-success {% if site['rtl'] %} rtl-alert {% endif %}">
                             <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -61,65 +67,7 @@
                             </form>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class=" account_page bg_color">
-                        <h2 class="text_color">Timezone Settings</h2>
-                        {% if site['languages']|length > 1 %}
-                        <div class="well">
-                            <form {% if site['rtl'] %}class="rtl-form"{% endif %} method="post" action="">
-                            <div class="form-group">
-                                <label for="language" class="control-label  text_color">{{ lang('account.language') }}</label>
-                                <select class="form-control" id="language" name="SettingsFrom[lang]">
-                                {% for language in site['languages'] %}
-                                <option value="{{ language['code'] }}" {% if language['code'] == user['lang'] %}selected{% endif %}>{{ language['name'] }}</option>
-                                {% endfor %}
-                                </select>
-                            </div>
-                            <input type="hidden" name="_csrf" value="{{csrftoken}}">
-                            <button type="submit" class="btn btn-primary btn-block">{{ lang('account.save') }}</button>
-                            </form>
-                        </div>
-                        {% endif %}
-                        <div class="well">
-                            <form {% if site['rtl'] %}class="rtl-form"{% endif %} action="" method="post">
-                                <div class="form-group">
-                                    <label for="timezone" class="control-label text_color">{{ lang('account.timezone') }}</label>
-                                    <select name="SettingsFrom[timezone]" id="timezone" class="form-control bg_color">
-                                    {% for timezone,label in timezones %}
-                                    <option value="{{timezone}}" {% if timezone == user['timezone'] %}selected{% endif %}>{{label}}</option>
-                                    {% endfor %}
-                                    </select>
-                                </div>
-                                <input type="hidden" name="_csrf" value="{{csrftoken}}">
-                                <button type="submit" class="btn btn-primary btn-block">{{ lang('account.save') }}</button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class=" account_page mt-5 bg_color">
-                        <h2 class="text_color">API Key Settings</h2>
-                        <div class="well">
-                            <form {% if site['rtl'] %}class="rtl-form"{% endif %} action="{{ page['url'] }}/newkey" method="post">
-                                <div class="form-group">
-                                    <p>Never share your API Key. We will never ask for it.</p>
-                                    <label for="key" class="control-label text_color">{{ lang('account.api_key') }}</label>
-                                    {% if user['is_generated_apikey'] %}
-                                    <input type="text" class="form-control bg_color" id="api_key" value="{{ user['apikey'] }}" readonly>
-                                    <span class="api_copy" id="api_copy"><i class="fa fa-clone" aria-hidden="true"></i></span>
-                                    
-                                    {% endif %}
-                                </div>
-                                
-                                <input type="hidden" name="_csrf" value="{{csrftoken}}">
-                                <button type="submit" class="btn btn-primary btn-block key_setting">{{ lang('account.generate_key') }}</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-md-6">
                     <div class="account_page bg_color mt-5">
                         <h2 class="text_color">Other Details</h2>
                         <div class="well">
@@ -175,6 +123,116 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-md-6">
+                    <!-- Two Factor Auth -->
+                    <div class="account_page bg_color">
+                        <div id="2fa-approve-error-block"
+                                style="{% if twofactorauth.error %} display: block; {% else %} display: none; {% endif %}"
+                                class="alert alert-dismissible alert-danger {% if site['rtl'] %} rtl-alert {% endif %}">
+                            <button type="button" class="close">&times;</button>
+                            <span id="2fa-error-text">{{ twofactorauth.error }}</span>
+                        </div>
+                        <h2 class="text_color">Two-factor authentication</h2>
+                        <label class="control-label">
+                            <!-- {{ lang('2fa.title') }} -->
+                            {% if not twofactorauth.activated %}
+                                {{ lang('account.2fa.enabled') }}
+                            {% endif %}
+                        </label>
+                
+                        <!-- 2FA Form generate code -->
+                        <form id="2fa-generate-form"
+                                method="post" {% if site['rtl'] %} class="rtl-form" {% endif %}
+                                action="{{ twofactorauth.url.generate }}"
+                                style="{% if twofactorauth.active_code %} display: none; {% else %} display: block; {% endif %}">
+                            <p>{{ lang('account.2fa.description') }}</p>
+                            <input type="hidden" name="enabled" value="{{ twofactorauth.activated }}">
+                            <input type="hidden" name="_csrf" value="{{ csrftoken }}">
+                            <button id="2fa-generate" type="submit" class="btn btn-primary btn-block">
+                                {% if twofactorauth.activated %}
+                                {{ lang('account.2fa.enable') }}
+                                {% else %}
+                                {{ lang('account.2fa.disable') }}
+                                {% endif %}
+                            </button>
+                        </form>
+                
+                        <!-- 2FA Form approve code -->
+                        <form id="2fa-approve-form" method="post" {% if site['rtl'] %} class="rtl-form"{% endif %}
+                                action="{{ twofactorauth.url.approve }}"
+                                style="{% if twofactorauth.active_code %} display: block; {% else %} display: none; {% endif %}">
+                            <p>{{ lang('2fa.sent') }}</p>
+                            <div class="form-group">
+                                <label for="code" class="control-label">{{ lang('2fa.code') }}</label>
+                                <input type="text" id="code" name="code" class="form-control">
+                            </div>
+                            <input type="hidden" name="enabled" value="{{ twofactorauth.activated }}">
+                            <input type="hidden" name="_csrf" value="{{ csrftoken }}">
+                            <button id="2fa-approve" type="submit" class="btn btn-primary btn-block">
+                                {% if twofactorauth.activated %}
+                                {{ lang('account.2fa.enable') }}
+                                {% else %}
+                                {{ lang('account.2fa.disable') }}
+                                {% endif %}
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="account_page mt-5 bg_color">
+                        <h2 class="text_color">Timezone Settings</h2>
+                        {% if site['languages']|length > 1 %}
+                        <div class="well">
+                            <form {% if site['rtl'] %}class="rtl-form"{% endif %} method="post" action="">
+                            <div class="form-group">
+                                <label for="language" class="control-label  text_color">{{ lang('account.language') }}</label>
+                                <select class="form-control" id="language" name="SettingsFrom[lang]">
+                                {% for language in site['languages'] %}
+                                <option value="{{ language['code'] }}" {% if language['code'] == user['lang'] %}selected{% endif %}>{{ language['name'] }}</option>
+                                {% endfor %}
+                                </select>
+                            </div>
+                            <input type="hidden" name="_csrf" value="{{csrftoken}}">
+                            <button type="submit" class="btn btn-primary btn-block">{{ lang('account.save') }}</button>
+                            </form>
+                        </div>
+                        {% endif %}
+                        <div class="well">
+                            <form {% if site['rtl'] %}class="rtl-form"{% endif %} action="" method="post">
+                                <div class="form-group">
+                                    <label for="timezone" class="control-label text_color">{{ lang('account.timezone') }}</label>
+                                    <select name="SettingsFrom[timezone]" id="timezone" class="form-control bg_color">
+                                    {% for timezone,label in timezones %}
+                                    <option value="{{timezone}}" {% if timezone == user['timezone'] %}selected{% endif %}>{{label}}</option>
+                                    {% endfor %}
+                                    </select>
+                                </div>
+                                <input type="hidden" name="_csrf" value="{{csrftoken}}">
+                                <button type="submit" class="btn btn-primary btn-block">{{ lang('account.save') }}</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class=" account_page mt-5 bg_color">
+                        <h2 class="text_color">API Key Settings</h2>
+                        <div class="well">
+                            <form {% if site['rtl'] %}class="rtl-form"{% endif %} action="{{ page['url'] }}/newkey" method="post">
+                                <div class="form-group">
+                                    <p>Never share your API Key. We will never ask for it.</p>
+                                    <label for="key" class="control-label text_color">{{ lang('account.api_key') }}</label>
+                                    {% if user['is_generated_apikey'] %}
+                                    <input type="text" class="form-control bg_color" id="api_key" value="{{ user['apikey'] }}" readonly>
+                                    <span class="api_copy" id="api_copy"><i class="fa fa-clone" aria-hidden="true"></i></span>
+                                    
+                                    {% endif %}
+                                </div>
+                                
+                                <input type="hidden" name="_csrf" value="{{csrftoken}}">
+                                <button type="submit" class="btn btn-primary btn-block key_setting">{{ lang('account.generate_key') }}</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
