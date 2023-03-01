@@ -621,7 +621,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         
                         let newSortedService = [];
                         let best_ids = [];
-
+                        let actuall_best_length = 0;
 
                         // if best seller should to order by excel docu.. so let it
                         if(cat_id == "Best sellers"){
@@ -657,7 +657,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                                 index++;
                             }
                         } else {
-                             
                             var selected_category_name = $("#orderform-category option:selected").text();
 
                             // get best seller for selected category id
@@ -703,6 +702,8 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                                 }
                             })
 
+                            actuall_best_length = index;
+
                             // and then put rest services
                             for (const [key, value] of Object.entries(orderform_service)) {	
                                 if(!best_ids.includes(key)){
@@ -733,7 +734,8 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                                             temp['value'] += " ⚡";
                                         }
                                         temp['type'] = orderform_service[key]['type'];
-                                        newSortedService[sort_val.sort_order + best_ids.length] = temp;
+                                        // newSortedService[sort_val.sort_order + best_ids.length] = temp;
+                                        newSortedService[sort_val.sort_order + actuall_best_length] = temp;
                                     }
                                 }
                             }
@@ -750,10 +752,10 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
                         
                         newSortedService.forEach((element, key) => {	
-                            if(index == 0 && best_ids.length > 0){
+                            if(index == 0 && actuall_best_length > 0){
                                 lsubCategoryOption += '<optgroup label="---------- 👇 Best Sellers 👇 ----------">';
                             }
-                            if(best_ids.length > 0 && index == best_ids.length){
+                            if(actuall_best_length > 0 && index == actuall_best_length){
                                 lsubCategoryOption += '</optgroup>';
                                 lsubCategoryOption += '<optgroup label="---------- ☝️ Best Sellers ☝️ ----------">';
                             }
@@ -1029,6 +1031,16 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     navigator.clipboard.writeText(selected_ids);
 
                     const el = document.getElementById('sparkling-txt');
+
+                    if( window.innerWidth <= 768){
+                        el.style.left = (e.clientX + 20) + 'px';
+                        el.style.top = (e.pageY - e.currentTarget.offsetTop - 70) + 'px';
+                    } else {
+                        el.style.left = (e.clientX - 215) + 'px';
+                        el.style.top = (e.pageY - e.currentTarget.offsetTop - 30) + 'px';
+                    }
+
+
                     el.className      = 'glitter-star';
                     el.style.display = 'block';
                    
