@@ -245,11 +245,11 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 }
             }
         }
-        
+        console.log(best_sellers);
         let result_best_seller = []
         // pick best sellers from search result
-        for(var k in serviceDetails) {
-            for(let i = 0; i < best_sellers.length; i++){
+        for(let i = 0; i < best_sellers.length; i++){
+            for(var k in serviceDetails) {
                 if(serviceDetails[k]['id'] == best_sellers[i]){
                     result_best_seller.push(serviceDetails[k]['id']);
                     break;
@@ -260,8 +260,8 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         let tbody = '';
         if(result_best_seller.length > 0){
             tbody += '<tr class="tablerowid best-seller-separator"><td colspan="10" class="text-center">---------- 👇 Best Sellers 👇 ----------</td></tr>'; 
-            for(var k in serviceDetails) {
-                for(let i = 0; i < result_best_seller.length; i++){
+            for(let i = 0; i < result_best_seller.length; i++){    
+                for(var k in serviceDetails) {
                     if(serviceDetails[k]['id'] == result_best_seller[i]){
                         tbody += getTRow(serviceDetails[k], category_name);
                         break;
