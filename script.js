@@ -1918,6 +1918,11 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         if(serviceName.includes('crypto coin')){
             return "crypto-coin-color.svg";
         }
+
+        if(serviceName.includes('threads')){
+            return "threads.svg";
+        }
+
         return "marketing.svg";
     }
 
