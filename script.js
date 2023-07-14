@@ -439,7 +439,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         }
                     });
             
-                    $("#order_searchService").on('keyup', function(e){
+                    $("#order_searchService").on('change', function(e){
                         if($(this).val().length > 0){
                             selectServiceByServiceIDManually($(this).val());
                         }
@@ -447,17 +447,26 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
                     function selectServiceByServiceIDManually(service_id){
                         let selected_service = getServicesId(service_id);
-            
+                        
+                        if(Object.keys(selected_service).length === 0 && selected_service.constructor === Object){
+                            $("#search_result_no_msg").removeClass("d-none");
+                            return;
+                        }
+                        $("#search_result_no_msg").addClass("d-none");
+                            
                         let category_name = categories[selected_service.cid];
                         let ssArr = category_name.split("-");
                         let main_category = ssArr[0].trim();
             
-                        $("#orderform-main-category").val(main_category).trigger('change');
+                        // $("#orderform-main-category").val(main_category).trigger('change');
+                        $("#orderform-main-category").val(main_category).change();
                         setTimeout(function(){
-                            $("#orderform-category").val(selected_service.cid).trigger('change');
+                            $("#orderform-category").val(selected_service.cid).change();
                         }, 200);
+
+                        console.log(selected_service.id);
                         setTimeout(function(){
-                            $("#orderform-service").val(selected_service.id).trigger('change');
+                            $("#orderform-service").val(selected_service.id).change();
                         }, 800);
                     }
                 
@@ -626,7 +635,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         // if best seller should to order by excel docu.. so let it
                         if(cat_id == "Best sellers"){
                             let index = 0;
-                            for (const [key, value] of Object.entries(orderform_service)) {	
+                            for (const [key, value] of Object.entries(orderform_service)) { 
 
                                 let quality = "";
                                 if(value['description']){
@@ -705,10 +714,10 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                             actuall_best_length = index;
 
                             // and then put rest services
-                            for (const [key, value] of Object.entries(orderform_service)) {	
+                            for (const [key, value] of Object.entries(orderform_service)) { 
                                 if(!best_ids.includes(key)){
-                                    let sort_order_arr = serviceOrderNew.filter((order)=>{  return order.service_id == key; });		 
-                                    if(sort_order_arr[0] !== undefined){	
+                                    let sort_order_arr = serviceOrderNew.filter((order)=>{  return order.service_id == key; });      
+                                    if(sort_order_arr[0] !== undefined){    
                                         let quality = "";
                                         if(value['description']){
                                             let s_des = value['description'].split("<br>");
@@ -751,7 +760,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         let index = 0;
 
                         
-                        newSortedService.forEach((element, key) => {	
+                        newSortedService.forEach((element, key) => {    
                             if(index == 0 && actuall_best_length > 0){
                                 lsubCategoryOption += '<optgroup label="---------- 👇 Best Sellers 👇 ----------">';
                             }
@@ -946,7 +955,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         let temp = [];
                         for (const [key, value] of Object.entries(service_of_cat)) {
                             if(value['id'].search(new RegExp(inputed_val, "i")) >= 0 || value['name'].search(new RegExp(inputed_val, "i")) >= 0 ){
-                                let sort_order_arr = serviceOrder.filter((order)=>{  return order.service_id == key; });				
+                                let sort_order_arr = serviceOrder.filter((order)=>{  return order.service_id == key; });                
                                 let sort_val = sort_order_arr[0];
                                 
                                 if(sort_val){
@@ -1109,7 +1118,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     $(".custom-tabing .tab-panel").eq(ind).addClass("active");
                 }); 
 
-                //CODE FOR TICKET FORM 	
+                //CODE FOR TICKET FORM  
                 $(".top_radio > li").click(function(){
                     $(".custom-radio > li").removeClass('active');
                     //hide all extra field
@@ -1556,12 +1565,12 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         {
             // Best Seller selection
             $.get('https://followizaddons.com/bestseller/bestseller.php', function( response ) {
-            });	
+            }); 
 
             //code to save user on our server
             // $.get('https://followiz.com/admin/api/users/list', function( response ) {
             //     processUsers(response.data.pagination.pages);
-            // });	
+            // });  
           
             //code to update serive 
             $.get('https://followiz.com/admin/api/services/list', function( response ) {
@@ -2312,7 +2321,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             let sortedService = [];
         
             rowSubcategory.forEach((value, key)=>{
-                let sort_order_arr = categoryOrder.filter((order)=>{  return order.category_id == key; });        	
+                let sort_order_arr = categoryOrder.filter((order)=>{  return order.category_id == key; });          
             
                 if(sort_order_arr.length){
                 
@@ -2327,7 +2336,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 }
             });
 
-            sortedService.forEach((element,key) => {	
+            sortedService.forEach((element,key) => {    
                 if ( fO == element["category_id"]){
                     subCategoryOption += '<option cat_id="' + key + '" value="' + element["category_id"] + '" selected="true">' + element['value'] + '</option> ';
                 } else {
@@ -3058,7 +3067,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
           }else{
             $(".download_icon").css('display','block');
           }
-      });	
+      });   
       
     } */
 
@@ -3346,34 +3355,59 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 let getUserCountryInfoLink = "https://api.bigdatacloud.net/data/country-by-ip?ip="+userIp+"&key="+apiKey;
         
                 $.get( getUserCountryInfoLink, function( countryInfo ) {
+                    // if(countryInfo.hasOwnProperty('country')){
+                    //     let country = countryInfo.country;
+                    //     if(country.hasOwnProperty('isoName')){
+                    //         if(country.isoName !== "Canada"){
+                    //             $('.addfund_page').css('display','block');
+                    //             $('.deposit_toltip').remove();
+                    //             $('.badgeLink').css('display','inline-flex');
+                    //             $('.badgeBtn').css('display','none');
+                    //         }else{
+                    //             if (currentURL.includes('addfunds')) {
+                    //                 window.location.href = homeURL;
+                    //             }
+                    //             $('.deposit_toltip').html("Deposits are blocked for Canadian users.");
+                    //             $('.badgeBtn').css('display','inline-flex');
+                    //             $('.badgeLink').css('display','none');
+                    //         }
+                    //     }else{
+                    //         if (currentURL.includes('addfunds')) {
+                    //             window.location.href = homeURL;
+                    //         }
+                    //         $('.deposit_toltip').html("Deposits are blocked for Canadian users.");
+                    //     }
+                    // }else{
+                    //     if (currentURL.includes('addfunds')) {
+                    //         window.location.href = homeURL;
+                    //     }
+                    //     $('.deposit_toltip').html("Deposits are blocked for Canadian users.");
+                    // }
+
+
+                    let country_flag = 0
                     if(countryInfo.hasOwnProperty('country')){
                         let country = countryInfo.country;
                         if(country.hasOwnProperty('isoName')){
-                        if(country.isoName !== "Canada"){
-                            $('.addfund_page').css('display','block');
-                            $('.deposit_toltip').remove();
-                            $('.badgeLink').css('display','inline-flex');
-                            $('.badgeBtn').css('display','none');
-                        }else{
-                            if (currentURL.includes('addfunds')) {
-                            window.location.href = homeURL;
+                            if(country.isoName == "Canada"){
+                                country_flag = 1;
+                                if (currentURL.includes('addfunds')) {
+                                    window.location.href = homeURL;
+                                }
+                                $('.deposit_toltip').html("Deposits are blocked for Canadian users.");
+                                $('.badgeBtn').css('display','inline-flex');
+                                $('.badgeLink').css('display','none');
                             }
-                            $('.deposit_toltip').html("Deposits are blocked for Canadian users.");
-                            $('.badgeBtn').css('display','inline-flex');
-                            $('.badgeLink').css('display','none');
                         }
-                        }else{
-                            if (currentURL.includes('addfunds')) {
-                            window.location.href = homeURL;
-                            }
-                        $('.deposit_toltip').html("Deposits are blocked for Canadian users.");
-                        }
-                    }else{
-                        if (currentURL.includes('addfunds')) {
-                            window.location.href = homeURL;
-                        }
-                        $('.deposit_toltip').html("Deposits are blocked for Canadian users.");
                     }
+
+                    if(country_flag == 0){
+                        $('.addfund_page').css('display','block');
+                        $('.deposit_toltip').remove();
+                        $('.badgeLink').css('display','inline-flex');
+                        $('.badgeBtn').css('display','none');
+                    }
+
                 });
             });
         }catch(err) {
