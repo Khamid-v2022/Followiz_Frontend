@@ -7214,7 +7214,7 @@ html {
     width: calc(100% - 70px);
   }
 
-  .dataTables_wrapper .pagination>li {
+  .dataTables_wrapper .pagination>li, .pagination>li.paginate_button {
     margin: 0px 2px;
   }
   

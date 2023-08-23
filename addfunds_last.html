@@ -1,0 +1,465 @@
+<div class="container">
+    <div class="row">
+       <div class="panel addfund_page" >
+          <div class="panel-body">
+             {% if paymentsList %}
+             <div class="col-md-6">
+                <div class=" account_page deposit_page bg_color">
+                   <h2 class="text_color"> Deposit Cash</h2>
+                   <div class="well">
+                      <div class=" payment_option">
+						{% if success %}
+						<div class="alert alert-dismissible alert-success {% if site['rtl'] %} rtl-alert {% endif %}">
+						   <button type="button" class="close" data-dismiss="alert">&times;</button>
+						   {{ successText }}
+						</div>
+						{% endif %}
+						{% if error %}
+						<div class="alert alert-dismissible alert-danger {% if site['rtl'] %} rtl-alert {% endif %}">
+						   <button type="button" class="close" data-dismiss="alert">&times;</button>
+						   {{ errorText }}
+						</div>
+						{% endif %}
+
+						{% if site['cpf_field'] %}
+						<div class="form-group">
+						   <label for="cpf" class="control-label">{{ lang('addfunds.cpf') }}</label>
+						   <input type="text" class="form-control"  name="AddFoundsForm[cpf]" id="cpf">
+						</div>
+						{% endif %}
+				
+				
+				
+                         <ul class="text_color">
+                            {% for payment in paymentsList %} 
+                            {% if payment['name'] == 'Payoneer' %}
+                            <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
+                               <label class="radio_button">
+                                  <input type="radio" checked="checked" name="radio">
+                                  <span class="checkmark radio_txt">
+                                     <img src="https://www.startdesigns.com/followiz-icons/payoneer.svg">
+                                     <p>{{payment['name']}}</p>
+                                  </span>
+                               </label>
+                            </li>
+                            {% elseif payment['name'] == 'Perfect Money USD' %}
+                            <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
+                               <label class="radio_button">
+                                  <input type="radio" checked="checked" name="radio">
+                                  <span class="checkmark radio_txt">
+                                     <img src="https://followizaddons.com/followiz-icons/perfect-money_icon.svg">
+                                     <p>{{payment['name']}}</p>
+                                  </span>
+                               </label>
+                            </li>
+                            {% elseif payment['name'] == 'Stripe / Credit Card' %}
+                            <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
+                               <label class="radio_button">
+                                  <input type="radio"  name="radio">
+                                  <span class="checkmark radio_txt">
+                                     <img src="https://followizaddons.com/followiz-icons/strip_icon.svg">
+                                     <p>{{payment['name']}}</p>
+                                  </span>
+                               </label>
+                            </li>
+							
+							{% elseif payment['name'] == 'Stripe / Credit Card (VIP)' %}
+                            <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
+                               <label class="radio_button">
+                                  <input type="radio"  name="radio">
+                                  <span class="checkmark radio_txt">
+                                     <img src="https://followizaddons.com/followiz-icons/strip_icon.svg">
+                                     <p>{{payment['name']}}</p>
+                                  </span>
+                               </label>
+                            </li>
+							
+                            {% elseif payment['name'] == 'PayPal Invoice' %}
+                            <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
+                               <label class="radio_button">
+                                  <input type="radio"  name="radio">
+                                  <span class="checkmark radio_txt">
+                                     <img src="https://followizaddons.com/followiz-icons/strip_icon.svg">
+                                     <p>{{payment['name']}}</p>
+                                  </span>
+                               </label>
+                            </li>
+                            {% elseif payment['name'] == 'PayPal' %}
+                            <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
+                               <label class="radio_button">
+                                  <input type="radio"  name="radio">
+                                  <span class="checkmark radio_txt">
+                                     <img src="https://followizaddons.com/followiz-icons/strip_icon.svg">
+                                     <p>{{payment['name']}}</p>
+                                  </span>
+                               </label>
+                            </li>
+                            {% elseif payment['name'] == 'Coinbase' %}
+                            <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
+                               <label class="radio_button">
+                                  <input type="radio" name="radio">
+                                  <span class="checkmark radio_txt">
+                                     <img src="https://followizaddons.com/followiz-icons/coinbase.svg">
+                                     <p>{{payment['name']}}</p>
+                                  </span>
+                               </label>
+                            </li>
+                            {% elseif payment['name'] == 'Coinpayments' %}
+                            <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
+                               <label class="radio_button">
+                                  <input type="radio" name="radio">
+                                  <span class="checkmark radio_txt">
+                                     <img src="https://followizaddons.com/followiz-icons/coinpayments.svg">
+                                     <p>{{payment['name']}}</p>
+                                  </span>
+                               </label>
+                            </li>
+                            {% else %}
+                            <li class="deposit_icon payment_tab_link" id="tab_{{ payment['id'] }}" data-paymentName="{{ payment['name'] }}"  data-paymentId="{{ payment['id'] }}">
+                               <label class="radio_button">
+                                  <input type="radio" name="radio">
+                                  <span class="checkmark radio_txt">
+                                     <img src="https://followizaddons.com/followiz-icons/payeer_icon.svg">
+                                     <p>{{payment['name']}}</p>
+                                  </span>
+                               </label>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                         </ul>
+                      </div>
+                   </div>
+                   <div class="note">
+                      <form {% if site['rtl'] %} class="rtl-form"{% endif %} method="post" action="">        
+                      <div class="deposit_deposit_txt text_color">
+                         <div class="row" id="perfect_eur_content" style="display:none">
+                            <!--<div class="col-md-4 center_txt">
+                               <p>Minimum: <span>$5</span></p>
+                            </div>
+                            <div class="col-md-4 center_txt">
+                               <p>Estimated Time:<span>1 Minute</span></p>
+                               
+                            </div>-->
+                            <div class="col-md-4 center_txt">
+                               <p>Bonus:<span>0%</span></p>
+                            </div>
+                            <div class="col-md-12">
+                                 <p>Minimum: <span>$5</span></p>
+                                 <p>Estimated Time:<span>1 Minute</span></p>
+                                 <p>Bonus:<span>0%</span></p>
+                             </div>
+                         </div>
+                         <div class="row" id="perfect_usd_content"  >
+                            <!--<div class="col-md-4 center_txt">
+                               <p>Minimum: <span>$5</span></p>
+                            </div>
+                            <div class="col-md-4 center_txt">
+                               <p>Estimated Time:<span>1 Minute</span></p>
+                               
+                            </div>
+                            <div class="col-md-4 center_txt">
+                               <p>Bonus:<span>0%</span></p>
+                            </div>-->
+                             <div class="col-md-12">
+                                 <p>Minimum: <span>$5</span></p>
+                                 <p>Estimated Time:<span>1 Minute</span></p>
+                                 <p>Bonus:<span>0%</span></p>
+                                 <p class="note">Note: <span>For Perfect Money USD Payments Only</span></p>
+                             </div>
+                         </div>
+                         <div class="row" id="stripe_content" style="display:none" >
+                            <!--<div class="col-md-4 center_txt">
+                               <p>Minimum: <span>$10</span></p>
+                            </div>
+                            <div class="col-md-4 center_txt">
+                               <p>Estimated Time:<span>5 Minute</span></p>
+                            </div>
+                            <div class="col-md-4 center_txt">
+                               <p>Bonus:<span>0%</span></p>
+                            </div>-->
+                            <div class="col-md-12">
+                                 <p>Minimum: <span>$10</span></p>
+                                 <p>Estimated Time:<span>5 Minutes</span></p>
+                                 <p>Bonus:<span>0%</span></p>
+                             </div>
+                         </div>
+                         <div class="row" id="payPal_invoice_content" style="display:none">
+                            <div class="col-md-4 center_txt">
+                               <p>Minimum: <span>$20</span></p>
+                               <p>Maximum:<span>$100</span></p>
+                            </div>
+                            <div class="col-md-4 center_txt">
+                               <p>Estimated Time:<span>15 Minute</span></p>
+                               <p>Bonus:<span>0%</span></p>
+                            </div>
+                            <div class="col-md-4 center_txt">
+                               <p>Fees:<span>N/A</span></p>
+                            </div>
+                         </div>
+                         <div class="row" id="payPal_content" style="display:none">
+                            <div class="col-md-4 center_txt">
+                               <p>Minimum: <span>$5</span></p>
+                               <p>Maximum:<span>N/A</span></p>
+                            </div>
+                            <div class="col-md-4 center_txt">
+                               <p>Estimated Time:<span>1 Minute</span></p>
+                               <p>Bonus:<span>0%</span></p>
+                            </div>
+                            <div class="col-md-4 center_txt">
+                               <p>Fees:<span>N/A</span></p>
+                            </div>
+                         </div>
+                         <div class="row" id="skrill_content" style="display:none">
+                            <div class="col-md-4 center_txt">
+                               <p>Minimum: <span>$5</span></p>
+                               <p>Maximum:<span>100</span></p>
+                            </div>
+                            <div class="col-md-4 center_txt">
+                               <p>Estimated Time:<span>5 Minute</span></p>
+                               <p>Bonus:<span>0%</span></p>
+                            </div>
+                            <div class="col-md-4 center_txt">
+                               <p>Fees:<span>N/A</span></p>
+                            </div>
+                         </div>
+                         
+                         <div class="row" id="coinPayments_content" style="display:none" >
+                            <!--<div class="col-md-4 center_txt">
+                               <p>Minimum: <span>$1</span></p>
+                            </div>
+                            <div class="col-md-4 center_txt">
+                               <p>Estimated Time:<span>30 Minutes</span></p>
+                               
+                            </div>
+                            <div class="col-md-4 center_txt">
+                               <p>Bonus:<span>0%</span></p>
+                            </div>-->
+                            <div class="col-md-12">
+                                 <p>Minimum: <span>$20</span></p>
+                                 <p>Estimated Time:<span>30 Minutes</span></p>
+                                 <p>Bonus:<span>0%</span></p>
+                                 <p class="note">Note: <span>Always send the right amount of BTC and not USD, else your payment might get canceled.<br>
+ If the transaction haven't received the right amount of BTC, it will get canceled automatically and you will get an email from coinpayments explaining the issue from where you will be able to get a refund for the funds you sent.</span></p>
+                             </div>
+                         </div>
+                         
+                         <div class="row" id="coinbase_content" style="display:none" >
+                            <!--<div class="col-md-4 center_txt">
+                               <p>Minimum: <span>$1</span></p>
+                            </div>
+                            <div class="col-md-4 center_txt">
+                               <p>Estimated Time:<span>30 Minutes</span></p>
+                               
+                            </div>
+                            <div class="col-md-4 center_txt">
+                               <p>Bonus:<span>0%</span></p>
+                            </div>-->
+                            <div class="col-md-12">
+                                 <p>Minimum: <span>$1</span></p>
+                                 <p>Estimated Time:<span>30 Minutes</span></p>
+                                 <p>Bonus:<span>0%</span></p>
+                                 <p class="note">Note: <span>Always send the right amount of BTC and not USD, else your payment might get canceled.<br>
+ If the transaction haven't received the right amount of BTC, the transaction may be underpaid and stuck. If no payment is added under your balance after 1 hour, open up a ticket with the transaction details. We will manually verify the payment and add it to your balance.</span></p>
+                             </div>
+                         </div>
+                         
+                         <div class="row" id="payeer_content" style="display:none" >
+                            <!--<div class="col-md-4 center_txt">
+                               <p>Minimum: <span>$5</span></p>
+                            </div>
+                            <div class="col-md-4 center_txt">
+                               <p>Estimated Time:<span>5 Minutes</span></p>
+                               
+                            </div>
+                            <div class="col-md-4 center_txt">
+                               <p>Bonus:<span>0%</span></p>
+                            </div>-->
+                            <div class="col-md-12">
+                                 <p>Minimum: <span>$5</span></p>
+                                 <p>Estimated Time:<span>5 Minutes</span></p>
+                                 <p>Bonus:<span>0%</span></p>
+                             </div>
+                         </div>
+ 
+                         <div class="form-group hidden">
+                            <label for="method" class="control-label">{{ lang('addfunds.method') }}</label>
+                            <select class="form-control" id="method" name="AddFoundsForm[type]" id="order_type">
+                            {% for payment in paymentsList %}
+                            <option value="{{ payment['id'] }}"{% if currentPayment == payment['id'] %} selected{% endif %}>{{ payment['name'] }}</option>
+                            {% endfor %}
+                            </select>
+                         </div>
+                         
+                         <div class="ammount_send">
+                            <div class="form-group    ">
+                               <label for="amount" class="control-label">Amount to Deposit</label>
+                               <input type="amount" class="form-control bg_color" name="AddFoundsForm[amount]" id="amount" placeholder="ex. $120">
+                            </div>
+                            <input type="hidden" name="_csrf" value="{{ csrftoken }}">
+                            <button type="submit" class="btn btn-primary btn-block">SUBMIT ORDER</button>
+                         </div>
+                      </div>
+                      </form>
+                   </div>
+                </div>
+             </div>
+             {% endif %}
+			 
+			 
+			     {% if addfunds %}
+				 <div class="col-md-6 deposit_faq bg_color">
+				 <h2 class="text_color">FAQ</h2>
+					 <div class="well {% if site['rtl'] %} rtl-content {% endif %}">
+						{{ addfunds }}
+					 </div>
+				  </div>
+				{% endif %}
+	</div>
+	</div>
+	</div>
+	<div class="row">
+       <div class="panel addfund_page" style="padding:15px 20px 20px 20px!important;"  >
+          <div class="panel-body">
+	
+			
+			
+             <div class="col-md-12 transaction_history bg_color">
+                <div class=" account_page">
+                   <h2 class="text_color">Transaction History</h2>
+                </div>
+                <div class="well text_color text-color2">
+                    <input type="hidden" id="other_name">
+                    <input type="hidden" id="other_phone">
+                    <input type="hidden" id="other_address">
+                    <input type="hidden" id="other_city">
+                    <input type="hidden" id="other_country">
+                    <input type="hidden" id="other_province">
+                    <input type="hidden" id="other_postal">
+                    <pre style="display: none;" id="other_detail"></pre>
+
+                    <div class="transaction_history" style="padding-top: 20px">
+                        <!-- <table class="table data-table"> -->
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for payment in paymentList %}
+                                <tr>
+                                    <td>{{ payment['id'] }}</td>
+                                    <td>{{ payment['date'] }}</td>
+                                    <td>{{ payment['method'] }}</td>
+                                    <td>
+                                        {% if payment['original_amount'] %}
+                                            <span data-toggle="tooltip" data-placement="left" title="{{ payment['original_amount'] }}&nbsp;{{ payment['original_currency'] }}">≈ {{ payment['amount'] }}</span>
+                                        {% else %}
+                                            {{ payment['amount'] }}
+                                        {% endif %}
+                                        <style>
+                                            #drm_nav{{ payment['id'] }}{
+                                                background: #fff; height: 650px; width: 80%;top: 5%;margin: 0 auto;
+                                            }
+                                        </style>
+									<!--
+                                        <span class="view_invoices">
+                                            <a href="javascript:void(0)" data-payment-id="{{ payment['id'] }}"
+                                                data-payment-date="{{ payment['date'] }}"
+                                                data-payment-method="{{ payment['method'] }}"
+                                                {% if payment["original_amount"] %}
+                                                    data-payment-amount="{{ payment['original_amount'] }}"
+                                                {% else %}
+                                                    data-payment-amount="{{ payment['amount'] }}"
+                                                {% endif %} 
+                                                onclick="drm_nav11({{ payment['id'] }})" 
+                                                class="payment_drm" 
+                                                data-toggle="modal" 
+                                                data-target="#drm_nav{{ payment['id'] }}" >view Invoice</a>
+                                        </span>
+                                        <div id="drm_pdf">
+                                            <div class="modal fade drm420" id="drm_nav{{ payment['id'] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="">
+                                                <button type="button" style="background: red;margin: 10px 0px;height: 32px;width: 30px;color: #000;margin-right: 10px;" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                            </div>
+                                        </div>-->
+                                    </td>
+                                    <td>
+                                        {% if user['spent'] >= 5000 %}
+										<span class="download_icon">
+                                            <a href="#"  data-payment-id="{{ payment['id'] }}"
+                                                data-payment-date="{{ payment['date'] }}"
+                                                data-payment-method="{{ payment['method'] }}"
+                                                {% if payment["original_amount"] %}
+                                                data-payment-amount="{{ payment['original_amount'] }}"
+                                                {% else %}
+                                                data-payment-amount="{{ payment['amount'] }}"
+                                                {% endif %}
+                                                class="btn btn-blue getInvoiceBtn">
+                                                    <img src="https://followizaddons.com/followiz-icons/download_icon.svg">&nbsp;Invoice
+                                            </a>
+                                        </span>
+										{% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {% if pagination['count'] > 50 %}
+                    <div class="nav-pills">
+                        <ul class="pagination {% if site['rtl'] %} rtl-pagination {% endif %}">
+                            {% if pagination['current'] != 1 %}
+                            <li class="paginate_button">
+                                <a href="{{ page['url'] }}/{{ pagination['last'] }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            {% set r, l = 3, 3 %}
+
+                            {% if pagination['current'] == 1 %}
+                                {% set r = 6 %}
+                            {% endif %}
+
+                            {% if pagination['current'] == 2 %}
+                                {% set r = 5 %}
+                            {% endif %}
+
+                            {% if pagination['current'] >= pagination['pages'] %}
+                                {% set l = 5 %}
+                            {% endif %}
+
+                            {% for i in 1..ceil(pagination['pages']) %}
+                                {% if i >= (pagination['current']-l) and i <= (pagination['current']+r) %}
+                                    <li {% if i == pagination['current'] %} class="paginate_button active" {% else %} class="paginate_button" {% endif %}><a href="{{ page['url'] }}/{{i}}">{{i}}</a></li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if pagination['current'] < pagination['pages'] %}
+                                <li class="paginate_button">
+                                    <a href="{{ page['url'] }}/{{ pagination['next'] }}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+ </div>
+ 
+
+
+ <script>
+    const paymentList = {{ paymentList | json_encode }};
+</script>

@@ -183,7 +183,7 @@
                 {% endif %}
                 <ul class="pagination {% if site['rtl'] %} rtl-pagination {% endif %}">
                     {% if pagination['current'] != 1 %}
-                    <li class="page_arrow">
+                    <li class="page_arrow paginate_button">
                         <a href="{{ page['url'] }}/{{ status }}/{{ pagination['last'] }}{{ params }}" aria-label="Previous">
                         <span aria-hidden="true"><i class="fa fa-angle-left" aria-hidden="true"></i></span>
                         </a>
@@ -206,13 +206,13 @@
                     
                     {% for i in 1..ceil(pagination['pages']-1) %}
                         {% if i >= (pagination['current']-l) and i <= (pagination['current']+r) %}
-                            <li{% if i == pagination['current'] %} class="active"{% endif %}><a
+                            <li {% if i == pagination['current'] %} class="paginate_button active" {% else %}  class="paginate_button" {% endif %}><a
                                 href="{{ page['url'] }}/{{ status }}/{{ i }}{{ params }}">{{ i }}</a></li>
                         {% endif %}
                     {% endfor %}
                     
                     {% if pagination['current'] < pagination['pages'] %}
-                        <li class="page_arrow">
+                        <li class="paginate_button page_arrow">
                             <a href="{{ page['url'] }}/{{ status }}/{{ pagination['next'] }}{{ params }}" aria-label="Next">
                             <span aria-hidden="true"><i class="fa fa-angle-right" aria-hidden="true"></i></span>
                             </a>
