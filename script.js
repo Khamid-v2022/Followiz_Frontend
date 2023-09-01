@@ -1445,7 +1445,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 
                 });
                 
-                $('.data-table tbody').on('click', 'tr .getInvoiceBtn', function () {
+                $('.getInvoiceBtn').on('click', function () {
                     if(invoices.length > 0){
                         for(let index = 0; index < invoices.length; index++){
                             if(invoices[index].id == $(this).attr('data-payment-id')){

@@ -8062,3 +8062,7 @@ html {
         border: solid #7E8E8D;
         border-width: 0 2px 2px 0;
     }
+
+    .d-none {
+      display: none;
+    }
