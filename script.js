@@ -429,8 +429,8 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     $(document).on('submit','#order-form',function(){
                         localStorage.setItem('ordersuccesscount',1);
                         localStorage.setItem('main-category', $('#orderform-main-category').val());
-                        localStorage.setItem('category', $('#orderform-category').val());
-                        localStorage.setItem('service', $('#orderform-service').val());
+                        localStorage.setItem('category', $('#orderform-category_1').val());
+                        localStorage.setItem('service', $('#orderform-service_1').val());
                     })     
                 
                     $('#orderform-main-category').on('keydown', function(e) {
@@ -439,40 +439,40 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         }
                     });
             
-                    $("#order_searchService").on('change', function(e){
-                        if($(this).val().length > 0){
-                            selectServiceByServiceIDManually($(this).val());
-                        }
-                    })
+                    // $("#order_searchService").on('change', function(e){
+                    //     if($(this).val().length > 0){
+                    //         selectServiceByServiceIDManually($(this).val());
+                    //     }
+                    // })
 
-                    function selectServiceByServiceIDManually(service_id){
-                        let selected_service = getServicesId(service_id);
+                    // function selectServiceByServiceIDManually(service_id){
+                    //     let selected_service = getServicesId(service_id);
                         
-                        if(Object.keys(selected_service).length === 0 && selected_service.constructor === Object){
-                            console.log("no result")
-                            $("#search_result_no_msg").removeClass("d-none");
-                            return;
-                        }
-                        $("#search_result_no_msg").addClass("d-none");
+                    //     if(Object.keys(selected_service).length === 0 && selected_service.constructor === Object){
+                    //         console.log("no result")
+                    //         $("#search_result_no_msg").removeClass("d-none");
+                    //         return;
+                    //     }
+                    //     $("#search_result_no_msg").addClass("d-none");
                             
-                        let category_name = categories[selected_service.cid];
-                        let ssArr = category_name.split("-");
-                        let main_category = ssArr[0].trim();
+                    //     let category_name = categories[selected_service.cid];
+                    //     let ssArr = category_name.split("-");
+                    //     let main_category = ssArr[0].trim();
             
-                        // $("#orderform-main-category").val(main_category).trigger('change');
-                        $("#orderform-main-category").val(main_category).change();
-                        setTimeout(function(){
-                            $("#orderform-category").val(selected_service.cid).change();
-                        }, 200);
+                    //     // $("#orderform-main-category").val(main_category).trigger('change');
+                    //     $("#orderform-main-category").val(main_category).change();
+                    //     setTimeout(function(){
+                    //         $("#orderform-category_1").val(selected_service.cid).change();
+                    //     }, 200);
 
-                        console.log(selected_service.id);
-                        setTimeout(function(){
-                            $("#orderform-service").val(selected_service.id).change();
-                        }, 800);
-                    }
+                    //     console.log(selected_service.id);
+                    //     setTimeout(function(){
+                    //         $("#orderform-service_1").val(selected_service.id).change();
+                    //     }, 800);
+                    // }
                 
                     // populate new order form value    
-                    $("#orderform-service").on("change", function(){
+                    $("#orderform-service_1").on("change", function(){
                         let sel_service_id = $(this).val();
                         //Delay because else the value it was taking from the description was from the previous service chosen
                         setTimeout(function() {
@@ -489,9 +489,9 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     
                     $('#dripfeed-options').append('<p style="color:red;font-weight:bold;">MINIMUM INTERVAL SHOULD BE AT LEAST 4 TIMES THE START TIME.<br>We will not refund any orders that does not follow this rule.</p>');
                 
-                    var selected_val =  $("#orderform-service").val();
+                    var selected_val =  $("#orderform-service_1").val();
                     if(!selected_val){
-                        selected_val = $("#orderform-service").prop("selectedIndex", 0).val();
+                        selected_val = $("#orderform-service_1").prop("selectedIndex", 0).val();
                     }
                     
                     $('#field-orderform-fields-check').on('click', function(){
@@ -506,17 +506,17 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     
                     });
             
-                    $("#orderform-main-category, #orderform-category").select2({
+                    $("#orderform-main-category, #orderform-category_1").select2({
                         templateSelection: formatState1,
                         templateResult: formatState1,
                     });
 
-                    $("#orderform-service").select2({
+                    $("#orderform-service_1").select2({
                         templateSelection: formatState2,
                         templateResult: formatState2,
                     });
             
-                    $("#orderform-main-category, #orderform-category, #orderform-service").on("select2:open", hideSelect2Keyboard);
+                    $("#orderform-main-category, #orderform-category_1, #orderform-service_1").on("select2:open", hideSelect2Keyboard);
 
                 /***************** Initialize New Order Page Component END **********************/
                 const categoryOrderURLlocal = 'https://followizaddons.com/client_js/service_order/category.php';       
@@ -549,28 +549,58 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         selected_main_category = ssArr[0].trim();
                     } 
                     
-                    for (const [key, value] of Object.entries(categories)) {
-                        let ssArr = value.split("-");
-                        let ssName = ssArr[0].trim();
+                    // for (const [key, value] of Object.entries(categories)) {
+                    //     let ssArr = value.split("-");
+                    //     let ssName = ssArr[0].trim();
                         
-                        if(ssName !== firstSocialPlateForm){
-                            mainCategory[key] = ssName;
-                            firstSocialPlateForm = ssName; 
+                    //     if(ssName !== firstSocialPlateForm){
+                    //         mainCategory[key] = ssName;
+                    //         firstSocialPlateForm = ssName; 
                         
-                            if(typeof subCategory[ssName] === 'undefined'){
-                                subCategory[ssName] = [];
+                    //         if(typeof subCategory[ssName] === 'undefined'){
+                    //             subCategory[ssName] = [];
+                    //         }
+                    //     }
+                    //     subCategory[ssName][key] = value; 
+                        
+                    //     // If Order Again button click mode
+                    //     if(params.has('service')){
+                    //         let selected_category =  localStorage.getItem("selected_category");
+                    //         if(selected_category == value){
+                    //             localStorage.setItem('category', key);
+                    //         }
+                    //     }
+                    // }
+
+                    categories.forEach((item) => {
+                        if(item.name == 'Favorite services'){
+                            mainCategory[0] = 'Favorite services';
+                            firstSocialPlateForm = 'Favorite services';
+                            subCategory['Favorite services'] = ['Favorite services'];
+                        } else {
+                            let ssArr = item.name.split("-");
+                            let ssName = ssArr[0].trim();
+
+                            if(ssName !== firstSocialPlateForm){
+                                mainCategory[item.id] = ssName;
+                                firstSocialPlateForm = ssName; 
+                            
+                                if(typeof subCategory[ssName] === 'undefined'){
+                                    subCategory[ssName] = [];
+                                }
                             }
-                        }
-                        subCategory[ssName][key] = value; 
-                        
-                        // If Order Again button click mode
-                        if(params.has('service')){
-                            let selected_category =  localStorage.getItem("selected_category");
-                            if(selected_category == value){
-                                localStorage.setItem('category', key);
+                            subCategory[ssName][item.id] = item.name; 
+
+                            // If Order Again button click mode
+                            if(params.has('service')){
+                                let selected_category =  localStorage.getItem("selected_category");
+                                if(selected_category == item.name){
+                                    localStorage.setItem('category', item.id);
+                                }
                             }
-                        }
-                    }
+                        }                       
+                        
+                    })
             
                     //sort categories
                     let sortedMainCategory = [];
@@ -619,8 +649,41 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         }
                         
                     }); 
-                
+
                     $("#orderform-category").change(function(){
+                        const selected_category_id = $(this).val();
+
+                        if(selected_category_id == -1){
+                            // Favorite services
+
+                        } else {
+                            let selected_category_name = '';
+
+                            for(let index = 0; index < categories.length; index++){
+                                if(categories[index].id == selected_category_id){
+                                    selected_category_name = categories[index].name;
+                                    break;
+                                }
+                            }
+                            if(selected_category_name){
+                                let ssArr = selected_category_name.split("-");
+                                const main_cat_name = ssArr[0].trim();
+                                $("#orderform-main-category").val(main_cat_name).trigger('change');
+                                
+                                $("#orderform-category_1").val(selected_category_id);
+
+                                setTimeout(function(){
+                                    const sel_service_id = $("#orderform-service").val();
+                                    $("#orderform-service_1").val(sel_service_id).trigger('change');
+                                }, 200)
+                                
+                            }
+                        }
+                        
+                        
+                    })
+
+                    $("#orderform-category_1").change(function(){
 
                         var cat_id = $('option:selected', $(this)).val();
 
@@ -667,7 +730,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                                 index++;
                             }
                         } else {
-                            var selected_category_name = $("#orderform-category option:selected").text();
+                            var selected_category_name = $("#orderform-category_1 option:selected").text();
 
                             // get best seller for selected category id
                             for(let index = 0; index < subBestSeller.length; index++){
@@ -800,10 +863,11 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     
                         setTimeout(function(){
                             // service
-                            $("#orderform-service").html(lsubCategoryOption).trigger('change');
+                            $("#orderform-service_1").html(lsubCategoryOption).trigger('change');
                         }, 100)
 
-                        $("#orderform-category").select2("close");
+                        $("#orderform-category_1").select2("close");
+                        console.log('aaaaa');
                     })
 
                     $("#orderform-main-category").html('').html(mainCategoryOption);
@@ -817,7 +881,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     if(params.has('service')){
                         setTimeout(function(){
                             let sel_service_id = params.get('service');
-                            $("#orderform-service").val(sel_service_id).trigger('change');
+                            $("#orderform-service_1").val(sel_service_id).trigger('change');
                         }, 500);
                     }
                 // });
@@ -1966,9 +2030,9 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     };
 
     function updateMinMax(){
-        var selected_val =  jQuery("#orderform-service").val();
+        var selected_val =  jQuery("#orderform-service_1").val();
         if(!selected_val){
-            selected_val = jQuery("#orderform-service").prop("selectedIndex", 0).val();
+            selected_val = jQuery("#orderform-service_1").prop("selectedIndex", 0).val();
         }
     
         var serviceDetails = getServiceDetailsById(selected_val);
@@ -2161,7 +2225,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                                 insertOrUpdateVoteForOrder(user_id, _service_id, e.stars);
                                 setTimeout(function(){
                                     getMyFavoriteServices();
-                                    // $('#orderform-category').trigger('change');
+                                    // $('#orderform-category_1').trigger('change');
                                 }, 500);
                                 $(".review").rating({
                                     "value":e.stars
@@ -2185,7 +2249,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                                 insertOrUpdateVoteForOrder(user_id, _service_id, e.stars);
                                 setTimeout(function(){
                                     getMyFavoriteServices();
-                                    // $('#orderform-category').trigger('change');
+                                    // $('#orderform-category_1').trigger('change');
                                 }, 500);
                                 $(".review").rating({
                                     "value":e.stars
@@ -2219,7 +2283,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     }
 
     function updateServiceTitle(){
-        var valService = $("#orderform-service").find("option:selected").text();
+        var valService = $("#orderform-service_1").find("option:selected").text();
     
         jQuery( "#seviceTitle" ).text(valService);
         
@@ -2351,13 +2415,13 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             });
         }
 
-        $("#orderform-category").html(subCategoryOption);
+        $("#orderform-category_1").html(subCategoryOption);
         
         setTimeout(
             function(){ 
-                $('#orderform-category').trigger('change');
+                $('#orderform-category_1').trigger('change');
             }, 
-        500);
+        50);
     }
 
     function onlyUnique(value, index, self) {
@@ -2386,15 +2450,23 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         var service_details = [];
         var services = window.modules.siteOrder.services;
 
-        if(catId == "Your Favorite Services" && myFavoriteServices.length > 0){
+        // if(catId == "Your Favorite Services" && myFavoriteServices.length > 0){
+        //     for (let list_service_id of Object.keys(services)) {
+        //         for(let i = 0; i < myFavoriteServices.length; i++){
+        //             if (services[list_service_id]['id'] == myFavoriteServices[i].service_id) {
+        //                 service_details[services[list_service_id]['id']] = services[list_service_id];
+        //             }
+        //         }
+        //     }
+        // } 
+        if(catId == "Your Favorite Services"){
             for (let list_service_id of Object.keys(services)) {
-                for(let i = 0; i < myFavoriteServices.length; i++){
-                    if (services[list_service_id]['id'] == myFavoriteServices[i].service_id) {
-                        service_details[services[list_service_id]['id']] = services[list_service_id];
-                    }
+                if (services[list_service_id]['favorite'] == true) {
+                    service_details[services[list_service_id]['id']] = services[list_service_id];
                 }
             }
-        } else if(catId == "New Services" && newServices.length > 0){
+        } 
+        else if(catId == "New Services" && newServices.length > 0){
             for (let list_service_id of Object.keys(services)) {
                 for(let i = 0; i < newServices.length; i++){
                     let service = newServices[i].service.split("-");

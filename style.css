@@ -16137,3 +16137,12 @@ html {
 .tab-content.faq_details.custom-tabing>.tab-panel:first-child:active, .tab-content.faq_details.custom-tabing>.tab-panel.active {
   display: block;
 }
+
+.theme-dark .select2-container .select2-selection__text,
+.theme-dark .select2-container .dropdown-menu > li > a {
+    color: white;
+}
+
+.select2-container--default .select2-results>.select2-results__options {
+    min-height: 38px;
+}

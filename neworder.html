@@ -25,63 +25,78 @@
             <h2 class="page-header page-title text_color new_heading">Place a New Order</h2>
             <div class="row order1">
                 <div class="col-md-6 form_design">
-                    {% if error %}
-                        <div class="alert alert-dismissible alert-danger {% if site['rtl'] %} rtl-alert {% endif %}">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            {{ errorMessage }}
-                        </div>
-                    {% endif %}
-                    {% if 1 == success %}
-                        <div class="alert alert-success alert-dismissible" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4>{{lang('neworder.message.success')}}</h4>
-                            {{lang('neworder.id')}}: {{order['id']}}<br>
-                            {{lang('neworder.service')}}: {{order['service']}}
-                            <br>
-                            {{lang('neworder.link')}}: {{order['link']}}<br>
-                            {{lang('neworder.quantity')}}: {{order['quantity']}}<br>
-                            {{lang('neworder.charge')}}: {{order['charge']}}<br>
-                            {{lang('neworder.balance')}}: {{order['balance']}}<br>
-                        </div>
-                    {%endif%}
-                    {% if 2 == success %}
-                        <div class="alert alert-success alert-dismissible" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4>{{lang('neworder.message.success')}}</h4>
-                            {{lang('neworder.subscription_id')}}: {{order['id']}}<br>
-                            {{lang('neworder.service')}}: {{order['service']}}
-                            <br>
-                            {{lang('neworder.username')}}: {{order['link']}}<br>
-                            {{lang('neworder.quantity')}}:
-                            {% if order['quantity_min'] == order['quantity_max'] %}
-                                {{order['quantity_max']}}
-                            {% else %}
-                                {{order['quantity_min']}}-{{order['quantity_max']}}
-                            {%endif%}
-                            <br>
-                            {{lang('neworder.new_posts')}}:
-                            {% if 0 == order['posts'] %}
-                                &#8734;
-                            {% else %}
-                                {{order['posts']}}
-                            {%endif%}
-                            <br>
-                            {{lang('neworder.delay')}}:
-                            {{order['delay']}}
-                            <br>
-                        </div>
-                    {%endif%}
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" name="search" id="order_searchService" class="form-control bg_color" value="{{ search }}"
-                            placeholder="Search Service ID">
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i></button>
-                            </span>
-                        </div>
-                        <div class="form-text text-danger d-none mt-2" id="search_result_no_msg">No results were found</div>
-                    </div>
                     <form {% if site['rtl'] %} class="rtl-form"{% endif %} action="{{ page['url'] }}" method="post" id="order-form">
+                        {% if error %}
+                            <div class="alert alert-dismissible alert-danger {% if site['rtl'] %} rtl-alert {% endif %}">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                {{ errorMessage }}
+                            </div>
+                        {% endif %}
+                        {% if 1 == success %}
+                            <div class="alert alert-success alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4>{{lang('neworder.message.success')}}</h4>
+                                {{lang('neworder.id')}}: {{order['id']}}<br>
+                                {{lang('neworder.service')}}: {{order['service']}}
+                                <br>
+                                {{lang('neworder.link')}}: {{order['link']}}<br>
+                                {{lang('neworder.quantity')}}: {{order['quantity']}}<br>
+                                {{lang('neworder.charge')}}: {{order['charge']}}<br>
+                                {{lang('neworder.balance')}}: {{order['balance']}}<br>
+                            </div>
+                        {%endif%}
+                        {% if 2 == success %}
+                            <div class="alert alert-success alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4>{{lang('neworder.message.success')}}</h4>
+                                {{lang('neworder.subscription_id')}}: {{order['id']}}<br>
+                                {{lang('neworder.service')}}: {{order['service']}}
+                                <br>
+                                {{lang('neworder.username')}}: {{order['link']}}<br>
+                                {{lang('neworder.quantity')}}:
+                                {% if order['quantity_min'] == order['quantity_max'] %}
+                                    {{order['quantity_max']}}
+                                {% else %}
+                                    {{order['quantity_min']}}-{{order['quantity_max']}}
+                                {%endif%}
+                                <br>
+                                {{lang('neworder.new_posts')}}:
+                                {% if 0 == order['posts'] %}
+                                    &#8734;
+                                {% else %}
+                                    {{order['posts']}}
+                                {%endif%}
+                                <br>
+                                {{lang('neworder.delay')}}:
+                                {{order['delay']}}
+                                <br>
+                            </div>
+                        {%endif%}
+
+                    
+                        <!-- <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" name="search" id="order_searchService" class="form-control bg_color" value="{{ search }}"
+                                placeholder="Search Service ID">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                </span>
+                            </div>
+                            <div class="form-text text-danger d-none mt-2" id="search_result_no_msg">No results were found</div>
+                        </div> -->
+
+                        {% if services_search %}
+                            <div class="form-group">
+                                <div class="bg_color search-dropdown" id="new-order-search" style="position: relative;" data-lang-placeholder="{{ lang('general.search.placeholder') }}" {% if site['rtl'] %} data-dir="rtl" {% endif %}>
+                                    <div class="input-wrapper" style="position: relative;">
+                                        <button style="position: absolute;top: 50%;transform: translateY(-50%);padding: 0px 2px;background: none;border: none;{% if site['rtl'] %}right: 12px;left: auto;{% else %}left: 12px;{% endif %}" type="button">
+                                            <span class="fas fa-search"></span>
+                                        </button>
+                                        <input type="text" class="form-control" id="template-input" value="" placeholder="{{ lang('general.search.placeholder') }}">
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
             
                         <div class="category_name">
                             {% if categories %}
@@ -99,28 +114,76 @@
                                             </div>
                                         </div>
                                     </span>
+
                                     <select class="form-control bg_color" id="orderform-main-category" name="main-category">
                                     </select>
                                 </div>
+
                                 <div class="form-group">
-                                    <!-- <label for="orderform-category" class="control-label"> 
-                                        {{ lang('neworder.category') }} 
-                                        </label> -->
+                                    <div class="d-none">
+                                        <select 
+                                            class="form-control" 
+                                            id="orderform-category" 
+                                            data-select="true"
+                                            data-select-search="true"
+                                            data-select-search-placeholder="{{ lang('general.search.placeholder') }}"
+                                            {% if site['rtl'] %} data-select-dir="rtl" {% endif %}
+                                        >
                                     
-                                    <select class="form-control" id="orderform-category" name="OrderForm[category]">
-                                    {% for categoryId,categoryName in categories %}
-                                        <option value="{{ categoryId }}" {% if categoryId == data['category'] %} selected {%endif%}> 
-                                            {{ categoryName }} 
+                                        {% for category in extended_categories %}
+                                            <option
+                                                value="{{ category.id }}"
+                                                {% if category.icon %}
+                                                data-icon="
+                                                    {% if category.icon['icon_type'] == 'icon' %}
+                                                    <span class='{{ category.icon['icon'] }}'></span>
+                                                    {% elseif category.icon['icon_type'] == 'emoji' %}
+                                                    <span>{{ category.icon['icon'] }}</span>
+                                                    {% elseif category.icon['icon_type'] == 'image' %}
+                                                    <img src='{{ category.icon['url'] }}' alt='{{ category.name }}' class='img-responsive btn-group-vertical'>
+                                                    {% endif %}
+                                                "
+                                                {% endif %}
+                                                {% if category.id == data['category'] %} selected {% endif %}
+                                            >
+                                                {{ category.name }}
+                                            </option>
+                                        {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <select 
+                                        class="form-control" 
+                                        id="orderform-category_1" 
+                                        name="OrderForm[category]"
+                                    >
+                                   
+                                    {% for category in extended_categories %}
+                                        <option
+                                            value="{{ category.id }}"
+                                            {% if category.icon %}
+                                            data-icon="
+                                                {% if category.icon['icon_type'] == 'icon' %}
+                                                <span class='{{ category.icon['icon'] }}'></span>
+                                                {% elseif category.icon['icon_type'] == 'emoji' %}
+                                                <span>{{ category.icon['icon'] }}</span>
+                                                {% elseif category.icon['icon_type'] == 'image' %}
+                                                <img src='{{ category.icon['url'] }}' alt='{{ category.name }}' class='img-responsive btn-group-vertical'>
+                                                {% endif %}
+                                            "
+                                            {% endif %}
+                                            {% if category.id == data['category'] %} selected {% endif %}
+                                        >
+                                            {{ category.name }}
                                         </option>
-                                    {%endfor%}
+                                    {% endfor %}
                                     </select>
                                 </div>
                             {% endif %}
                             <div class="form-group">
-                                <!--  <label for="orderform-service" class="control-label">
-                                    {{ lang('neworder.service') }}
-                                    </label> -->
-                                <select class="form-control" id="orderform-service" name="OrderForm[service]">
+                                <select class="form-control d-none" id="orderform-service">
+                                </select>
+                                <select class="form-control" id="orderform-service_1" name="OrderForm[service]">
                                 </select>
                             </div>
                         </div>
@@ -397,7 +460,7 @@
 {% endif %}
               
 <script>
-    const categories = {{ categories | json_encode }};
-    
+    const categories = {{ extended_categories | json_encode }};
+    console.log(categories);
     const selectedCatId = {{ data['category'] }};
 </script>
