@@ -1,0 +1,207 @@
+<!------Create a faq start------->
+<div class="container">
+<div class="panel faq">
+   <div class="panel-body">
+      <div class="row">
+         <div class="col-md-10 col-md-offset-1 bg_color">
+            <div class="well">
+               <div class="api_document create_ticket">
+                  <h2 class="m-b-md text_color">Frequently Asked Questions</h2>
+                  <div class="ticket faq_section">
+                     <div class="order-id ">
+                        <ul>
+                           <li class="active">
+                              <a href="#tab1" data-toggle="tab">
+                                 <div class="subject_box">
+                                    <span><img src="https://followizaddons.com/followiz-icons/sales-billing_icon.svg"></span>
+                                    <p class="text-color2">Sales/Billing</p>
+                                 </div>
+                              </a>
+                           </li>
+                           <li >
+                              <a href="#tab2" data-toggle="tab">
+                                 <div class="subject_box">
+                                    <span><img src="https://followizaddons.com/followiz-icons/account_icon.svg"></span>
+                                    <p class="text-color2">Account</p>
+                                 </div>
+                              </a>
+                           </li>
+                           <li >
+                              <a href="#tab3" data-toggle="tab">
+                                 <div class="subject_box">
+                                    <span><img src="https://followizaddons.com/followiz-icons/order_icon.svg"></span>
+                                    <p class="text-color2">Orders</p>
+                                 </div>
+                              </a>
+                           </li>
+                           <li>
+                              <a href="#tab4" data-toggle="tab">
+                                 <div class="subject_box">
+                                    <span><img src="https://followizaddons.com/followiz-icons/services_icon.svg"></span>
+                                    <p class="text-color2">Service</p>
+                                 </div>
+                              </a>
+                           </li>
+                        </ul>
+                 
+                          <!--  <div class="tab-content faq_details">
+                              <div class="tab-pane active text-style" id="tab1">
+                                 <div class="well history_ticket">
+                                    <div class="accordion" id="accordionExample">
+                                       <div class="card">
+                                          <div class="card-header" id="headingFive">
+                                             <h2 class="mb-0">
+                                                <button type="button" class="btn btn-link collapsed text_color" data-toggle="collapse" data-target="#collapseFive">How Do I Get My Balance Refunded?<i class="fa fa-plus"></i></button>                     
+                                             </h2>
+                                          </div>
+                                          <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
+                                             <div class="card-body">
+                                                <p class="text-color2">Followiz is offering a 10% Bonus on your First Deposit.
+                                                   In order to get it, please  <a href="#">open a ticket</a> and ask so.
+                                                   Maximum bonus: 50$
+                                                </p>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="card">
+                                          <div class="card-header" id="headingSix">
+                                             <h2 class="mb-0">
+                                                <button type="button" class="btn btn-link collapsed text_color" data-toggle="collapse" data-target="#collapseSix">How Do I Get My Balance Refunded?<i class="fa fa-plus"></i></button>                     
+                                             </h2>
+                                          </div>
+                                          <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionExample">
+                                             <div class="card-body">
+                                                <p class="text-color2">Followiz is offering a 10% Bonus on your First Deposit.
+                                                   In order to get it, please  <a href="#">open a ticket</a> and ask so.
+                                                   Maximum bonus: 50$
+                                                </p>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="tab-pane text-style" id="tab2">
+                                 <div class="history_ticket">
+                                    <div class="accordion" id="accordionExample">
+                                       <div class="card">
+                                          <div class="card-header" id="headingOne">
+                                             <h2 class="mb-0">
+                                                <button type="button" class="btn btn-link text_color" data-toggle="collapse" data-target="#collapseOne">How Can I Get 10% Off My First Deposit?<i class="fa fa-plus"></i></button>                  
+                                             </h2>
+                                          </div>
+                                          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                             <div class="card-body">
+                                                <p class="text-color2">Followiz is offering a 10% Bonus on your First Deposit.
+                                                   In order to get it, please  <a href="#">open a ticket</a> and ask so.
+                                                   Maximum bonus: 50$
+                                                </p>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="card">
+                                          <div class="card-header" id="headingTwo">
+                                             <h2 class="mb-0">
+                                                <button type="button" class="btn btn-link collapsed text_color" data-toggle="collapse" data-target="#collapseTwo">How Do I Get My Balance Refunded?<i class="fa fa-plus"></i></button>
+                                             </h2>
+                                          </div>
+                                          <div id="collapseTwo" class="collapse " aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                             <div class="card-body">
+                                                <p class="text-color2">Followiz is offering a 10% Bonus on your First Deposit.
+                                                   In order to get it, please  <a href="#">open a ticket</a> and ask so.
+                                                   Maximum bonus: 50$
+                                                </p>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="card">
+                                          <div class="card-header" id="headingThree">
+                                             <h2 class="mb-0">
+                                                <button type="button" class="btn btn-link collapsed text_color" data-toggle="collapse" data-target="#collapseThree">How Do I Get My Balance Refunded?<i class="fa fa-plus"></i></button>                     
+                                             </h2>
+                                          </div>
+                                          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                                             <div class="card-body">
+                                                <p class="text-color2">Followiz is offering a 10% Bonus on your First Deposit.
+                                                   In order to get it, please  <a href="#">open a ticket</a> and ask so.
+                                                   Maximum bonus: 50$
+                                                </p>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="card">
+                                          <div class="card-header" id="headingFour">
+                                             <h2 class="mb-0">
+                                                <button type="button" class="btn btn-link collapsed text_color" data-toggle="collapse" data-target="#collapseFour">How Do I Get My Balance Refunded?<i class="fa fa-plus"></i></button>                     
+                                             </h2>
+                                          </div>
+                                          <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                                             <div class="card-body">
+                                                <p class="text-color2">Followiz is offering a 10% Bonus on your First Deposit.
+                                                   In order to get it, please  <a href="#">open a ticket</a> and ask so.
+                                                   Maximum bonus: 50$
+                                                </p>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="tab-pane text-style" id="tab3">
+                                 <div class="well history_ticket">
+                                    <div class="accordion" id="accordionExample">
+                                       <div class="card">
+                                          <div class="card-header" id="headingSeven">
+                                             <h2 class="mb-0">
+                                                <button type="button" class="btn btn-link text_color" data-toggle="collapse" data-target="#collapseSeven">How Can I Get 10% Off My First Deposit?<i class="fa fa-plus"></i></button>                  
+                                             </h2>
+                                          </div>
+                                          <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordionExample">
+                                             <div class="card-body">
+                                                <p class="text-color2">Followiz is offering a 10% Bonus on your First Deposit.
+                                                   In order to get it, please  <a href="#">open a ticket</a> and ask so.
+                                                   Maximum bonus: 50$
+                                                </p>
+                                             </div>
+                                          </div>
+                                          <div class="card">
+                                             <div class="card-header" id="headingEight">
+                                                <h2 class="mb-0">
+                                                   <button type="button" class="btn btn-link collapsed text_color" data-toggle="collapse" data-target="#collapseEight">How Do I Get My Balance Refunded?<i class="fa fa-plus"></i></button>
+                                                </h2>
+                                             </div>
+                                             <div id="collapseEight" class="collapse " aria-labelledby="headingEight" data-parent="#accordionExample">
+                                                <div class="card-body">
+                                                   <p class="text-color2">Followiz is offering a 10% Bonus on your First Deposit.
+                                                      In order to get it, please  <a href="#">open a ticket</a> and ask so.
+                                                      Maximum bonus: 50$
+                                                   </p>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="tab-pane text-style" id="tab4">
+                                    <div class="well history_ticket">
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                                                   -->
+                     <div class="tab-content faq_details custom-tabing">
+                           {% if faq %}
+                           {{ faq }}
+                           {% endif %}
+                        </div> 
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+</div>
+
+  
