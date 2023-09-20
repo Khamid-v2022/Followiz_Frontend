@@ -245,7 +245,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                 }
             }
         }
-        console.log(best_sellers);
+
         let result_best_seller = []
         // pick best sellers from search result
         for(let i = 0; i < best_sellers.length; i++){
@@ -289,9 +289,22 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         let service_id = serviceItemDetail['id'];
 
         tbody += '<tr class="tablerowid" id="trow-' + service_id + '">'; 
+
+        tbody += '<td><span role="button"';
+        if(service.favorite) 
+            tbody += ' class="favorite-active"'; 
+        tbody += ' data-favorite-service-id="' + service.id + '">';
+        tbody += '<span data-favorite-icon class="';
+        if(service.favorite) 
+            tbody += 'fas fa-star';
+        else 
+            tbody += 'far fa-star';
+        tbody += '"></span></span></td>';
+
         tbody += '<td class="id review-hover-zone">' + service_id; 
-        tbody += '<div class="rating-wrap"><div class="reviewShowOnly" id="reviewShowOnly_' + service_id + '" data-service_id="' + service_id + '"></div>';
-        tbody += '<div class="review" id="review_' + service_id + '" data-service_id="' + service_id + '"></div> </div></td>';
+        // tbody += '<div class="rating-wrap"><div class="reviewShowOnly" id="reviewShowOnly_' + service_id + '" data-service_id="' + service_id + '"></div>';
+        // tbody += '<div class="review" id="review_' + service_id + '" data-service_id="' + service_id + '"></div> </div>';
+        tbody += '</td>';
         
         let service_name = service['name'];
         tbody += '<td class="width-25 name"><a href="#" class="order-again-btn" data-service_id="' + service_id + '" data-service-category="' + category_name + '">' + service_name + '</a></td>';
@@ -867,7 +880,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         }, 100)
 
                         $("#orderform-category_1").select2("close");
-                        console.log('aaaaa');
                     })
 
                     $("#orderform-main-category").html('').html(mainCategoryOption);

@@ -7351,10 +7351,6 @@ html {
     position: initial;
   }
 
-  .service_container .id {
-    min-width: 100px;
-  }
-
   .new_order .description_txt p {
     margin-bottom: 0px;
   }
