@@ -17,9 +17,14 @@
         </div>
     </div>
 </div>
-  
+
+
   
 <div class="container">
+
+    <div class="dashboard-div d-none">
+        Dashboard page
+    </div>
     <div class="panel new_order">
         <div class="panel-body">
             <h2 class="page-header page-title text_color new_heading">Place a New Order</h2>
@@ -460,6 +465,17 @@
 {% endif %}
               
 <script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const product = urlParams.get('page');
+    if(product == "neworder"){
+        document.querySelectorAll(".navbar ul li").forEach(el => el.classList.remove("active"));
+        document.querySelectorAll(".neworder-menu").forEach(el => el.classList.add("active"));
+    } else {
+        document.querySelectorAll(".dashboard-div").forEach(el => el.classList.remove("d-none"));
+    }
+        
     const categories = {{ extended_categories | json_encode }};
     const selectedCatId = {{ data['category'] }};
+
 </script>
