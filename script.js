@@ -443,7 +443,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         localStorage.setItem('ordersuccesscount',1);
                         localStorage.setItem('main-category', $('#orderform-main-category').val());
                         localStorage.setItem('category', $('#orderform-category_1').val());
-                        localStorage.setItem('service', $('#orderform-service_1').val());
+                        localStorage.setItem('service', $('#orderform-service').val());
                     })     
                 
                     $('#orderform-main-category').on('keydown', function(e) {
@@ -451,48 +451,14 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                             e.preventDefault();
                         }
                     });
-            
-                    // $("#order_searchService").on('change', function(e){
-                    //     if($(this).val().length > 0){
-                    //         selectServiceByServiceIDManually($(this).val());
-                    //     }
-                    // })
-
-                    // function selectServiceByServiceIDManually(service_id){
-                    //     let selected_service = getServicesId(service_id);
-                        
-                    //     if(Object.keys(selected_service).length === 0 && selected_service.constructor === Object){
-                    //         console.log("no result")
-                    //         $("#search_result_no_msg").removeClass("d-none");
-                    //         return;
-                    //     }
-                    //     $("#search_result_no_msg").addClass("d-none");
-                            
-                    //     let category_name = categories[selected_service.cid];
-                    //     let ssArr = category_name.split("-");
-                    //     let main_category = ssArr[0].trim();
-            
-                    //     // $("#orderform-main-category").val(main_category).trigger('change');
-                    //     $("#orderform-main-category").val(main_category).change();
-                    //     setTimeout(function(){
-                    //         $("#orderform-category_1").val(selected_service.cid).change();
-                    //     }, 200);
-
-                    //     console.log(selected_service.id);
-                    //     setTimeout(function(){
-                    //         $("#orderform-service_1").val(selected_service.id).change();
-                    //     }, 800);
-                    // }
                 
                     // populate new order form value    
-                    $("#orderform-service_1").on("change", function(){
-                        let sel_service_id = $(this).val();
+                    $("#orderform-service").on("change", function(){
                         //Delay because else the value it was taking from the description was from the previous service chosen
                         setTimeout(function() {
                             updateMinMax();
                             UpdateDescription();
                             updateServiceTitle();
-                            updateRating(sel_service_id);
                         }, 100)
                     });
             
@@ -502,9 +468,9 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     
                     $('#dripfeed-options').append('<p style="color:red;font-weight:bold;">MINIMUM INTERVAL SHOULD BE AT LEAST 4 TIMES THE START TIME.<br>We will not refund any orders that does not follow this rule.</p>');
                 
-                    var selected_val =  $("#orderform-service_1").val();
+                    var selected_val =  $("#orderform-service").val();
                     if(!selected_val){
-                        selected_val = $("#orderform-service_1").prop("selectedIndex", 0).val();
+                        selected_val = $("#orderform-service").prop("selectedIndex", 0).val();
                     }
                     
                     $('#field-orderform-fields-check').on('click', function(){
@@ -524,12 +490,12 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         templateResult: formatState1,
                     });
 
-                    $("#orderform-service_1").select2({
+                    $("#orderform-service").select2({
                         templateSelection: formatState2,
                         templateResult: formatState2,
                     });
             
-                    $("#orderform-main-category, #orderform-category_1, #orderform-service_1").on("select2:open", hideSelect2Keyboard);
+                    $("#orderform-main-category, #orderform-category_1, #orderform-service").on("select2:open", hideSelect2Keyboard);
 
                 /***************** Initialize New Order Page Component END **********************/
                 const categoryOrderURLlocal = 'https://followizaddons.com/client_js/service_order/category.php';       
@@ -682,19 +648,11 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                                 let ssArr = selected_category_name.split("-");
                                 const main_cat_name = ssArr[0].trim();
                                 $("#orderform-main-category").val(main_cat_name).trigger('change');
-                                
                                 $("#orderform-category_1").val(selected_category_id);
-
-                                setTimeout(function(){
-                                    const sel_service_id = $("#orderform-service").val();
-                                    $("#orderform-service_1").val(sel_service_id).trigger('change');
-                                }, 200)
-                                
                             }
                         }
-                        
-                        
                     })
+                    
 
                     $("#orderform-category_1").change(function(){
 
@@ -874,9 +832,10 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         });
                         lsubCategoryOption += '</optgroup>';
                     
+                        $("#orderform-service").html(lsubCategoryOption);
                         setTimeout(function(){
                             // service
-                            $("#orderform-service_1").html(lsubCategoryOption).trigger('change');
+                            $("#orderform-service").trigger('change');
                         }, 100)
 
                         $("#orderform-category_1").select2("close");
@@ -893,7 +852,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                     if(params.has('service')){
                         setTimeout(function(){
                             let sel_service_id = params.get('service');
-                            $("#orderform-service_1").val(sel_service_id).trigger('change');
+                            $("#orderform-service").val(sel_service_id).trigger('change');
                         }, 500);
                     }
                 // });
@@ -2042,21 +2001,21 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     };
 
     function updateMinMax(){
-        var selected_val =  jQuery("#orderform-service_1").val();
+        var selected_val =  $("#orderform-service").val();
         if(!selected_val){
-            selected_val = jQuery("#orderform-service_1").prop("selectedIndex", 0).val();
+            selected_val = $("#orderform-service").prop("selectedIndex", 0).val();
         }
     
         var serviceDetails = getServiceDetailsById(selected_val);
 
-        jQuery(".service-description-split").html(serviceDetails.description);
+        $(".service-description-split").html(serviceDetails.description);
         setTimeout(function(){
             let serviceDetailsMax = (parseInt(serviceDetails.max)).toLocaleString();
             let serviceDetailsmin = (parseInt(serviceDetails.min)).toLocaleString();
     
-            jQuery(".minMax-split").html(serviceDetailsmin+"<br>"+serviceDetailsMax);
-            jQuery('#field-orderform-fields-quantity').attr('placeholder',"Min: "+serviceDetailsmin+" - Max: "+serviceDetailsMax); 
-            jQuery(".price-split").html(serviceDetails.price);
+            $(".minMax-split").html(serviceDetailsmin+"<br>"+serviceDetailsMax);
+            $('#field-orderform-fields-quantity').attr('placeholder',"Min: "+serviceDetailsmin+" - Max: "+serviceDetailsMax); 
+            $(".price-split").html(serviceDetails.price);
 
             // AVG Time set
             $(".avg_txt").html(serviceDetails.average_time);
@@ -2065,18 +2024,18 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
 
     function UpdateDescription(){
     
-        lines = jQuery(".service-description-split").html().split("<br>");
+        lines = $(".service-description-split").html().split("<br>");
         
-        jQuery(".service-description-split").html('');
-        jQuery(".service-description-split").html('<div>' + lines.join("</div><div>") + '</div>');
+        $(".service-description-split").html('');
+        $(".service-description-split").html('<div>' + lines.join("</div><div>") + '</div>');
     
         var i = 1;
-        jQuery('.service-description-split div').each(function(){
+        $('.service-description-split div').each(function(){
             if(i < 6) {
-                jQuery(this).addClass('split-class' + i);
+                $(this).addClass('split-class' + i);
                 i++;
             }else{
-                jQuery(this).addClass('split-class-extra');
+                $(this).addClass('split-class-extra');
             }
         });
         
@@ -2140,9 +2099,9 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         //     detailsData += "Quality Examples:" + "<br>" + QualityExamplesData;
         // }
         
-        jQuery(".details-split").html(detailsData);
+        $(".details-split").html(detailsData);
 
-        var splt1 = jQuery( ".split-class1" ).text();
+        var splt1 = $( ".split-class1" ).text();
         
         if(!isNotEmpty(splt1)){
             return;
@@ -2151,55 +2110,55 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         var str1 = splt1.split(":");
         if(str1[1])
             str1[1] = str1[1].replace("Start Time", "");
-        jQuery(".quality-split").html(str1[1]);
+        $(".quality-split").html(str1[1]);
     
-        var splt2 = jQuery( ".split-class2" ).text();
+        var splt2 = $( ".split-class2" ).text();
         var str2 = splt2.split(":");
         if(str2[1])
             str2[1] = str2[1].replace("Start Time", "");
-        jQuery( ".time-split" ).html(str2[1]);
+        $( ".time-split" ).html(str2[1]);
     
-        var splt3 = jQuery( ".split-class3" ).text();
+        var splt3 = $( ".split-class3" ).text();
         var str3 = splt3.split(":");
         if(str3[1])
             str3[1] = str3[1].replace("Speed per Day", "");
-        jQuery( ".speed-split" ).html(str3[1]);
+        $( ".speed-split" ).html(str3[1]);
         
     
-        var splt4 = jQuery( ".split-class4" ).text();  
+        var splt4 = $( ".split-class4" ).text();  
         var str4 = splt4.split(":");
         
         
         if(str4[0]=='Min/Max'){
 
             str4[1] = str4[1].replace("Min/Max", "");
-            jQuery( ".minMax-split" ).html(str4[1]);
+            $( ".minMax-split" ).html(str4[1]);
     
-            var splt5 = jQuery( ".split-class5" ).text();
+            var splt5 = $( ".split-class5" ).text();
             var str5 = splt5.split(":");
             
             if(str5[0]=='Refill Available'){
-                jQuery( ".refill-split" ).html(str5[1]);
+                $( ".refill-split" ).html(str5[1]);
     
-                var splt6 = jQuery( ".split-class6" ).text();
+                var splt6 = $( ".split-class6" ).text();
                 var str6 = splt6.split(":");
                 
                 str6[1] = str6[1].replace("Price per 1000", "");
-                jQuery( ".price-split" ).html(str6[1]);
+                $( ".price-split" ).html(str6[1]);
         
             }else if(str5[0]=='Price per 1000') {
-                jQuery( ".price-split" ).html(str5[1]);
+                $( ".price-split" ).html(str5[1]);
             }
     
         } else if(str4[0]=='Refill Available') {
     
             str4[1] = str4[1].replace("Refill Available", "");
-            jQuery( ".refill-split" ).html(str4[1]);
+            $( ".refill-split" ).html(str4[1]);
         
-            var splt5 = jQuery( ".split-class5" ).text();
+            var splt5 = $( ".split-class5" ).text();
             var str5 = splt5.split(":");
             str5[1] = str5[1].replace("Price per 1000", "");
-            jQuery( ".price-split" ).html(str5[1]);
+            $( ".price-split" ).html(str5[1]);
         }  
 
        
@@ -2295,7 +2254,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     }
 
     function updateServiceTitle(){
-        var valService = $("#orderform-service_1").find("option:selected").text();
+        var valService = $("#orderform-service").find("option:selected").text();
     
         jQuery( "#seviceTitle" ).text(valService);
         
@@ -2427,13 +2386,13 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             });
         }
 
-        $("#orderform-category_1").html(subCategoryOption);
+        $("#orderform-category_1").html(subCategoryOption).trigger('change');
         
-        setTimeout(
-            function(){ 
-                $('#orderform-category_1').trigger('change');
-            }, 
-        50);
+        // setTimeout(
+        //     function(){ 
+        //         $('#orderform-category_1').trigger('change');
+        //     }, 
+        // 50);
     }
 
     function onlyUnique(value, index, self) {
