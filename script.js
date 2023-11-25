@@ -124,32 +124,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
         let service_cat_id1 = $('.ticketReview').attr('data_ser_key');
         let msg_id = $('.ticketReview').attr('data_msg_id');
         
-        //  $.ajax({
-        //      async: false,    
-        //      url: "https://followizaddons.com/vote/read1.php",
-        //      dataType: "json",
-        //      data:{user_id:user_id,ticket_id:service_cat_id1},    
-        //      type: "POST",
-        //      cache: false,
-        //      crossDomain: true,
-        //      success: function(response){            
-        //          for(var i =0; response.data.length >i ; i++){
-        //              msg_id = response.data[i]['msg_id'];
-        //              var sec_div = $('#msg_'+msg_id).parents('.viewticket-followiz');
-        //              let githu = '';  
-        //              let c= response.data[i]['vote'];
-                    
-        //              for(j = 0; j < c; j++){ 
-        //                  githu += ' <i class="fas fa-star" style="color: rgb(252, 215, 3);cursor: pointer;" aria-hidden="true"></i>';
-        //              }
-        //              let m = 5 - c;
-        //              for(k = 0; k < m; k++){ 
-        //                  githu += '<i class="far fa-star" style="cursor: pointer;" aria-hidden="true"></i>';
-        //              }
-        //              sec_div.find('.message-rating').append(githu);
-        //          }
-        //      }
-        //  }); 
+       
     });
   
 
@@ -666,6 +641,7 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
                         let newSortedService = [];
                         let best_ids = [];
                         let actuall_best_length = 0;
+
 
                         // if best seller should to order by excel docu.. so let it
                         if(cat_id == "Best sellers"){
@@ -1959,6 +1935,10 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
             return "threads.svg";
         }
 
+        if(serviceName.includes('whatsapp')){
+            return "whatsapp.svg";
+        }
+
         return "marketing.svg";
     }
 
@@ -2417,7 +2397,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     };
 
     function getServiceByCategoryId(catId) {
-
         var service_details = [];
         var services = window.modules.siteOrder.services;
 
@@ -3600,7 +3579,6 @@ const homeURL =  location.protocol+'//'+location.hostname+(location.port ? ':'+l
     
     function getUserRatingForOrder() {
         // Orders page, 
-        console.log("Orders page");
        
         $(".review").rating({
             "value": 0,

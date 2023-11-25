@@ -37,10 +37,6 @@
 								<p class="text_color">Payments</p>
 							 </div>
 						  </a>
-<!--<div class="ticket_tolltip bg_color">
-							   
-<p class="text-color2">Question about your funding transaction ?</p>
-							   </div>-->
 					   </li>
 					   <li href="#tab3" data-toggle="tab">
 						  <input type="radio" name="subject" value="Service"  class="designradio"/>
@@ -50,11 +46,6 @@
 								<p class="text_color">Service</p>
 							 </div>
 						  </a>
-<!--<div class="ticket_tolltip bg_color">
-							   
-<p class="text-color2">
-Question about our services ?</p>
-							   </div>-->
 					   </li>
 					   <li href="#tab4" data-toggle="tab">
 						  <input type="radio" name="subject" value="Child-Panel"  class="designradio"/>
@@ -85,11 +76,11 @@ Question about our services ?</p>
 					   </li>
 					</ul>
 				 </div>
+
 				 <div class="tab-content" id="secondTab">
 					<div class="tab-pane text-style active" id="tab11">
 					   
 					   	<div class="request">
-						  	<!--<h5 class="text_color">Request</h5>-->
 						  	<ul class="custom-radio">
 								<li id="refill_options" class="active">
 									<input type="radio" name="request" value="Refill"  class="designradio"  checked="true" />
@@ -98,10 +89,6 @@ Question about our services ?</p>
 											<p class="text-color2">Refill</p>
 										</div>
 									</a>
-	<!--<div class="ticket_tolltip bg_color">
-								
-	<p class="text-color2">Be Sure that the service used is Refill Guaranteed within the guarantee period</p>
-								</div>-->
 								</li>
 							 	<li>
 									<input type="radio" name="request" value="Cancellation"  class="designradio"/>
@@ -110,10 +97,6 @@ Question about our services ?</p>
 											<p  class="text-color2">Cancellation</p>
 										</div>
 									</a>
-	<!--<div class="ticket_tolltip bg_color">
-								
-	<p class="text-color2">Most order's can't be cancelled</p>
-								</div>-->
 								</li>
 								<li>
 									<input type="radio" name="request" value="Speed Up"  class="designradio"/>
@@ -122,13 +105,7 @@ Question about our services ?</p>
 											<p class="text-color2">Speed Up</p>
 										</div>
 									</a>
-	<!--<div class="ticket_tolltip bg_color">
-								
-	<p class="text-color2">please check start time and speed per day indicated in the service description </p>
-								</div>-->
 								</li>
-							
-							
 						  	</ul>
 					   	</div>
 
@@ -283,6 +260,8 @@ Question about our services ?</p>
                         <input type="hidden" name="_csrf" value="{{csrftoken}}">
 					</div>
 				<div id="messageContainer"></div>
+
+				
 				<input type="hidden" id="ticketSubject" name="TicketForm[subject]">
 				<button id="submitTicketBtn" type="submit" class="btn btn-primary btn-block">{{ lang('tickets.button') }}</button>
 				
